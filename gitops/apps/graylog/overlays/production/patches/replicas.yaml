@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graylog
+  namespace: logging-system
+spec:
+  replicas: 2  # Production HA
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+  namespace: logging-system
+spec:
+  replicas: 3  # Elasticsearch cluster

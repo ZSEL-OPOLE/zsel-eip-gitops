@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-postgresql
+  namespace: monitoring-system
+  labels:
+    app.kubernetes.io/name: zabbix
+    app.kubernetes.io/component: postgresql
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: zabbix
+    app.kubernetes.io/component: postgresql
+  ports:
+  - name: postgresql
+    port: 5432
+    targetPort: 5432
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-server
+  namespace: monitoring-system
+  labels:
+    app.kubernetes.io/name: zabbix
+    app.kubernetes.io/component: server
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: zabbix
+    app.kubernetes.io/component: server
+  ports:
+  - name: zabbix-trapper
+    port: 10051
+    targetPort: 10051
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-web
+  namespace: monitoring-system
+  labels:
+    app.kubernetes.io/name: zabbix
+    app.kubernetes.io/component: web
+  annotations:
+    metallb.universe.tf/address-pool: vlan600-management
+    metallb.universe.tf/loadBalancerIPs: 192.168.255.59
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.255.59
+  externalTrafficPolicy: Local
+  selector:
+    app.kubernetes.io/name: zabbix
+    app.kubernetes.io/component: web
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-agent
+  namespace: monitoring-system
+  labels:
+    app.kubernetes.io/name: zabbix
+    app.kubernetes.io/component: agent
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: zabbix
+    app.kubernetes.io/component: agent
+  ports:
+  - name: agent
+    port: 10050
+    targetPort: 10050
+    protocol: TCP

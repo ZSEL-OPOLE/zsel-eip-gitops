@@ -1,0 +1,7 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: user-ad-dc
+  namespace: identity-system
+spec:
+  replicas: 3  # Production HA: PRIMARY + SECONDARY + TERTIARY

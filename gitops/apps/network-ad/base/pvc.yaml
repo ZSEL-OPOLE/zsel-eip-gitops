@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: network-ad-storage
+  namespace: core-auth
+  labels:
+    app.kubernetes.io/name: network-ad
+    app.kubernetes.io/component: samba-ad-dc
+    app.kubernetes.io/part-of: core-services
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 50Gi

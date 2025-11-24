@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-ad-smb-config
+  namespace: identity-system
+  labels:
+    app.kubernetes.io/name: user-ad
+    app.kubernetes.io/component: samba-ad-dc
+    app.kubernetes.io/part-of: user-services
+data:
+  smb.conf: |
+    [global]
+    # User AD Domain Configuration (SSO for Applications)
+    netbios name = USER-AD-DC
+    realm = AD.ZSEL.OPOLE.PL
+    workgroup = ZSEL
+    server role = active directory domain controller
+    server services = s3fs, rpc, nbt, wrepl, ldap, cldap, kdc, drepl, winbindd, ntp_signd, kcc, dnsupdate
+    idmap_ldb:use rfc2307 = yes
+    
+    # DNS Configuration
+    dns forwarder = 1.1.1.1 9.9.9.9
+    dns backend = SAMBA_INTERNAL
+    allow dns updates = nonsecure and secure
+    
+    # LDAP Configuration for SSO Applications
+    ldap server require strong auth = yes
+    ldap ssl = start tls
+    
+    # Password Policy (strict for users)
+    password policy = enabled
+    min password length = 12
+    password complexity = on
+    password history length = 24
+    
+    # Logging
+    log level = 2
+    log file = /var/log/samba/samba.log
+    max log size = 10000
+    
+    # Performance Tuning
+    socket options = TCP_NODELAY IPTOS_LOWDELAY
+    read raw = yes
+    write raw = yes
+    max xmit = 65535
+    
+    [netlogon]
+    path = /var/lib/samba/sysvol/ad.zsel.opole.pl/scripts
+    read only = No
+    
+    [sysvol]
+    path = /var/lib/samba/sysvol
+    read only = No

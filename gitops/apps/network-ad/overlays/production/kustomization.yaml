@@ -1,0 +1,47 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: core-auth
+
+resources:
+  - ../../base
+
+# Production-specific patches
+patches:
+  - path: patches/replicas.yaml
+  - path: patches/resources.yaml
+
+# CRITICAL: Replace plain Secret with SealedSecret in production!
+# Generate SealedSecret:
+#   1. Create plain secret YAML:
+#      kubectl create secret generic network-ad-admin-secret \
+#        --namespace=core-auth \
+#        --from-literal=admin-password="$(openssl rand -base64 32)" \
+#        --dry-run=client -o yaml > /tmp/secret.yaml
+#
+#   2. Seal the secret:
+#      kubeseal --format=yaml --cert=pub-sealed-secrets.pem \
+#        < /tmp/secret.yaml > sealed-secret.yaml
+#
+#   3. Delete plain secret file:
+#      rm /tmp/secret.yaml
+#
+# Place sealed-secret.yaml in this directory and uncomment below:
+# resources:
+#   - sealed-secret.yaml
+
+# Remove base secret (replaced by SealedSecret)
+# patchesJson6902:
+#   - target:
+#       group: ""
+#       version: v1
+#       kind: Secret
+#       name: network-ad-admin-secret
+#       namespace: core-auth
+#     patch: |-
+#       - op: remove
+#         path: /
+
+labels:
+  - pairs:
+      environment: production

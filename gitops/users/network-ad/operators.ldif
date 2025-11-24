@@ -1,0 +1,68 @@
+# Network AD - Network Operators
+# OU: OU=Operators,OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl
+# Group: Network-Operators (read+write, NO reboot)
+# MikroTik Group: network-operator
+
+# Organizational Unit: Operators
+dn: OU=Operators,OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl
+objectClass: organizationalUnit
+ou: Operators
+description: Network Operators with limited access (NO reboot/policy)
+
+# User 1: Operator Sieciowy 1
+dn: CN=operator01,OU=Operators,OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: operator01
+sAMAccountName: operator01
+givenName: Operator
+sn: Sieciowy 1
+displayName: Operator Sieciowy 1
+mail: operator01@zsel.opole.pl
+userPrincipalName: operator01@network-ad.zsel.opole.pl
+description: Network Operator - Read+Write (NO reboot)
+userAccountControl: 512
+memberOf: CN=Network-Operators,OU=Groups,DC=network-ad,DC=zsel,DC=opole,DC=pl
+
+# User 2: Operator Sieciowy 2
+dn: CN=operator02,OU=Operators,OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: operator02
+sAMAccountName: operator02
+givenName: Operator
+sn: Sieciowy 2
+displayName: Operator Sieciowy 2
+mail: operator02@zsel.opole.pl
+userPrincipalName: operator02@network-ad.zsel.opole.pl
+description: Network Operator - Read+Write (NO reboot)
+userAccountControl: 512
+memberOf: CN=Network-Operators,OU=Groups,DC=network-ad,DC=zsel,DC=opole,DC=pl
+
+# User 3: Operator Sieciowy 3
+dn: CN=operator03,OU=Operators,OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: operator03
+sAMAccountName: operator03
+givenName: Operator
+sn: Sieciowy 3
+displayName: Operator Sieciowy 3
+mail: operator03@zsel.opole.pl
+userPrincipalName: operator03@network-ad.zsel.opole.pl
+description: Network Operator - Read+Write (NO reboot)
+userAccountControl: 512
+memberOf: CN=Network-Operators,OU=Groups,DC=network-ad,DC=zsel,DC=opole,DC=pl
+
+# User 4: Operator Sieciowy 4
+dn: CN=operator04,OU=Operators,OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: operator04
+sAMAccountName: operator04
+givenName: Operator
+sn: Sieciowy 4
+displayName: Operator Sieciowy 4
+mail: operator04@zsel.opole.pl
+userPrincipalName: operator04@network-ad.zsel.opole.pl
+description: Network Operator - Read+Write (NO reboot)
+userAccountControl: 512
+memberOf: CN=Network-Operators,OU=Groups,DC=network-ad,DC=zsel,DC=opole,DC=pl
+
+

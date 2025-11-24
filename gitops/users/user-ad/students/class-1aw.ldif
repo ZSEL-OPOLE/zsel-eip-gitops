@@ -1,0 +1,510 @@
+# User AD - Oddział 1AW (technik elektryk, 25 uczniów)
+# OU: OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+# Wychowawca: Wychowawca TBD
+# Hasło wspólne dla całego oddziału: 1AW2025
+# Data: 20.11.2025 - RZECZYWISTE DANE
+
+# Organizational Unit: Class-1AW
+dn: OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: organizationalUnit
+ou: Class-1AW
+description: Oddział 1AW - technik elektryk (rok 1, 25 uczniów)
+
+# Uczeń: Michał Bałys
+dn: CN=michal.balys,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: michal.balys
+sAMAccountName: michal.balys
+givenName: Michał
+sn: Bałys
+displayName: Michał Bałys (1AW)
+mail: michal.balys@student.zsel.opole.pl
+userPrincipalName: michal.balys@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\michal.balys
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Jakub Batóg
+dn: CN=jakub.batog,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: jakub.batog
+sAMAccountName: jakub.batog
+givenName: Jakub
+sn: Batóg
+displayName: Jakub Batóg (1AW)
+mail: jakub.batog@student.zsel.opole.pl
+userPrincipalName: jakub.batog@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\jakub.batog
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Karol Błażykowski
+dn: CN=karol.blazykowski,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: karol.blazykowski
+sAMAccountName: karol.blazykowski
+givenName: Karol
+sn: Błażykowski
+displayName: Karol Błażykowski (1AW)
+mail: karol.blazykowski@student.zsel.opole.pl
+userPrincipalName: karol.blazykowski@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\karol.blazykowski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Rafał Błyszcz
+dn: CN=rafal.blyszcz,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: rafal.blyszcz
+sAMAccountName: rafal.blyszcz
+givenName: Rafał
+sn: Błyszcz
+displayName: Rafał Błyszcz (1AW)
+mail: rafal.blyszcz@student.zsel.opole.pl
+userPrincipalName: rafal.blyszcz@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\rafal.blyszcz
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Łukasz Budzowski
+dn: CN=lukasz.budzowski,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: lukasz.budzowski
+sAMAccountName: lukasz.budzowski
+givenName: Łukasz
+sn: Budzowski
+displayName: Łukasz Budzowski (1AW)
+mail: lukasz.budzowski@student.zsel.opole.pl
+userPrincipalName: lukasz.budzowski@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\lukasz.budzowski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Mateusz Dawidowicz
+dn: CN=mateusz.dawidowicz,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: mateusz.dawidowicz
+sAMAccountName: mateusz.dawidowicz
+givenName: Mateusz
+sn: Dawidowicz
+displayName: Mateusz Dawidowicz (1AW)
+mail: mateusz.dawidowicz@student.zsel.opole.pl
+userPrincipalName: mateusz.dawidowicz@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\mateusz.dawidowicz
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Oskar Dzióbek
+dn: CN=oskar.dziobek,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: oskar.dziobek
+sAMAccountName: oskar.dziobek
+givenName: Oskar
+sn: Dzióbek
+displayName: Oskar Dzióbek (1AW)
+mail: oskar.dziobek@student.zsel.opole.pl
+userPrincipalName: oskar.dziobek@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\oskar.dziobek
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Marek Gąsiorowski
+dn: CN=marek.gasiorowski,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: marek.gasiorowski
+sAMAccountName: marek.gasiorowski
+givenName: Marek
+sn: Gąsiorowski
+displayName: Marek Gąsiorowski (1AW)
+mail: marek.gasiorowski@student.zsel.opole.pl
+userPrincipalName: marek.gasiorowski@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\marek.gasiorowski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Łukasz Gordzielik
+dn: CN=lukasz.gordzielik,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: lukasz.gordzielik
+sAMAccountName: lukasz.gordzielik
+givenName: Łukasz
+sn: Gordzielik
+displayName: Łukasz Gordzielik (1AW)
+mail: lukasz.gordzielik@student.zsel.opole.pl
+userPrincipalName: lukasz.gordzielik@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\lukasz.gordzielik
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Leon Kendzierski
+dn: CN=leon.kendzierski,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: leon.kendzierski
+sAMAccountName: leon.kendzierski
+givenName: Leon
+sn: Kendzierski
+displayName: Leon Kendzierski (1AW)
+mail: leon.kendzierski@student.zsel.opole.pl
+userPrincipalName: leon.kendzierski@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\leon.kendzierski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Filip Konieczny
+dn: CN=filip.konieczny,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: filip.konieczny
+sAMAccountName: filip.konieczny
+givenName: Filip
+sn: Konieczny
+displayName: Filip Konieczny (1AW)
+mail: filip.konieczny@student.zsel.opole.pl
+userPrincipalName: filip.konieczny@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\filip.konieczny
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Kajetan Kosno
+dn: CN=kajetan.kosno,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: kajetan.kosno
+sAMAccountName: kajetan.kosno
+givenName: Kajetan
+sn: Kosno
+displayName: Kajetan Kosno (1AW)
+mail: kajetan.kosno@student.zsel.opole.pl
+userPrincipalName: kajetan.kosno@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\kajetan.kosno
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Mateusz Kuc
+dn: CN=mateusz.kuc,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: mateusz.kuc
+sAMAccountName: mateusz.kuc
+givenName: Mateusz
+sn: Kuc
+displayName: Mateusz Kuc (1AW)
+mail: mateusz.kuc@student.zsel.opole.pl
+userPrincipalName: mateusz.kuc@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\mateusz.kuc
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Konrad Mirowski
+dn: CN=konrad.mirowski,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: konrad.mirowski
+sAMAccountName: konrad.mirowski
+givenName: Konrad
+sn: Mirowski
+displayName: Konrad Mirowski (1AW)
+mail: konrad.mirowski@student.zsel.opole.pl
+userPrincipalName: konrad.mirowski@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\konrad.mirowski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Szymon Nieckarz
+dn: CN=szymon.nieckarz,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: szymon.nieckarz
+sAMAccountName: szymon.nieckarz
+givenName: Szymon
+sn: Nieckarz
+displayName: Szymon Nieckarz (1AW)
+mail: szymon.nieckarz@student.zsel.opole.pl
+userPrincipalName: szymon.nieckarz@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\szymon.nieckarz
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Jakub Płoskonka
+dn: CN=jakub.ploskonka,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: jakub.ploskonka
+sAMAccountName: jakub.ploskonka
+givenName: Jakub
+sn: Płoskonka
+displayName: Jakub Płoskonka (1AW)
+mail: jakub.ploskonka@student.zsel.opole.pl
+userPrincipalName: jakub.ploskonka@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\jakub.ploskonka
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Igor Pniewski
+dn: CN=igor.pniewski,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: igor.pniewski
+sAMAccountName: igor.pniewski
+givenName: Igor
+sn: Pniewski
+displayName: Igor Pniewski (1AW)
+mail: igor.pniewski@student.zsel.opole.pl
+userPrincipalName: igor.pniewski@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\igor.pniewski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Damian Rosiński
+dn: CN=damian.rosinski,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: damian.rosinski
+sAMAccountName: damian.rosinski
+givenName: Damian
+sn: Rosiński
+displayName: Damian Rosiński (1AW)
+mail: damian.rosinski@student.zsel.opole.pl
+userPrincipalName: damian.rosinski@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\damian.rosinski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Aleksander Różalski
+dn: CN=aleksander.rozalski,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: aleksander.rozalski
+sAMAccountName: aleksander.rozalski
+givenName: Aleksander
+sn: Różalski
+displayName: Aleksander Różalski (1AW)
+mail: aleksander.rozalski@student.zsel.opole.pl
+userPrincipalName: aleksander.rozalski@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\aleksander.rozalski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Paweł Rydlakowski
+dn: CN=pawel.rydlakowski,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: pawel.rydlakowski
+sAMAccountName: pawel.rydlakowski
+givenName: Paweł
+sn: Rydlakowski
+displayName: Paweł Rydlakowski (1AW)
+mail: pawel.rydlakowski@student.zsel.opole.pl
+userPrincipalName: pawel.rydlakowski@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\pawel.rydlakowski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Krystian Sura
+dn: CN=krystian.sura,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: krystian.sura
+sAMAccountName: krystian.sura
+givenName: Krystian
+sn: Sura
+displayName: Krystian Sura (1AW)
+mail: krystian.sura@student.zsel.opole.pl
+userPrincipalName: krystian.sura@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\krystian.sura
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Sebastian Sura
+dn: CN=sebastian.sura,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: sebastian.sura
+sAMAccountName: sebastian.sura
+givenName: Sebastian
+sn: Sura
+displayName: Sebastian Sura (1AW)
+mail: sebastian.sura@student.zsel.opole.pl
+userPrincipalName: sebastian.sura@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\sebastian.sura
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Antoni Szpiech
+dn: CN=antoni.szpiech,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: antoni.szpiech
+sAMAccountName: antoni.szpiech
+givenName: Antoni
+sn: Szpiech
+displayName: Antoni Szpiech (1AW)
+mail: antoni.szpiech@student.zsel.opole.pl
+userPrincipalName: antoni.szpiech@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\antoni.szpiech
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Bartłomiej Świder
+dn: CN=bartlomiej.swider,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: bartlomiej.swider
+sAMAccountName: bartlomiej.swider
+givenName: Bartłomiej
+sn: Świder
+displayName: Bartłomiej Świder (1AW)
+mail: bartlomiej.swider@student.zsel.opole.pl
+userPrincipalName: bartlomiej.swider@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\bartlomiej.swider
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Kacper Ziemniak
+dn: CN=kacper.ziemniak,OU=Class-1AW,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: kacper.ziemniak
+sAMAccountName: kacper.ziemniak
+givenName: Kacper
+sn: Ziemniak
+displayName: Kacper Ziemniak (1AW)
+mail: kacper.ziemniak@student.zsel.opole.pl
+userPrincipalName: kacper.ziemniak@ad.zsel.opole.pl
+description: Uczeń 1AW - technik elektryk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\kacper.ziemniak
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1AW,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-elektryk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl

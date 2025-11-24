@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-alert-rules
+  namespace: monitoring-system
+  labels:
+    app.kubernetes.io/name: monitoring
+    app.kubernetes.io/component: prometheus
+data:
+  infrastructure.yml: |
+    groups:
+      - name: infrastructure
+        interval: 30s
+        rules:
+          # MikroTik Device Down
+          - alert: MikroTikDeviceDown
+            expr: up{job="mikrotik-snmp"} == 0
+            for: 2m
+            labels:
+              severity: critical
+            annotations:
+              summary: "MikroTik device {{ $labels.instance }} is down"
+              description: "{{ $labels.device_type }} {{ $labels.model }} at {{ $labels.instance }} has been unreachable for more than 2 minutes."
+          
+          # High CPU on MikroTik
+          - alert: MikroTikHighCPU
+            expr: mikrotik_cpu_usage > 80
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High CPU usage on {{ $labels.instance }}"
+              description: "CPU usage is {{ $value }}% on {{ $labels.instance }}"
+          
+          # High Memory on MikroTik
+          - alert: MikroTikHighMemory
+            expr: (mikrotik_memory_used / mikrotik_memory_total) * 100 > 85
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High memory usage on {{ $labels.instance }}"
+              description: "Memory usage is {{ $value }}% on {{ $labels.instance }}"
+          
+          # Interface Down
+          - alert: MikroTikInterfaceDown
+            expr: mikrotik_interface_running == 0
+            for: 2m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Interface {{ $labels.name }} down on {{ $labels.instance }}"
+              description: "Interface {{ $labels.name }} on {{ $labels.instance }} has been down for more than 2 minutes."
+          
+          # K3s Node Down
+          - alert: K3sNodeDown
+            expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "K3s node {{ $labels.node }} is down"
+              description: "Node {{ $labels.node }} has been NotReady for more than 5 minutes."
+          
+          # High Node CPU
+          - alert: NodeHighCPU
+            expr: (1 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance)) * 100 > 80
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High CPU on node {{ $labels.instance }}"
+              description: "CPU usage is {{ $value }}% on {{ $labels.instance }}"
+          
+          # High Node Memory
+          - alert: NodeHighMemory
+            expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High memory usage on node {{ $labels.instance }}"
+              description: "Memory usage is {{ $value }}% on {{ $labels.instance }}"
+          
+          # Disk Space Low
+          - alert: NodeDiskSpaceLow
+            expr: (node_filesystem_avail_bytes{fstype!~"tmpfs|fuse.lxcfs"} / node_filesystem_size_bytes) * 100 < 15
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Low disk space on {{ $labels.instance }}"
+              description: "Disk {{ $labels.mountpoint }} has only {{ $value }}% free space on {{ $labels.instance }}"
+          
+          # Pod CrashLooping
+          - alert: PodCrashLooping
+            expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Pod {{ $labels.pod }} is crash looping"
+              description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is restarting frequently."

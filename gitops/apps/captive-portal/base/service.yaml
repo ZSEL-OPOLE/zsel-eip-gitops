@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: packetfence-mariadb
+  namespace: identity-system
+  labels:
+    app.kubernetes.io/name: captive-portal
+    app.kubernetes.io/component: mariadb
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: captive-portal
+    app.kubernetes.io/component: mariadb
+  ports:
+  - name: mysql
+    port: 3306
+    targetPort: 3306
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: packetfence-redis
+  namespace: identity-system
+  labels:
+    app.kubernetes.io/name: captive-portal
+    app.kubernetes.io/component: redis
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: captive-portal
+    app.kubernetes.io/component: redis
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: 6379
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: packetfence
+  namespace: identity-system
+  labels:
+    app.kubernetes.io/name: captive-portal
+    app.kubernetes.io/component: packetfence
+  annotations:
+    metallb.universe.tf/address-pool: vlan600-management
+    metallb.universe.tf/loadBalancerIPs: 192.168.255.61
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.255.61
+  externalTrafficPolicy: Local
+  selector:
+    app.kubernetes.io/name: captive-portal
+    app.kubernetes.io/component: packetfence
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 443
+    protocol: TCP
+  - name: radius
+    port: 1812
+    targetPort: 1812
+    protocol: UDP
+  - name: radius-acct
+    port: 1813
+    targetPort: 1813
+    protocol: UDP

@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: freeradius-network-ldap-config
+  namespace: core-auth
+  labels:
+    app.kubernetes.io/name: freeradius-network
+    app.kubernetes.io/component: radius-auth
+data:
+  ldap: |
+    ldap network_ad {
+        server = 'network-ad-primary.core-auth.svc.cluster.local'
+        port = 389
+        
+        identity = 'CN=radius-bind,OU=ServiceAccounts,DC=network-ad,DC=zsel,DC=opole,DC=pl'
+        password = $ENV{RADIUS_BIND_PASSWORD}
+        
+        base_dn = 'DC=network-ad,DC=zsel,DC=opole,DC=pl'
+        
+        # Search filter for network administrators
+        filter = "(sAMAccountName=%{%{Stripped-User-Name}:-%{User-Name}})"
+        
+        # User search scope
+        scope = 'sub'
+        
+        # LDAP connection settings
+        start_tls = no
+        timeout = 10
+        timelimit = 10
+        net_timeout = 5
+        
+        # Require group membership (IT Admins only)
+        group {
+            base_dn = 'OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl'
+            filter = '(member=%{control:Ldap-UserDn})'
+            membership_attribute = 'memberOf'
+        }
+    }

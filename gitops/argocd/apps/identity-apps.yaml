@@ -1,0 +1,43 @@
+# User Identity Services (SSO for Applications)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: user-ad
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: core-services
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-opole-org.git
+    targetRevision: main
+    path: infrastruktura-k3s/gitops/apps/user-ad/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: identity-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 5m
+  healthChecks:
+    - tcpSocket:
+        port: 389  # LDAP
+      initialDelaySeconds: 60
+      periodSeconds: 10
+  info:
+    - name: Description
+      value: "Samba AD Domain Controller (ad.zsel.opole.pl) - SSO for Applications"
+    - name: Service IPs
+      value: "192.168.10.50 (Primary), .51 (Secondary), .52 (Tertiary)"
+    - name: Users
+      value: "~1000 (Teachers + Students)"

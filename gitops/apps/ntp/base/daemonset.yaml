@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: chrony
+  namespace: core-network
+  labels:
+    app.kubernetes.io/name: ntp
+    app.kubernetes.io/component: chrony
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ntp
+      app.kubernetes.io/component: chrony
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ntp
+        app.kubernetes.io/component: chrony
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      
+      containers:
+      - name: chrony
+        image: cturra/ntp:latest
+        imagePullPolicy: IfNotPresent
+        
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+            - SYS_TIME
+            - SYS_NICE
+        
+        ports:
+        - name: ntp
+          containerPort: 123
+          protocol: UDP
+          hostPort: 123
+        
+        volumeMounts:
+        - name: chrony-config
+          mountPath: /etc/chrony/chrony.conf
+          subPath: chrony.conf
+        - name: chrony-drift
+          mountPath: /var/lib/chrony
+        - name: chrony-logs
+          mountPath: /var/log/chrony
+        - name: localtime
+          mountPath: /etc/localtime
+          readOnly: true
+        
+        env:
+        - name: TZ
+          value: "Europe/Warsaw"
+        
+        livenessProbe:
+          exec:
+            command:
+            - chronyc
+            - tracking
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+        
+        readinessProbe:
+          exec:
+            command:
+            - chronyc
+            - sources
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+        
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+      
+      volumes:
+      - name: chrony-config
+        configMap:
+          name: chrony-config
+      - name: chrony-drift
+        hostPath:
+          path: /var/lib/chrony
+          type: DirectoryOrCreate
+      - name: chrony-logs
+        hostPath:
+          path: /var/log/chrony
+          type: DirectoryOrCreate
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+          type: File
+      
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule

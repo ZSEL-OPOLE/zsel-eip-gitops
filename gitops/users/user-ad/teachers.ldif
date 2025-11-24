@@ -1,0 +1,182 @@
+# User AD - Nauczyciele (74 osoby)
+# OU: OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+# Grupa: Teachers, Moodle-Admins, BBB-Moderators
+# Hasło: Losowe 16-znaków (must change at next login)
+
+# Organizational Unit: Teachers
+dn: OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: organizationalUnit
+ou: Teachers
+description: Nauczyciele ZSEL Opole
+
+# Nauczyciel 1: Damian Dobrowolski (DD) - Wychowawca 1AT
+dn: CN=d.dobrowolski,OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: d.dobrowolski
+sAMAccountName: d.dobrowolski
+givenName: Damian
+sn: Dobrowolski
+displayName: Damian Dobrowolski (DD)
+mail: d.dobrowolski@zsel.opole.pl
+userPrincipalName: d.dobrowolski@ad.zsel.opole.pl
+description: Wychowawca 1AT - technik mechatronik
+homeDirectory: \\nextcloud.zsel.opole.pl\home\d.dobrowolski
+homeDrive: H:
+userAccountControl: 512
+memberOf: CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=BBB-Moderators,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Nauczyciel 2: Beata Peczeniuk (BP) - Wychowawca 1BT
+dn: CN=b.peczeniuk,OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: b.peczeniuk
+sAMAccountName: b.peczeniuk
+givenName: Beata
+sn: Peczeniuk
+displayName: Beata Peczeniuk (BP)
+mail: b.peczeniuk@zsel.opole.pl
+userPrincipalName: b.peczeniuk@ad.zsel.opole.pl
+description: Wychowawca 1BT - technik elektryk/automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\b.peczeniuk
+homeDrive: H:
+userAccountControl: 512
+memberOf: CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=BBB-Moderators,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Nauczyciel 3: Dariusz Stankowicz (DS) - Wychowawca 1CT
+dn: CN=d.stankowicz,OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: d.stankowicz
+sAMAccountName: d.stankowicz
+givenName: Dariusz
+sn: Stankowicz
+displayName: Dariusz Stankowicz (DS)
+mail: d.stankowicz@zsel.opole.pl
+userPrincipalName: d.stankowicz@ad.zsel.opole.pl
+description: Wychowawca 1CT - technik programista/teleinformatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\d.stankowicz
+homeDrive: H:
+userAccountControl: 512
+memberOf: CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=BBB-Moderators,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Nauczyciel 4: Andrzej Rapiński (AR) - Wychowawca 1DT
+dn: CN=a.rapinski,OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: a.rapinski
+sAMAccountName: a.rapinski
+givenName: Andrzej
+sn: Rapiński
+displayName: Andrzej Rapiński (AR)
+mail: a.rapinski@zsel.opole.pl
+userPrincipalName: a.rapinski@ad.zsel.opole.pl
+description: Wychowawca 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\a.rapinski
+homeDrive: H:
+userAccountControl: 512
+memberOf: CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=BBB-Moderators,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Nauczyciel 5: Leszek Kamiński (LK)
+dn: CN=l.kaminski,OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: l.kaminski
+sAMAccountName: l.kaminski
+givenName: Leszek
+sn: Kamiński
+displayName: Leszek Kamiński (LK)
+mail: l.kaminski@zsel.opole.pl
+userPrincipalName: l.kaminski@ad.zsel.opole.pl
+homeDirectory: \\nextcloud.zsel.opole.pl\home\l.kaminski
+homeDrive: H:
+userAccountControl: 512
+memberOf: CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Nauczyciel 6: Paweł Dworaczyk (Do)
+dn: CN=p.dworaczyk,OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: p.dworaczyk
+sAMAccountName: p.dworaczyk
+givenName: Paweł
+sn: Dworaczyk
+displayName: Paweł Dworaczyk (Do)
+mail: p.dworaczyk@zsel.opole.pl
+userPrincipalName: p.dworaczyk@ad.zsel.opole.pl
+homeDirectory: \\nextcloud.zsel.opole.pl\home\p.dworaczyk
+homeDrive: H:
+userAccountControl: 512
+memberOf: CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Nauczyciel 7: Kamila Dworaczyńska (KD)
+dn: CN=k.dworaczynska,OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: k.dworaczynska
+sAMAccountName: k.dworaczynska
+givenName: Kamila
+sn: Dworaczyńska
+displayName: Kamila Dworaczyńska (KD)
+mail: k.dworaczynska@zsel.opole.pl
+userPrincipalName: k.dworaczynska@ad.zsel.opole.pl
+homeDirectory: \\nextcloud.zsel.opole.pl\home\k.dworaczynska
+homeDrive: H:
+userAccountControl: 512
+memberOf: CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Nauczyciel 8: Sławomir Święs (ŚS)
+dn: CN=s.swies,OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: s.swies
+sAMAccountName: s.swies
+givenName: Sławomir
+sn: Święs
+displayName: Sławomir Święs (ŚS)
+mail: s.swies@zsel.opole.pl
+userPrincipalName: s.swies@ad.zsel.opole.pl
+homeDirectory: \\nextcloud.zsel.opole.pl\home\s.swies
+homeDrive: H:
+userAccountControl: 512
+memberOf: CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Nauczyciel 9: Monika Czerkawska (KP)
+dn: CN=m.czerkawska,OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: m.czerkawska
+sAMAccountName: m.czerkawska
+givenName: Monika
+sn: Czerkawska
+displayName: Monika Czerkawska (KP)
+mail: m.czerkawska@zsel.opole.pl
+userPrincipalName: m.czerkawska@ad.zsel.opole.pl
+homeDirectory: \\nextcloud.zsel.opole.pl\home\m.czerkawska
+homeDrive: H:
+userAccountControl: 512
+memberOf: CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Nauczyciel 10: Krzysztof Mansfeld (Ma)
+dn: CN=k.mansfeld,OU=Teachers,OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: k.mansfeld
+sAMAccountName: k.mansfeld
+givenName: Krzysztof
+sn: Mansfeld
+displayName: Krzysztof Mansfeld (Ma)
+mail: k.mansfeld@zsel.opole.pl
+userPrincipalName: k.mansfeld@ad.zsel.opole.pl
+homeDirectory: \\nextcloud.zsel.opole.pl\home\k.mansfeld
+homeDrive: H:
+userAccountControl: 512
+memberOf: CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# NOTE: Pozostałych 64 nauczycieli zostanie dodanych analogicznie
+# Pełna lista: M.Kmieć, M.Korzekwa, T.Śniegur, E.Rogala, A.Stankowicz, R.Dobosz, J.Sukiennik, E.Dratwa, K.Kansy, G.Łomny, M.Lisowska, S.Sawulska, B.Tulkis, A.Chmielewska, E.Kozicka, D.Wiktorowska, H.Wojdyła, I.Natalli, A.Świsulska, R.Kowol, M.Turek, T.Myśluk, K.Syta-Cziernok, D.Kulik-Nowak, W.Dobrowolski, T.Kaleta, K.Kamieniak, B.Rączka, N.Skowron, J.Stykała, T.Zajączkowski, G.Blozik, R.Chwaliński, E.Dubaj, D.Schnober, P.Żminkowski, D.Święcicki, P.Muszyński, L.Gargul, R.Kisza-Świątek, B.Wiśniewski, P.Mietełka, R.Moch, M.Małecki, M.Machacka, K.Woliński, K.Nicpoń, T.Dobranowski, Z.Wiktorowski, T.Socha, B.Kubis, P.Dobrowolski, J.Trusz
+# + 11 nauczycieli zastępczych (V.etyka, V.DS, V.AR, V.LK, V.BT, V.BP, V.DD, V.WL, V.ŚS, V.ER, YV)

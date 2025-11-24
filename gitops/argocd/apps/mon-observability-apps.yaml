@@ -1,0 +1,40 @@
+# Monitoring Stack (Prometheus + Grafana + AlertManager + SNMP Exporter + Node Exporter)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-stack
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  project: monitoring
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-opole-org.git
+    targetRevision: main
+    path: infrastruktura-k3s/gitops/apps/monitoring/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  healthChecks:
+    - httpGet:
+        path: /-/healthy
+        port: 9090
+      initialDelaySeconds: 60
+      periodSeconds: 30
+  info:
+    - name: Description
+      value: "Complete monitoring stack: Prometheus + Grafana + AlertManager + SNMP Exporter + Node Exporter"
+    - name: Components
+      value: "Prometheus (2 replicas), Grafana (2 replicas), AlertManager (2 replicas), SNMP Exporter (3 replicas), Node Exporter (9 nodes)"
+    - name: Storage
+      value: "1 TB (90 days retention) + 10GB (Grafana dashboards)"
+    - name: Targets
+      value: "57 MikroTik devices (SNMP v3) + 9 K3s nodes"
+    - name: Service IPs
+      value: "Prometheus: 192.168.255.56, Grafana: 192.168.255.57, AlertManager: 192.168.255.58"

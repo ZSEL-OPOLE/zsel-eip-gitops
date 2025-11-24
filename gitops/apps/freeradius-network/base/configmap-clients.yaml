@@ -1,0 +1,122 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: freeradius-network-clients-config
+  namespace: core-auth
+  labels:
+    app.kubernetes.io/name: freeradius-network
+    app.kubernetes.io/component: radius-auth
+data:
+  clients.conf: |
+    # MikroTik Routers (5 devices)
+    client CCR2216-BCU-01 {
+        ipaddr = 192.168.255.1
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = ccr-bcu-01
+        nas_type = mikrotik
+    }
+    
+    client CCR2216-BCU-02 {
+        ipaddr = 192.168.255.2
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = ccr-bcu-02
+        nas_type = mikrotik
+    }
+    
+    client CCR2216-CPD-01 {
+        ipaddr = 192.168.255.3
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = ccr-cpd-01
+        nas_type = mikrotik
+    }
+    
+    client CCR2216-CPD-02 {
+        ipaddr = 192.168.255.4
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = ccr-cpd-02
+        nas_type = mikrotik
+    }
+    
+    client CCR2216-BSO-01 {
+        ipaddr = 192.168.255.5
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = ccr-bso-01
+        nas_type = mikrotik
+    }
+    
+    # MikroTik Aggregation Switches (6 devices)
+    client CRS518-AGG-CPD-01 {
+        ipaddr = 192.168.255.10
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = crs518-agg-cpd-01
+        nas_type = mikrotik
+    }
+    
+    client CRS518-AGG-CPD-02 {
+        ipaddr = 192.168.255.11
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = crs518-agg-cpd-02
+        nas_type = mikrotik
+    }
+    
+    client CRS518-AGG-BCU-01 {
+        ipaddr = 192.168.255.12
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = crs518-agg-bcu-01
+        nas_type = mikrotik
+    }
+    
+    client CRS518-AGG-BCU-02 {
+        ipaddr = 192.168.255.13
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = crs518-agg-bcu-02
+        nas_type = mikrotik
+    }
+    
+    client CRS518-AGG-BSO-01 {
+        ipaddr = 192.168.255.14
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = crs518-agg-bso-01
+        nas_type = mikrotik
+    }
+    
+    client CRS518-AGG-BSO-02 {
+        ipaddr = 192.168.255.15
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = crs518-agg-bso-02
+        nas_type = mikrotik
+    }
+    
+    # MikroTik Distribution Switches (16 devices - network ranges)
+    client DIST-P0-RANGE {
+        ipaddr = 192.168.255.20/28
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = dist-p0
+        nas_type = mikrotik
+    }
+    
+    client DIST-P1-RANGE {
+        ipaddr = 192.168.255.36/28
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = dist-p1
+        nas_type = mikrotik
+    }
+    
+    # MikroTik Access Switches (13 devices - network ranges)
+    client ACC-RANGE {
+        ipaddr = 192.168.255.52/28
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = acc-switches
+        nas_type = mikrotik
+    }
+    
+    # MikroTik PoE Switch
+    client CRS328-POE-01 {
+        ipaddr = 192.168.255.68
+        secret = ${MIKROTIK_RADIUS_SECRET}
+        shortname = crs328-poe-01
+        nas_type = mikrotik
+    }
+    
+    # NOTE: WiFi APs (16 cAP ax) use SEPARATE FreeRADIUS instance
+    # See: freeradius-user-wifi (192.168.255.60)

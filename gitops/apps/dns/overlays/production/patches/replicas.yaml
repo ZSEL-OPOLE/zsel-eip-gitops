@@ -1,0 +1,7 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bind9
+  namespace: core-network
+spec:
+  replicas: 3  # Production HA

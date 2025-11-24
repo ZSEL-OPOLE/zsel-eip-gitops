@@ -1,0 +1,160 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bind9-config
+  namespace: core-network
+  labels:
+    app.kubernetes.io/name: dns
+    app.kubernetes.io/component: bind9
+data:
+  named.conf: |
+    options {
+        directory "/var/cache/bind";
+        
+        # Listen on all interfaces
+        listen-on { any; };
+        listen-on-v6 { none; };
+        
+        # Allow queries from private networks
+        allow-query {
+            192.168.0.0/16;
+            10.0.0.0/8;
+            172.16.0.0/12;
+            127.0.0.0/8;
+        };
+        
+        # Recursion enabled for internal clients
+        recursion yes;
+        allow-recursion {
+            192.168.0.0/16;
+            10.0.0.0/8;
+            172.16.0.0/12;
+            127.0.0.0/8;
+        };
+        
+        # Forward queries to external DNS
+        forwarders {
+            1.1.1.1;        # Cloudflare Primary
+            1.0.0.1;        # Cloudflare Secondary
+            8.8.8.8;        # Google Primary
+            8.8.4.4;        # Google Secondary
+        };
+        forward first;
+        
+        # DNSSEC validation
+        dnssec-validation auto;
+        
+        # DNS64 disabled
+        dns64 no;
+        
+        # Query source
+        query-source address * port *;
+        
+        # Disable zone transfers by default
+        allow-transfer { none; };
+        
+        # Rate limiting
+        rate-limit {
+            responses-per-second 50;
+            window 5;
+        };
+        
+        # Logging
+        querylog yes;
+    };
+    
+    # Logging configuration
+    logging {
+        channel default_log {
+            syslog daemon;
+            severity info;
+            print-category yes;
+            print-severity yes;
+            print-time yes;
+        };
+        
+        channel query_log {
+            syslog daemon;
+            severity info;
+            print-category yes;
+            print-severity yes;
+            print-time yes;
+        };
+        
+        category default { default_log; };
+        category queries { query_log; };
+        category security { default_log; };
+    };
+    
+    # Root hints
+    zone "." IN {
+        type hint;
+        file "/usr/share/dns/root.hints";
+    };
+    
+    # Localhost zones
+    zone "localhost" IN {
+        type master;
+        file "/etc/bind/db.local";
+        allow-update { none; };
+    };
+    
+    zone "127.in-addr.arpa" IN {
+        type master;
+        file "/etc/bind/db.127";
+        allow-update { none; };
+    };
+    
+    zone "0.in-addr.arpa" IN {
+        type master;
+        file "/etc/bind/db.0";
+        allow-update { none; };
+    };
+    
+    zone "255.in-addr.arpa" IN {
+        type master;
+        file "/etc/bind/db.255";
+        allow-update { none; };
+    };
+    
+    # ===== CUSTOM ZONES =====
+    
+    # Network AD Zone (network-ad.zsel.opole.pl)
+    zone "network-ad.zsel.opole.pl" IN {
+        type master;
+        file "/etc/bind/zones/db.network-ad.zsel.opole.pl";
+        allow-update { none; };
+        allow-query { any; };
+    };
+    
+    # User AD Zone (ad.zsel.opole.pl)
+    zone "ad.zsel.opole.pl" IN {
+        type master;
+        file "/etc/bind/zones/db.ad.zsel.opole.pl";
+        allow-update { none; };
+        allow-query { any; };
+    };
+    
+    # Infrastructure Zone (zsel.opole.pl)
+    zone "zsel.opole.pl" IN {
+        type master;
+        file "/etc/bind/zones/db.zsel.opole.pl";
+        allow-update { none; };
+        allow-query { any; };
+    };
+    
+    # Reverse Zone - VLAN 600 Management (192.168.255.0/24)
+    zone "255.168.192.in-addr.arpa" IN {
+        type master;
+        file "/etc/bind/zones/db.255.168.192.in-addr.arpa";
+        allow-update { none; };
+        allow-query { any; };
+    };
+    
+    # Reverse Zone - VLAN 10 Servers (192.168.10.0/24)
+    zone "10.168.192.in-addr.arpa" IN {
+        type master;
+        file "/etc/bind/zones/db.10.168.192.in-addr.arpa";
+        allow-update { none; };
+        allow-query { any; };
+    };

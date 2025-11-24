@@ -1,0 +1,202 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring-system
+  labels:
+    app.kubernetes.io/name: monitoring
+    app.kubernetes.io/component: prometheus
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 30s
+      scrape_timeout: 10s
+      evaluation_interval: 30s
+      external_labels:
+        cluster: 'zsel-k3s-prod'
+        environment: 'production'
+    
+    # AlertManager configuration
+    alerting:
+      alertmanagers:
+        - static_configs:
+            - targets:
+                - alertmanager:9093
+    
+    # Load rules
+    rule_files:
+      - '/etc/prometheus/rules/*.yml'
+    
+    # Scrape configurations
+    scrape_configs:
+      # Prometheus self-monitoring
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+      
+      # K3s API Server
+      - job_name: 'kubernetes-apiservers'
+        kubernetes_sd_configs:
+          - role: endpoints
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+            action: keep
+            regex: default;kubernetes;https
+      
+      # K3s Nodes (kubelet metrics)
+      - job_name: 'kubernetes-nodes'
+        kubernetes_sd_configs:
+          - role: node
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+          - action: labelmap
+            regex: __meta_kubernetes_node_label_(.+)
+      
+      # K3s Pods
+      - job_name: 'kubernetes-pods'
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+            action: keep
+            regex: true
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+            action: replace
+            target_label: __metrics_path__
+            regex: (.+)
+          - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+            action: replace
+            regex: ([^:]+)(?::\d+)?;(\d+)
+            replacement: $1:$2
+            target_label: __address__
+          - action: labelmap
+            regex: __meta_kubernetes_pod_label_(.+)
+          - source_labels: [__meta_kubernetes_namespace]
+            action: replace
+            target_label: kubernetes_namespace
+          - source_labels: [__meta_kubernetes_pod_name]
+            action: replace
+            target_label: kubernetes_pod_name
+      
+      # MikroTik Devices SNMP Exporter (57 devices)
+      - job_name: 'mikrotik-snmp'
+        static_configs:
+          # Routers (5 CCR2216)
+          - targets:
+              - 192.168.255.2   # CCR2216-BCU-01
+              - 192.168.255.3   # CCR2216-BCU-02
+              - 192.168.255.4   # CCR2216-CDN-01
+              - 192.168.255.5   # CCR2216-CDN-02
+              - 192.168.255.6   # CCR2216-CORE-01
+            labels:
+              device_type: 'router'
+              model: 'CCR2216'
+          
+          # Switches AGG (6 CRS518)
+          - targets:
+              - 192.168.255.10  # CRS518-AGG-01
+              - 192.168.255.11  # CRS518-AGG-02
+              - 192.168.255.12  # CRS518-AGG-03
+              - 192.168.255.13  # CRS518-AGG-04
+              - 192.168.255.14  # CRS518-AGG-05
+              - 192.168.255.15  # CRS518-AGG-06
+            labels:
+              device_type: 'switch'
+              model: 'CRS518'
+              layer: 'aggregation'
+          
+          # Switches DIST (16 CRS354)
+          - targets:
+              - 192.168.255.20  # CRS354-DIST-P0-01
+              - 192.168.255.21  # CRS354-DIST-P0-02
+              - 192.168.255.22  # CRS354-DIST-P1-01
+              - 192.168.255.23  # CRS354-DIST-P1-02
+              - 192.168.255.24  # CRS354-DIST-P2-01
+              - 192.168.255.25  # CRS354-DIST-P2-02
+              - 192.168.255.26  # CRS354-DIST-P3-01
+              - 192.168.255.27  # CRS354-DIST-P3-02
+              - 192.168.255.28  # CRS354-DIST-P4-01
+              - 192.168.255.29  # CRS354-DIST-P4-02
+              - 192.168.255.30  # CRS354-DIST-LAB-01
+              - 192.168.255.31  # CRS354-DIST-LAB-02
+              - 192.168.255.32  # CRS354-DIST-LAB-03
+              - 192.168.255.33  # CRS354-DIST-LAB-04
+              - 192.168.255.34  # CRS354-DIST-LAB-05
+              - 192.168.255.35  # CRS354-DIST-LAB-06
+            labels:
+              device_type: 'switch'
+              model: 'CRS354'
+              layer: 'distribution'
+          
+          # Switches ACC (13 CRS326 + 1 CRS328)
+          - targets:
+              - 192.168.255.52  # CRS326-ACC-01
+              - 192.168.255.53  # CRS326-ACC-02
+              - 192.168.255.54  # CRS326-ACC-03
+              - 192.168.255.55  # CRS326-ACC-04
+              - 192.168.255.56  # CRS326-ACC-05
+              - 192.168.255.57  # CRS326-ACC-06
+              - 192.168.255.58  # CRS326-ACC-07
+              - 192.168.255.59  # CRS326-ACC-08
+              - 192.168.255.60  # CRS326-ACC-09
+              - 192.168.255.61  # CRS326-ACC-10
+              - 192.168.255.62  # CRS326-ACC-11
+              - 192.168.255.63  # CRS326-ACC-12
+              - 192.168.255.64  # CRS326-ACC-13
+              - 192.168.255.68  # CRS328-POE-01
+            labels:
+              device_type: 'switch'
+              model: 'CRS326'
+              layer: 'access'
+          
+          # WiFi APs (16 cAP ax)
+          - targets:
+              - 192.168.255.101 # CAP-AX-01
+              - 192.168.255.102 # CAP-AX-02
+              - 192.168.255.103 # CAP-AX-03
+              - 192.168.255.104 # CAP-AX-04
+              - 192.168.255.105 # CAP-AX-05
+              - 192.168.255.106 # CAP-AX-06
+              - 192.168.255.107 # CAP-AX-07
+              - 192.168.255.108 # CAP-AX-08
+              - 192.168.255.109 # CAP-AX-09
+              - 192.168.255.110 # CAP-AX-10
+              - 192.168.255.111 # CAP-AX-11
+              - 192.168.255.112 # CAP-AX-12
+              - 192.168.255.113 # CAP-AX-13
+              - 192.168.255.114 # CAP-AX-14
+              - 192.168.255.115 # CAP-AX-15
+              - 192.168.255.116 # CAP-AX-16
+            labels:
+              device_type: 'wireless'
+              model: 'cAP-ax'
+        
+        metrics_path: /snmp
+        params:
+          module: [mikrotik]
+        relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            replacement: snmp-exporter:9116
+      
+      # Node Exporter (9 Mac Pro nodes)
+      - job_name: 'node-exporter'
+        kubernetes_sd_configs:
+          - role: node
+        relabel_configs:
+          - source_labels: [__address__]
+            regex: '(.*):10250'
+            replacement: '${1}:9100'
+            target_label: __address__
+          - action: labelmap
+            regex: __meta_kubernetes_node_label_(.+)

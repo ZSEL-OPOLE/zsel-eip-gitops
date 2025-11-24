@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: identity-system
+
+resources:
+  - namespace.yaml
+  - configmap-pf.yaml
+  - configmap-portal-template.yaml
+  - secret.yaml
+  - statefulset-mariadb.yaml
+  - deployment-redis.yaml
+  - deployment-packetfence.yaml
+  - service.yaml
+  - ingress.yaml

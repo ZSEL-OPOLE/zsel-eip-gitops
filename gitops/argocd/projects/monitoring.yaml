@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  description: Monitoring and observability stack (Prometheus, Grafana, Graylog, Zabbix)
+  
+  sourceRepos:
+    - https://github.com/zsel-opole/zsel-opole-org.git
+  
+  destinations:
+    - namespace: 'mon-*'
+      server: https://kubernetes.default.svc
+  
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace
+    - group: 'rbac.authorization.k8s.io'
+      kind: ClusterRole
+    - group: 'rbac.authorization.k8s.io'
+      kind: ClusterRoleBinding
+  
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  
+  roles:
+    - name: admin
+      description: Full access to monitoring services
+      policies:
+        - p, proj:monitoring:admin, applications, *, monitoring/*, allow
+      groups:
+        - IT-Admins
+    
+    - name: viewer
+      description: Read-only access to monitoring
+      policies:
+        - p, proj:monitoring:viewer, applications, get, monitoring/*, allow
+      groups:
+        - Monitoring

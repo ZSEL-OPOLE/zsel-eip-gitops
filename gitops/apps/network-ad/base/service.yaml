@@ -1,0 +1,128 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: network-ad-headless
+  namespace: core-auth
+  labels:
+    app.kubernetes.io/name: network-ad
+    app.kubernetes.io/component: samba-ad-dc
+    app.kubernetes.io/part-of: core-services
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/name: network-ad
+    app.kubernetes.io/component: samba-ad-dc
+  ports:
+  - name: ldap
+    port: 389
+    protocol: TCP
+  - name: ldaps
+    port: 636
+    protocol: TCP
+  - name: kerberos-tcp
+    port: 88
+    protocol: TCP
+  - name: dns-tcp
+    port: 53
+    protocol: TCP
+  - name: smb
+    port: 445
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: network-ad-primary
+  namespace: core-auth
+  labels:
+    app.kubernetes.io/name: network-ad
+    app.kubernetes.io/component: samba-ad-dc
+    app.kubernetes.io/part-of: core-services
+    service-type: loadbalancer-primary
+  annotations:
+    metallb.universe.tf/address-pool: vlan600-management
+    metallb.universe.tf/loadBalancerIPs: 192.168.255.51
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.255.51
+  externalTrafficPolicy: Local
+  selector:
+    app.kubernetes.io/name: network-ad
+    app.kubernetes.io/component: samba-ad-dc
+    statefulset.kubernetes.io/pod-name: network-ad-dc-0
+  ports:
+  - name: ldap
+    port: 389
+    targetPort: 389
+    protocol: TCP
+  - name: ldaps
+    port: 636
+    targetPort: 636
+    protocol: TCP
+  - name: kerberos-tcp
+    port: 88
+    targetPort: 88
+    protocol: TCP
+  - name: kerberos-udp
+    port: 88
+    targetPort: 88
+    protocol: UDP
+  - name: dns-tcp
+    port: 53
+    targetPort: 53
+    protocol: TCP
+  - name: dns-udp
+    port: 53
+    targetPort: 53
+    protocol: UDP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: network-ad-secondary
+  namespace: core-auth
+  labels:
+    app.kubernetes.io/name: network-ad
+    app.kubernetes.io/component: samba-ad-dc
+    app.kubernetes.io/part-of: core-services
+    service-type: loadbalancer-secondary
+  annotations:
+    metallb.universe.tf/address-pool: vlan600-management
+    metallb.universe.tf/loadBalancerIPs: 192.168.255.52
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.255.52
+  externalTrafficPolicy: Local
+  selector:
+    app.kubernetes.io/name: network-ad
+    app.kubernetes.io/component: samba-ad-dc
+    statefulset.kubernetes.io/pod-name: network-ad-dc-1
+  ports:
+  - name: ldap
+    port: 389
+    targetPort: 389
+    protocol: TCP
+  - name: ldaps
+    port: 636
+    targetPort: 636
+    protocol: TCP
+  - name: kerberos-tcp
+    port: 88
+    targetPort: 88
+    protocol: TCP
+  - name: kerberos-udp
+    port: 88
+    targetPort: 88
+    protocol: UDP
+  - name: dns-tcp
+    port: 53
+    targetPort: 53
+    protocol: TCP
+  - name: dns-udp
+    port: 53
+    targetPort: 53
+    protocol: UDP

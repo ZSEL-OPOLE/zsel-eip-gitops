@@ -1,0 +1,130 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graylog
+  namespace: logging-system
+  labels:
+    app.kubernetes.io/name: graylog
+    app.kubernetes.io/component: server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: graylog
+      app.kubernetes.io/component: server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: graylog
+        app.kubernetes.io/component: server
+    spec:
+      initContainers:
+      - name: wait-for-mongodb
+        image: busybox:1.36
+        command:
+        - sh
+        - -c
+        - |
+          until nc -z mongodb 27017; do
+            echo "Waiting for MongoDB..."
+            sleep 2
+          done
+          echo "MongoDB is ready!"
+      
+      - name: wait-for-elasticsearch
+        image: busybox:1.36
+        command:
+        - sh
+        - -c
+        - |
+          until nc -z elasticsearch 9200; do
+            echo "Waiting for Elasticsearch..."
+            sleep 2
+          done
+          echo "Elasticsearch is ready!"
+      
+      containers:
+      - name: graylog
+        image: graylog/graylog:5.2
+        imagePullPolicy: IfNotPresent
+        
+        env:
+        # Graylog Configuration
+        - name: GRAYLOG_PASSWORD_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: graylog-secrets
+              key: graylog-password-secret
+        - name: GRAYLOG_ROOT_PASSWORD_SHA2
+          valueFrom:
+            secretKeyRef:
+              name: graylog-secrets
+              key: graylog-root-password-sha2
+        - name: GRAYLOG_HTTP_EXTERNAL_URI
+          value: "http://graylog.zsel.opole.pl:9000/"
+        - name: GRAYLOG_HTTP_BIND_ADDRESS
+          value: "0.0.0.0:9000"
+        - name: GRAYLOG_ELASTICSEARCH_HOSTS
+          value: "http://elasticsearch:9200"
+        - name: GRAYLOG_MONGODB_URI
+          value: "mongodb://root:$(MONGODB_ROOT_PASSWORD)@mongodb:27017/graylog?authSource=admin"
+        - name: MONGODB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: graylog-secrets
+              key: mongodb-root-password
+        - name: GRAYLOG_TIMEZONE
+          value: "Europe/Warsaw"
+        
+        # Retention
+        - name: GRAYLOG_ROTATION_STRATEGY
+          value: "time"
+        - name: GRAYLOG_ELASTICSEARCH_MAX_DOCS_PER_INDEX
+          value: "20000000"
+        - name: GRAYLOG_ELASTICSEARCH_MAX_SIZE_PER_INDEX
+          value: "1073741824"
+        - name: GRAYLOG_ELASTICSEARCH_MAX_TIME_PER_INDEX
+          value: "1d"
+        - name: GRAYLOG_ELASTICSEARCH_MAX_NUMBER_OF_INDICES
+          value: "90"
+        
+        ports:
+        - name: http
+          containerPort: 9000
+          protocol: TCP
+        - name: syslog-udp
+          containerPort: 514
+          protocol: UDP
+        - name: syslog-tcp
+          containerPort: 514
+          protocol: TCP
+        - name: gelf-udp
+          containerPort: 12201
+          protocol: UDP
+        - name: gelf-tcp
+          containerPort: 12201
+          protocol: TCP
+        
+        livenessProbe:
+          httpGet:
+            path: /api/system/lbstatus
+            port: 9000
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 5
+        
+        readinessProbe:
+          httpGet:
+            path: /api/system/lbstatus
+            port: 9000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+        
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"

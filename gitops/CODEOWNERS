@@ -1,0 +1,40 @@
+# Code Owners for ZSEL GitOps Repository
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global owners (default for everything)
+* @lkolodziej @zsel-it-admins
+
+# Documentation
+/infrastruktura-k3s/gitops/docs/ @lkolodziej
+
+# ArgoCD configuration (require 2 approvals)
+/infrastruktura-k3s/gitops/argocd/ @lkolodziej @zsel-it-manager
+
+# Core Authentication Services (Network AD + RADIUS)
+/infrastruktura-k3s/gitops/apps/network-ad/ @lkolodziej @network-admin
+/infrastruktura-k3s/gitops/apps/freeradius/ @lkolodziej @network-admin
+/infrastruktura-k3s/gitops/argocd/applications/core-auth/ @lkolodziej @network-admin
+
+# Network Services (DNS, NTP, DHCP)
+/infrastruktura-k3s/gitops/apps/dns/ @network-admin
+/infrastruktura-k3s/gitops/apps/ntp/ @network-admin
+/infrastruktura-k3s/gitops/apps/dhcp/ @network-admin
+
+# Storage Services (MinIO)
+/infrastruktura-k3s/gitops/apps/minio/ @lkolodziej @storage-admin
+
+# Monitoring Stack (Prometheus, Grafana, Zabbix, Graylog)
+/infrastruktura-k3s/gitops/apps/prometheus/ @monitoring-team
+/infrastruktura-k3s/gitops/apps/grafana/ @monitoring-team
+/infrastruktura-k3s/gitops/apps/zabbix/ @monitoring-team @network-admin
+/infrastruktura-k3s/gitops/apps/graylog/ @monitoring-team
+/infrastruktura-k3s/gitops/apps/alertmanager/ @monitoring-team
+
+# Production Sealed Secrets (require 2 approvals from security team)
+/infrastruktura-k3s/gitops/environments/production/sealed-secrets/ @lkolodziej @security-admin
+
+# Production Environment Config (require approval)
+/infrastruktura-k3s/gitops/environments/production/ @lkolodziej @zsel-it-manager
+
+# Cluster Configuration (MetalLB, StorageClass)
+/infrastruktura-k3s/gitops/clusters/ @lkolodziej @k3s-admin

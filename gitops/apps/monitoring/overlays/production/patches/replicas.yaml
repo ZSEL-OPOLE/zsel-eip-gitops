@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: prometheus
+  namespace: monitoring-system
+spec:
+  replicas: 2  # Production HA
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: monitoring-system
+spec:
+  replicas: 2  # Production HA
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager
+  namespace: monitoring-system
+spec:
+  replicas: 2  # Production HA
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snmp-exporter
+  namespace: monitoring-system
+spec:
+  replicas: 3  # High availability for SNMP scraping

@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: freeradius-user-wifi-ldap-config
+  namespace: identity-system
+  labels:
+    app.kubernetes.io/name: freeradius-user-wifi
+    app.kubernetes.io/component: radius-auth
+data:
+  ldap: |
+    ldap user_ad {
+        server = 'user-ad-primary.identity-system.svc.cluster.local'
+        port = 389
+        
+        identity = 'CN=sso-wifi-bind,OU=SSOApps,OU=ServiceAccounts,DC=ad,DC=zsel,DC=opole,DC=pl'
+        password = $ENV{RADIUS_BIND_PASSWORD}
+        
+        base_dn = 'OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl'
+        
+        # Search filter for teachers and students
+        filter = "(sAMAccountName=%{%{Stripped-User-Name}:-%{User-Name}})"
+        
+        # User search scope
+        scope = 'sub'
+        
+        # LDAP connection settings (TLS for user domain)
+        start_tls = yes
+        timeout = 10
+        timelimit = 10
+        net_timeout = 5
+        
+        # Allow Teachers and Students groups
+        group {
+            base_dn = 'OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl'
+            filter = '(|(memberOf=CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl)(memberOf=CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl))'
+            membership_attribute = 'memberOf'
+        }
+    }

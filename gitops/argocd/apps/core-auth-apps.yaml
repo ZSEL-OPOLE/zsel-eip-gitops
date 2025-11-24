@@ -1,0 +1,77 @@
+# Core Authentication Services
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: network-ad
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: core-services
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-opole-org.git
+    targetRevision: main
+    path: infrastruktura-k3s/gitops/apps/network-ad/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: core-auth
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 5m
+  healthChecks:
+    - tcpSocket:
+        port: 389  # LDAP
+      initialDelaySeconds: 60
+      periodSeconds: 10
+  info:
+    - name: Description
+      value: "Samba AD Domain Controller (network-ad.zsel.opole.pl) - Infrastructure Only"
+    - name: Service IPs
+      value: "192.168.255.51 (Primary), 192.168.255.52 (Secondary)"
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: freeradius
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # After Samba AD
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: core-services
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-opole-org.git
+    targetRevision: main
+    path: infrastruktura-k3s/gitops/apps/freeradius/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: core-auth
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  healthChecks:
+    - exec:
+        command: ["radtest", "test", "test", "localhost", "0", "testing123"]
+      initialDelaySeconds: 30
+      periodSeconds: 30
+  info:
+    - name: Description
+      value: "RADIUS authentication for MikroTik (LDAP integration)"
+    - name: Service IP
+      value: "192.168.255.50"

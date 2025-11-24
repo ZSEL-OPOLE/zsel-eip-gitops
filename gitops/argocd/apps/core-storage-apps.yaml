@@ -1,0 +1,38 @@
+# Storage Services
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: core-services
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-opole-org.git
+    targetRevision: main
+    path: infrastruktura-k3s/gitops/apps/minio/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: storage-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  healthChecks:
+    - httpGet:
+        path: /minio/health/live
+        port: 9000
+      initialDelaySeconds: 30
+      periodSeconds: 30
+  info:
+    - name: Description
+      value: "MinIO Distributed S3 Storage (4 nodes, EC:2 erasure coding)"
+    - name: Service IPs
+      value: "API: 192.168.255.70:9000, Console: 192.168.255.71:80"
+    - name: Capacity
+      value: "10 TB total (2.5TB × 4 nodes)"
+    - name: Use Cases
+      value: "Backups: Graylog, Prometheus, Zabbix DB, K3s etcd, AD"

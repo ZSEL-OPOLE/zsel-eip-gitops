@@ -1,0 +1,135 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: packetfence-portal-template
+  namespace: identity-system
+  labels:
+    app.kubernetes.io/name: captive-portal
+    app.kubernetes.io/component: packetfence
+data:
+  login.html: |
+    <!DOCTYPE html>
+    <html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WiFi Portal - ZSEL Opole</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                padding: 20px;
+            }
+            .container {
+                background: white;
+                padding: 40px;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                max-width: 400px;
+                width: 100%;
+            }
+            .logo {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .logo h1 {
+                color: #667eea;
+                font-size: 32px;
+                font-weight: 700;
+            }
+            .logo p {
+                color: #666;
+                margin-top: 10px;
+            }
+            .form-group {
+                margin-bottom: 20px;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #333;
+                font-weight: 500;
+            }
+            .form-group input {
+                width: 100%;
+                padding: 12px 15px;
+                border: 2px solid #e0e0e0;
+                border-radius: 10px;
+                font-size: 16px;
+                transition: border-color 0.3s;
+            }
+            .form-group input:focus {
+                outline: none;
+                border-color: #667eea;
+            }
+            .btn-login {
+                width: 100%;
+                padding: 14px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: transform 0.2s;
+            }
+            .btn-login:hover {
+                transform: translateY(-2px);
+            }
+            .info {
+                margin-top: 20px;
+                padding: 15px;
+                background: #f5f5f5;
+                border-radius: 10px;
+                font-size: 14px;
+                color: #666;
+            }
+            .error {
+                background: #fee;
+                color: #c33;
+                padding: 12px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="logo">
+                <h1>🎓 ZSEL WiFi</h1>
+                <p>Zespół Szkół Ekonomiczno-Licealnych w Opolu</p>
+            </div>
+            
+            <div class="error" id="error-msg"></div>
+            
+            <form method="POST" action="/captive-portal/authenticate">
+                <div class="form-group">
+                    <label for="username">Nazwa użytkownika</label>
+                    <input type="text" id="username" name="username" 
+                           placeholder="jan.kowalski" required autofocus>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Hasło</label>
+                    <input type="password" id="password" name="password" 
+                           placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn-login">Zaloguj się</button>
+            </form>
+            
+            <div class="info">
+                <strong>ℹ️ Informacja:</strong><br>
+                Użyj swoich danych do logowania (AD: ad.zsel.opole.pl).<br>
+                Problemy? Skontaktuj się z IT: <a href="mailto:it@zsel.opole.pl">it@zsel.opole.pl</a>
+            </div>
+        </div>
+    </body>
+    </html>

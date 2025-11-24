@@ -1,0 +1,52 @@
+# Pre-commit hooks for ZSEL GitOps
+# Install: pip install pre-commit && pre-commit install
+# https://pre-commit.com/
+
+repos:
+  # YAML validation
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: [--strict, -c, .yamllint]
+        files: \.(yaml|yml)$
+
+  # Generic checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+      - id: check-case-conflict
+      - id: mixed-line-ending
+
+  # Kustomize build validation
+  - repo: local
+    hooks:
+      - id: kustomize-build-prod
+        name: Kustomize Build (Production)
+        entry: bash -c 'for app in apps/*/overlays/production; do echo "Building $app..."; kubectl kustomize "$app" > /dev/null || exit 1; done'
+        language: system
+        pass_filenames: false
+        files: apps/.*\.(yaml|yml)$
+
+  # Conventional commits (enforce commit message format)
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.0.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [--strict]
+
+  # Detect secrets (prevent committing passwords)
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: [--baseline, .secrets.baseline]
+        exclude: package.lock.json

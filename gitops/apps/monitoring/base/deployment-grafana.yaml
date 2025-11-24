@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: monitoring-system
+  labels:
+    app.kubernetes.io/name: monitoring
+    app.kubernetes.io/component: grafana
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: monitoring
+      app.kubernetes.io/component: grafana
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: monitoring
+        app.kubernetes.io/component: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:10.2.2
+        imagePullPolicy: IfNotPresent
+        
+        env:
+        - name: GF_SECURITY_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: monitoring-secrets
+              key: grafana-admin-user
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: monitoring-secrets
+              key: grafana-admin-password
+        - name: GF_SERVER_ROOT_URL
+          value: "http://grafana.zsel.opole.pl"
+        - name: GF_SERVER_DOMAIN
+          value: "grafana.zsel.opole.pl"
+        - name: GF_INSTALL_PLUGINS
+          value: "grafana-clock-panel,grafana-simple-json-datasource"
+        
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
+        
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/grafana
+        - name: datasources
+          mountPath: /etc/grafana/provisioning/datasources
+        - name: dashboards-config
+          mountPath: /etc/grafana/provisioning/dashboards
+        
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+      
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: grafana-data
+      - name: datasources
+        configMap:
+          name: grafana-datasources
+      - name: dashboards-config
+        configMap:
+          name: grafana-dashboards-config

@@ -1,0 +1,44 @@
+# Secrets
+*.key
+*.pem
+*.p12
+*.pfx
+hasla.md
+passwords.txt
+secrets.yaml
+
+# Backups
+backups/
+*.bak
+*.backup
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+
+# Ansible
+*.retry
+.vault_pass
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/

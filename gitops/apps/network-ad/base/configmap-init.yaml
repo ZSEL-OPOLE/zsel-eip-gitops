@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: network-ad-init-script
+  namespace: core-auth
+  labels:
+    app.kubernetes.io/name: network-ad
+    app.kubernetes.io/component: samba-ad-dc
+    app.kubernetes.io/part-of: core-services
+data:
+  init-domain.sh: |
+    #!/bin/bash
+    set -euo pipefail
+    
+    echo "[INFO] Starting Network AD Domain Initialization..."
+    
+    # Check if domain already provisioned
+    if [ -f /var/lib/samba/private/sam.ldb ]; then
+      echo "[INFO] Domain already provisioned. Starting Samba AD DC..."
+      exec samba -i --foreground --no-process-group
+    fi
+    
+    echo "[INFO] Provisioning new domain: network-ad.zsel.opole.pl"
+    
+    # Provision domain
+    samba-tool domain provision \
+      --realm=NETWORK-AD.ZSEL.OPOLE.PL \
+      --domain=NETWORK-AD \
+      --adminpass="$SAMBA_ADMIN_PASSWORD" \
+      --server-role=dc \
+      --dns-backend=SAMBA_INTERNAL \
+      --use-rfc2217
+    
+    # Create Organizational Units
+    echo "[INFO] Creating Organizational Units..."
+    
+    samba-tool ou create "OU=NetworkDevices,DC=network-ad,DC=zsel,DC=opole,DC=pl" || true
+    samba-tool ou create "OU=MikroTik,OU=NetworkDevices,DC=network-ad,DC=zsel,DC=opole,DC=pl" || true
+    samba-tool ou create "OU=Routers,OU=MikroTik,OU=NetworkDevices,DC=network-ad,DC=zsel,DC=opole,DC=pl" || true
+    samba-tool ou create "OU=Switches,OU=MikroTik,OU=NetworkDevices,DC=network-ad,DC=zsel,DC=opole,DC=pl" || true
+    samba-tool ou create "OU=WiFi,OU=MikroTik,OU=NetworkDevices,DC=network-ad,DC=zsel,DC=opole,DC=pl" || true
+    
+    samba-tool ou create "OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl" || true
+    samba-tool ou create "OU=ITAdmins,OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl" || true
+    
+    samba-tool ou create "OU=ServiceAccounts,DC=network-ad,DC=zsel,DC=opole,DC=pl" || true
+    
+    # Create RADIUS bind service account
+    echo "[INFO] Creating RADIUS bind service account..."
+    samba-tool user create radius-bind "$(cat /dev/urandom | tr -dc 'A-Za-z0-9' | fold -w 32 | head -n 1)" \
+      --description="Service account for FreeRADIUS LDAP bind" \
+      --must-change-at-next-login=no || true
+    
+    samba-tool user setexpiry radius-bind --noexpiry || true
+    
+    # Move radius-bind to ServiceAccounts OU
+    samba-tool user move radius-bind "OU=ServiceAccounts,DC=network-ad,DC=zsel,DC=opole,DC=pl" || true
+    
+    # Create example network admin user (CHANGE THIS IN PRODUCTION!)
+    echo "[INFO] Creating example network admin user..."
+    samba-tool user create admin-network "ChangeMe123!" \
+      --description="Network Administrator" \
+      --given-name="Network" \
+      --surname="Admin" \
+      --must-change-at-next-login=yes || true
+    
+    samba-tool user move admin-network "OU=ITAdmins,OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl" || true
+    
+    # Create Domain Admins group membership
+    samba-tool group addmembers "Domain Admins" admin-network || true
+    
+    echo "[INFO] Domain provisioning complete!"
+    echo "[INFO] Starting Samba AD DC..."
+    
+    exec samba -i --foreground --no-process-group

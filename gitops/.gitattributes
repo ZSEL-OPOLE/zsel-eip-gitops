@@ -1,0 +1,25 @@
+# Git Attributes for ZSEL GitOps
+# https://git-scm.com/docs/gitattributes
+
+# Auto-detect text files
+* text=auto
+
+# Force LF line endings for YAML/text files
+*.yaml text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+
+# Treat as binary (no diff, no merge)
+*.png binary
+*.jpg binary
+*.pdf binary
+
+# Linguist overrides (GitHub language detection)
+*.yaml linguist-language=YAML
+*.yml linguist-language=YAML
+CODEOWNERS linguist-language=Text
+
+# Git LFS for large files (optional)
+# *.tar.gz filter=lfs diff=lfs merge=lfs -text
+# *.zip filter=lfs diff=lfs merge=lfs -text

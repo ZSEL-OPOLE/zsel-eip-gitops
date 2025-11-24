@@ -1,0 +1,610 @@
+# User AD - Oddział 1DT (technik informatyk, 30 uczniów)
+# OU: OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+# Wychowawca: Joanna Sukiennik (JS)
+# Hasło wspólne dla całego oddziału: 1DT2025
+# Data: 20.11.2025 - RZECZYWISTE DANE
+
+# Organizational Unit: Class-1DT
+dn: OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: organizationalUnit
+ou: Class-1DT
+description: Oddział 1DT - technik informatyk (rok 1, 30 uczniów)
+
+# Uczeń: Bartosz Anioł
+dn: CN=bartosz.aniol,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: bartosz.aniol
+sAMAccountName: bartosz.aniol
+givenName: Bartosz
+sn: Anioł
+displayName: Bartosz Anioł (1DT)
+mail: bartosz.aniol@student.zsel.opole.pl
+userPrincipalName: bartosz.aniol@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\bartosz.aniol
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Filip Barteczko
+dn: CN=filip.barteczko,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: filip.barteczko
+sAMAccountName: filip.barteczko
+givenName: Filip
+sn: Barteczko
+displayName: Filip Barteczko (1DT)
+mail: filip.barteczko@student.zsel.opole.pl
+userPrincipalName: filip.barteczko@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\filip.barteczko
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Konrad Bartków
+dn: CN=konrad.bartkow,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: konrad.bartkow
+sAMAccountName: konrad.bartkow
+givenName: Konrad
+sn: Bartków
+displayName: Konrad Bartków (1DT)
+mail: konrad.bartkow@student.zsel.opole.pl
+userPrincipalName: konrad.bartkow@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\konrad.bartkow
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Maksymilian Bisztyga
+dn: CN=maksymilian.bisztyga,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: maksymilian.bisztyga
+sAMAccountName: maksymilian.bisztyga
+givenName: Maksymilian
+sn: Bisztyga
+displayName: Maksymilian Bisztyga (1DT)
+mail: maksymilian.bisztyga@student.zsel.opole.pl
+userPrincipalName: maksymilian.bisztyga@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\maksymilian.bisztyga
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Paweł Bobko
+dn: CN=pawel.bobko,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: pawel.bobko
+sAMAccountName: pawel.bobko
+givenName: Paweł
+sn: Bobko
+displayName: Paweł Bobko (1DT)
+mail: pawel.bobko@student.zsel.opole.pl
+userPrincipalName: pawel.bobko@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\pawel.bobko
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Wiktor Buhl
+dn: CN=wiktor.buhl,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: wiktor.buhl
+sAMAccountName: wiktor.buhl
+givenName: Wiktor
+sn: Buhl
+displayName: Wiktor Buhl (1DT)
+mail: wiktor.buhl@student.zsel.opole.pl
+userPrincipalName: wiktor.buhl@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\wiktor.buhl
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Marcin Dworak
+dn: CN=marcin.dworak,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: marcin.dworak
+sAMAccountName: marcin.dworak
+givenName: Marcin
+sn: Dworak
+displayName: Marcin Dworak (1DT)
+mail: marcin.dworak@student.zsel.opole.pl
+userPrincipalName: marcin.dworak@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\marcin.dworak
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Michał Firlus
+dn: CN=michal.firlus,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: michal.firlus
+sAMAccountName: michal.firlus
+givenName: Michał
+sn: Firlus
+displayName: Michał Firlus (1DT)
+mail: michal.firlus@student.zsel.opole.pl
+userPrincipalName: michal.firlus@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\michal.firlus
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Adam Gromada
+dn: CN=adam.gromada,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: adam.gromada
+sAMAccountName: adam.gromada
+givenName: Adam
+sn: Gromada
+displayName: Adam Gromada (1DT)
+mail: adam.gromada@student.zsel.opole.pl
+userPrincipalName: adam.gromada@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\adam.gromada
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Nikodem Josek
+dn: CN=nikodem.josek,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: nikodem.josek
+sAMAccountName: nikodem.josek
+givenName: Nikodem
+sn: Josek
+displayName: Nikodem Josek (1DT)
+mail: nikodem.josek@student.zsel.opole.pl
+userPrincipalName: nikodem.josek@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\nikodem.josek
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Franciszek Judek
+dn: CN=franciszek.judek,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: franciszek.judek
+sAMAccountName: franciszek.judek
+givenName: Franciszek
+sn: Judek
+displayName: Franciszek Judek (1DT)
+mail: franciszek.judek@student.zsel.opole.pl
+userPrincipalName: franciszek.judek@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\franciszek.judek
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Julia Kałuża
+dn: CN=julia.kaluza,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: julia.kaluza
+sAMAccountName: julia.kaluza
+givenName: Julia
+sn: Kałuża
+displayName: Julia Kałuża (1DT)
+mail: julia.kaluza@student.zsel.opole.pl
+userPrincipalName: julia.kaluza@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\julia.kaluza
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Robert Kempa
+dn: CN=robert.kempa,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: robert.kempa
+sAMAccountName: robert.kempa
+givenName: Robert
+sn: Kempa
+displayName: Robert Kempa (1DT)
+mail: robert.kempa@student.zsel.opole.pl
+userPrincipalName: robert.kempa@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\robert.kempa
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Aleksander Kowcz
+dn: CN=aleksander.kowcz,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: aleksander.kowcz
+sAMAccountName: aleksander.kowcz
+givenName: Aleksander
+sn: Kowcz
+displayName: Aleksander Kowcz (1DT)
+mail: aleksander.kowcz@student.zsel.opole.pl
+userPrincipalName: aleksander.kowcz@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\aleksander.kowcz
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Szymon Marciak
+dn: CN=szymon.marciak,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: szymon.marciak
+sAMAccountName: szymon.marciak
+givenName: Szymon
+sn: Marciak
+displayName: Szymon Marciak (1DT)
+mail: szymon.marciak@student.zsel.opole.pl
+userPrincipalName: szymon.marciak@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\szymon.marciak
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Grzegorz Młot
+dn: CN=grzegorz.mlot,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: grzegorz.mlot
+sAMAccountName: grzegorz.mlot
+givenName: Grzegorz
+sn: Młot
+displayName: Grzegorz Młot (1DT)
+mail: grzegorz.mlot@student.zsel.opole.pl
+userPrincipalName: grzegorz.mlot@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\grzegorz.mlot
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Dominik Muszkiet
+dn: CN=dominik.muszkiet,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: dominik.muszkiet
+sAMAccountName: dominik.muszkiet
+givenName: Dominik
+sn: Muszkiet
+displayName: Dominik Muszkiet (1DT)
+mail: dominik.muszkiet@student.zsel.opole.pl
+userPrincipalName: dominik.muszkiet@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\dominik.muszkiet
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Bartosz Napieralski
+dn: CN=bartosz.napieralski,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: bartosz.napieralski
+sAMAccountName: bartosz.napieralski
+givenName: Bartosz
+sn: Napieralski
+displayName: Bartosz Napieralski (1DT)
+mail: bartosz.napieralski@student.zsel.opole.pl
+userPrincipalName: bartosz.napieralski@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\bartosz.napieralski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Adam Ozaist
+dn: CN=adam.ozaist,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: adam.ozaist
+sAMAccountName: adam.ozaist
+givenName: Adam
+sn: Ozaist
+displayName: Adam Ozaist (1DT)
+mail: adam.ozaist@student.zsel.opole.pl
+userPrincipalName: adam.ozaist@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\adam.ozaist
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Aleksander Pawłowicz
+dn: CN=aleksander.pawlowicz,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: aleksander.pawlowicz
+sAMAccountName: aleksander.pawlowicz
+givenName: Aleksander
+sn: Pawłowicz
+displayName: Aleksander Pawłowicz (1DT)
+mail: aleksander.pawlowicz@student.zsel.opole.pl
+userPrincipalName: aleksander.pawlowicz@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\aleksander.pawlowicz
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Arsenii Protsak
+dn: CN=arsenii.protsak,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: arsenii.protsak
+sAMAccountName: arsenii.protsak
+givenName: Arsenii
+sn: Protsak
+displayName: Arsenii Protsak (1DT)
+mail: arsenii.protsak@student.zsel.opole.pl
+userPrincipalName: arsenii.protsak@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\arsenii.protsak
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Tomasz Romik
+dn: CN=tomasz.romik,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: tomasz.romik
+sAMAccountName: tomasz.romik
+givenName: Tomasz
+sn: Romik
+displayName: Tomasz Romik (1DT)
+mail: tomasz.romik@student.zsel.opole.pl
+userPrincipalName: tomasz.romik@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\tomasz.romik
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Jakub Siendzielorz
+dn: CN=jakub.siendzielorz,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: jakub.siendzielorz
+sAMAccountName: jakub.siendzielorz
+givenName: Jakub
+sn: Siendzielorz
+displayName: Jakub Siendzielorz (1DT)
+mail: jakub.siendzielorz@student.zsel.opole.pl
+userPrincipalName: jakub.siendzielorz@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\jakub.siendzielorz
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Łukasz Słupczyński
+dn: CN=lukasz.slupczynski,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: lukasz.slupczynski
+sAMAccountName: lukasz.slupczynski
+givenName: Łukasz
+sn: Słupczyński
+displayName: Łukasz Słupczyński (1DT)
+mail: lukasz.slupczynski@student.zsel.opole.pl
+userPrincipalName: lukasz.slupczynski@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\lukasz.slupczynski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Grzegorz Soboń
+dn: CN=grzegorz.sobon,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: grzegorz.sobon
+sAMAccountName: grzegorz.sobon
+givenName: Grzegorz
+sn: Soboń
+displayName: Grzegorz Soboń (1DT)
+mail: grzegorz.sobon@student.zsel.opole.pl
+userPrincipalName: grzegorz.sobon@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\grzegorz.sobon
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Marcel Sosnowski
+dn: CN=marcel.sosnowski,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: marcel.sosnowski
+sAMAccountName: marcel.sosnowski
+givenName: Marcel
+sn: Sosnowski
+displayName: Marcel Sosnowski (1DT)
+mail: marcel.sosnowski@student.zsel.opole.pl
+userPrincipalName: marcel.sosnowski@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\marcel.sosnowski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Nazarii Trach
+dn: CN=nazarii.trach,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: nazarii.trach
+sAMAccountName: nazarii.trach
+givenName: Nazarii
+sn: Trach
+displayName: Nazarii Trach (1DT)
+mail: nazarii.trach@student.zsel.opole.pl
+userPrincipalName: nazarii.trach@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\nazarii.trach
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Franciszek Werner
+dn: CN=franciszek.werner,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: franciszek.werner
+sAMAccountName: franciszek.werner
+givenName: Franciszek
+sn: Werner
+displayName: Franciszek Werner (1DT)
+mail: franciszek.werner@student.zsel.opole.pl
+userPrincipalName: franciszek.werner@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\franciszek.werner
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Kacper Wolny
+dn: CN=kacper.wolny,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: kacper.wolny
+sAMAccountName: kacper.wolny
+givenName: Kacper
+sn: Wolny
+displayName: Kacper Wolny (1DT)
+mail: kacper.wolny@student.zsel.opole.pl
+userPrincipalName: kacper.wolny@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\kacper.wolny
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Stanisław Wójcik
+dn: CN=stanislaw.wojcik,OU=Class-1DT,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: stanislaw.wojcik
+sAMAccountName: stanislaw.wojcik
+givenName: Stanisław
+sn: Wójcik
+displayName: Stanisław Wójcik (1DT)
+mail: stanislaw.wojcik@student.zsel.opole.pl
+userPrincipalName: stanislaw.wojcik@ad.zsel.opole.pl
+description: Uczeń 1DT - technik informatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\stanislaw.wojcik
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1DT,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-informatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl

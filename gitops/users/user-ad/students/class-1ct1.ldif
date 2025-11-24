@@ -1,0 +1,290 @@
+# User AD - Oddział 1CT1 (technik programista, 14 uczniów)
+# OU: OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+# Wychowawca: Piotr Muszyński (Mu)
+# Hasło wspólne dla całego oddziału: 1CT12025
+# Data: 20.11.2025 - RZECZYWISTE DANE
+
+# Organizational Unit: Class-1CT1
+dn: OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: organizationalUnit
+ou: Class-1CT1
+description: Oddział 1CT1 - technik programista (rok 1, 14 uczniów)
+
+# Uczeń: Szymon Czapluk
+dn: CN=szymon.czapluk,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: szymon.czapluk
+sAMAccountName: szymon.czapluk
+givenName: Szymon
+sn: Czapluk
+displayName: Szymon Czapluk (1CT1)
+mail: szymon.czapluk@student.zsel.opole.pl
+userPrincipalName: szymon.czapluk@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\szymon.czapluk
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Filip Druzgała
+dn: CN=filip.druzgala,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: filip.druzgala
+sAMAccountName: filip.druzgala
+givenName: Filip
+sn: Druzgała
+displayName: Filip Druzgała (1CT1)
+mail: filip.druzgala@student.zsel.opole.pl
+userPrincipalName: filip.druzgala@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\filip.druzgala
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Dawid Gryc
+dn: CN=dawid.gryc,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: dawid.gryc
+sAMAccountName: dawid.gryc
+givenName: Dawid
+sn: Gryc
+displayName: Dawid Gryc (1CT1)
+mail: dawid.gryc@student.zsel.opole.pl
+userPrincipalName: dawid.gryc@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\dawid.gryc
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Aleksander Grzelak
+dn: CN=aleksander.grzelak,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: aleksander.grzelak
+sAMAccountName: aleksander.grzelak
+givenName: Aleksander
+sn: Grzelak
+displayName: Aleksander Grzelak (1CT1)
+mail: aleksander.grzelak@student.zsel.opole.pl
+userPrincipalName: aleksander.grzelak@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\aleksander.grzelak
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Oskar Kaźmierowicz
+dn: CN=oskar.kazmierowicz,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: oskar.kazmierowicz
+sAMAccountName: oskar.kazmierowicz
+givenName: Oskar
+sn: Kaźmierowicz
+displayName: Oskar Kaźmierowicz (1CT1)
+mail: oskar.kazmierowicz@student.zsel.opole.pl
+userPrincipalName: oskar.kazmierowicz@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\oskar.kazmierowicz
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Karol Kmiecik
+dn: CN=karol.kmiecik,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: karol.kmiecik
+sAMAccountName: karol.kmiecik
+givenName: Karol
+sn: Kmiecik
+displayName: Karol Kmiecik (1CT1)
+mail: karol.kmiecik@student.zsel.opole.pl
+userPrincipalName: karol.kmiecik@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\karol.kmiecik
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Kacper Korczak
+dn: CN=kacper.korczak,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: kacper.korczak
+sAMAccountName: kacper.korczak
+givenName: Kacper
+sn: Korczak
+displayName: Kacper Korczak (1CT1)
+mail: kacper.korczak@student.zsel.opole.pl
+userPrincipalName: kacper.korczak@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\kacper.korczak
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Marcel Kupczyk
+dn: CN=marcel.kupczyk,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: marcel.kupczyk
+sAMAccountName: marcel.kupczyk
+givenName: Marcel
+sn: Kupczyk
+displayName: Marcel Kupczyk (1CT1)
+mail: marcel.kupczyk@student.zsel.opole.pl
+userPrincipalName: marcel.kupczyk@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\marcel.kupczyk
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Szymon Mientus
+dn: CN=szymon.mientus,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: szymon.mientus
+sAMAccountName: szymon.mientus
+givenName: Szymon
+sn: Mientus
+displayName: Szymon Mientus (1CT1)
+mail: szymon.mientus@student.zsel.opole.pl
+userPrincipalName: szymon.mientus@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\szymon.mientus
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Dominik Moch
+dn: CN=dominik.moch,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: dominik.moch
+sAMAccountName: dominik.moch
+givenName: Dominik
+sn: Moch
+displayName: Dominik Moch (1CT1)
+mail: dominik.moch@student.zsel.opole.pl
+userPrincipalName: dominik.moch@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\dominik.moch
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Jan Niewiadomski
+dn: CN=jan.niewiadomski,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: jan.niewiadomski
+sAMAccountName: jan.niewiadomski
+givenName: Jan
+sn: Niewiadomski
+displayName: Jan Niewiadomski (1CT1)
+mail: jan.niewiadomski@student.zsel.opole.pl
+userPrincipalName: jan.niewiadomski@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\jan.niewiadomski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: David Radzioch
+dn: CN=david.radzioch,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: david.radzioch
+sAMAccountName: david.radzioch
+givenName: David
+sn: Radzioch
+displayName: David Radzioch (1CT1)
+mail: david.radzioch@student.zsel.opole.pl
+userPrincipalName: david.radzioch@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\david.radzioch
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Paweł Wieja
+dn: CN=pawel.wieja,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: pawel.wieja
+sAMAccountName: pawel.wieja
+givenName: Paweł
+sn: Wieja
+displayName: Paweł Wieja (1CT1)
+mail: pawel.wieja@student.zsel.opole.pl
+userPrincipalName: pawel.wieja@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\pawel.wieja
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Krzysztof Żak
+dn: CN=krzysztof.zak,OU=Class-1CT1,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: krzysztof.zak
+sAMAccountName: krzysztof.zak
+givenName: Krzysztof
+sn: Żak
+displayName: Krzysztof Żak (1CT1)
+mail: krzysztof.zak@student.zsel.opole.pl
+userPrincipalName: krzysztof.zak@ad.zsel.opole.pl
+description: Uczeń 1CT1 - technik programista
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\krzysztof.zak
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1CT1,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-programista,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl

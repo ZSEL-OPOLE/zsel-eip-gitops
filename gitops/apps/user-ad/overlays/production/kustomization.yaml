@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: identity-system
+
+resources:
+  - ../../base
+  # Uncomment after generating sealed secrets:
+  # - sealed-secrets/user-ad-admin-secret.yaml
+  # - sealed-secrets/sso-moodle-bind-secret.yaml
+  # - sealed-secrets/sso-bbb-bind-secret.yaml
+  # - sealed-secrets/sso-nextcloud-bind-secret.yaml
+
+patches:
+  - path: patches/replicas.yaml
+  - path: patches/resources.yaml
+
+labels:
+  - pairs:
+      environment: production

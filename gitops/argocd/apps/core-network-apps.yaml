@@ -1,0 +1,96 @@
+# Core Network Services
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dns-bind9
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"  # After Samba AD, before FreeRADIUS
+spec:
+  project: core-services
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-opole-org.git
+    targetRevision: main
+    path: infrastruktura-k3s/gitops/apps/dns/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: core-network
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  healthChecks:
+    - exec:
+        command: ["dig", "@localhost", "ad.zsel.opole.pl", "+short"]
+      initialDelaySeconds: 20
+      periodSeconds: 30
+  info:
+    - name: Description
+      value: "DNS Server (ad.zsel.opole.pl + 54 reverse zones)"
+    - name: Service IP
+      value: "192.168.255.53"
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ntp-chrony
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"  # First - no dependencies
+spec:
+  project: core-services
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-opole-org.git
+    targetRevision: main
+    path: infrastruktura-k3s/gitops/apps/ntp/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: core-network
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  healthChecks:
+    - exec:
+        command: ["chronyc", "tracking"]
+      initialDelaySeconds: 10
+      periodSeconds: 60
+  info:
+    - name: Description
+      value: "NTP Server (stratum 2) for 57 MikroTik devices"
+    - name: Service IP
+      value: "192.168.255.54"
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dhcp-kea
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"  # After DNS
+spec:
+  project: core-services
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-opole-org.git
+    targetRevision: main
+    path: infrastruktura-k3s/gitops/base/dhcp-kea
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: core-network
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  info:
+    - name: Description
+      value: "DHCP Server (management VLAN 600 + reservations)"
+    - name: Service IP
+      value: "192.168.255.58"

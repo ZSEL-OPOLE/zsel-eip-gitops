@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graylog
+  namespace: logging-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: graylog
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: "2000m"
+          limits:
+            memory: "8Gi"
+            cpu: "4000m"
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+  namespace: logging-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: elasticsearch
+        resources:
+          requests:
+            memory: "8Gi"
+            cpu: "4000m"
+          limits:
+            memory: "16Gi"
+            cpu: "8000m"
+        env:
+        - name: ES_JAVA_OPTS
+          value: "-Xms4g -Xmx4g"

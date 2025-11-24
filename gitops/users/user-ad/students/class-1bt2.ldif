@@ -1,0 +1,330 @@
+# User AD - Oddział 1BT2 (technik automatyk, 16 uczniów)
+# OU: OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+# Wychowawca: Magdalena Turek (TU)
+# Hasło wspólne dla całego oddziału: 1BT22025
+# Data: 20.11.2025 - RZECZYWISTE DANE
+
+# Organizational Unit: Class-1BT2
+dn: OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: organizationalUnit
+ou: Class-1BT2
+description: Oddział 1BT2 - technik automatyk (rok 1, 16 uczniów)
+
+# Uczeń: Dominik Bekiesz
+dn: CN=dominik.bekiesz,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: dominik.bekiesz
+sAMAccountName: dominik.bekiesz
+givenName: Dominik
+sn: Bekiesz
+displayName: Dominik Bekiesz (1BT2)
+mail: dominik.bekiesz@student.zsel.opole.pl
+userPrincipalName: dominik.bekiesz@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\dominik.bekiesz
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Natan Dębowski
+dn: CN=natan.debowski,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: natan.debowski
+sAMAccountName: natan.debowski
+givenName: Natan
+sn: Dębowski
+displayName: Natan Dębowski (1BT2)
+mail: natan.debowski@student.zsel.opole.pl
+userPrincipalName: natan.debowski@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\natan.debowski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Maciej Dudek
+dn: CN=maciej.dudek,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: maciej.dudek
+sAMAccountName: maciej.dudek
+givenName: Maciej
+sn: Dudek
+displayName: Maciej Dudek (1BT2)
+mail: maciej.dudek@student.zsel.opole.pl
+userPrincipalName: maciej.dudek@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\maciej.dudek
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Szymon Hadamek
+dn: CN=szymon.hadamek,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: szymon.hadamek
+sAMAccountName: szymon.hadamek
+givenName: Szymon
+sn: Hadamek
+displayName: Szymon Hadamek (1BT2)
+mail: szymon.hadamek@student.zsel.opole.pl
+userPrincipalName: szymon.hadamek@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\szymon.hadamek
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Maksymilian Hartyn Leszczyński
+dn: CN=maksymilian.hartynleszczynski,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: maksymilian.hartynleszczynski
+sAMAccountName: maksymilian.hartynleszczynski
+givenName: Maksymilian
+sn: Hartyn Leszczyński
+displayName: Maksymilian Hartyn Leszczyński (1BT2)
+mail: maksymilian.hartynleszczynski@student.zsel.opole.pl
+userPrincipalName: maksymilian.hartynleszczynski@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\maksymilian.hartynleszczynski
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Dariusz Ibrahim
+dn: CN=dariusz.ibrahim,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: dariusz.ibrahim
+sAMAccountName: dariusz.ibrahim
+givenName: Dariusz
+sn: Ibrahim
+displayName: Dariusz Ibrahim (1BT2)
+mail: dariusz.ibrahim@student.zsel.opole.pl
+userPrincipalName: dariusz.ibrahim@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\dariusz.ibrahim
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Jan Lika
+dn: CN=jan.lika,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: jan.lika
+sAMAccountName: jan.lika
+givenName: Jan
+sn: Lika
+displayName: Jan Lika (1BT2)
+mail: jan.lika@student.zsel.opole.pl
+userPrincipalName: jan.lika@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\jan.lika
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Kornel Osadzin
+dn: CN=kornel.osadzin,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: kornel.osadzin
+sAMAccountName: kornel.osadzin
+givenName: Kornel
+sn: Osadzin
+displayName: Kornel Osadzin (1BT2)
+mail: kornel.osadzin@student.zsel.opole.pl
+userPrincipalName: kornel.osadzin@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\kornel.osadzin
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Wojciech Pietruszka
+dn: CN=wojciech.pietruszka,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: wojciech.pietruszka
+sAMAccountName: wojciech.pietruszka
+givenName: Wojciech
+sn: Pietruszka
+displayName: Wojciech Pietruszka (1BT2)
+mail: wojciech.pietruszka@student.zsel.opole.pl
+userPrincipalName: wojciech.pietruszka@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\wojciech.pietruszka
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Krzysztof Rother
+dn: CN=krzysztof.rother,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: krzysztof.rother
+sAMAccountName: krzysztof.rother
+givenName: Krzysztof
+sn: Rother
+displayName: Krzysztof Rother (1BT2)
+mail: krzysztof.rother@student.zsel.opole.pl
+userPrincipalName: krzysztof.rother@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\krzysztof.rother
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Mateusz Skrzipczyk
+dn: CN=mateusz.skrzipczyk,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: mateusz.skrzipczyk
+sAMAccountName: mateusz.skrzipczyk
+givenName: Mateusz
+sn: Skrzipczyk
+displayName: Mateusz Skrzipczyk (1BT2)
+mail: mateusz.skrzipczyk@student.zsel.opole.pl
+userPrincipalName: mateusz.skrzipczyk@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\mateusz.skrzipczyk
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Michał Stepczuk
+dn: CN=michal.stepczuk,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: michal.stepczuk
+sAMAccountName: michal.stepczuk
+givenName: Michał
+sn: Stepczuk
+displayName: Michał Stepczuk (1BT2)
+mail: michal.stepczuk@student.zsel.opole.pl
+userPrincipalName: michal.stepczuk@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\michal.stepczuk
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Dominik Szafranek
+dn: CN=dominik.szafranek,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: dominik.szafranek
+sAMAccountName: dominik.szafranek
+givenName: Dominik
+sn: Szafranek
+displayName: Dominik Szafranek (1BT2)
+mail: dominik.szafranek@student.zsel.opole.pl
+userPrincipalName: dominik.szafranek@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\dominik.szafranek
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Miłosz Szczęśniak
+dn: CN=milosz.szczesniak,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: milosz.szczesniak
+sAMAccountName: milosz.szczesniak
+givenName: Miłosz
+sn: Szczęśniak
+displayName: Miłosz Szczęśniak (1BT2)
+mail: milosz.szczesniak@student.zsel.opole.pl
+userPrincipalName: milosz.szczesniak@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\milosz.szczesniak
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Tobiasz Szneider
+dn: CN=tobiasz.szneider,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: tobiasz.szneider
+sAMAccountName: tobiasz.szneider
+givenName: Tobiasz
+sn: Szneider
+displayName: Tobiasz Szneider (1BT2)
+mail: tobiasz.szneider@student.zsel.opole.pl
+userPrincipalName: tobiasz.szneider@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\tobiasz.szneider
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+
+# Uczeń: Rafał Wrzeciono
+dn: CN=rafal.wrzeciono,OU=Class-1BT2,OU=Students,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: rafal.wrzeciono
+sAMAccountName: rafal.wrzeciono
+givenName: Rafał
+sn: Wrzeciono
+displayName: Rafał Wrzeciono (1BT2)
+mail: rafal.wrzeciono@student.zsel.opole.pl
+userPrincipalName: rafal.wrzeciono@ad.zsel.opole.pl
+description: Uczeń 1BT2 - technik automatyk
+homeDirectory: \\nextcloud.zsel.opole.pl\home\students\rafal.wrzeciono
+homeDrive: H:
+scriptPath: logon-student.bat
+userAccountControl: 512
+memberOf: CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Class-1BT2,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Specialization-technik-automatyk,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl

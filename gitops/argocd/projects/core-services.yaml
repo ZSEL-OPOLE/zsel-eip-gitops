@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: core-services
+  namespace: argocd
+spec:
+  description: Core infrastructure services (Auth, Network, Storage)
+  
+  # Source repositories allowed
+  sourceRepos:
+    - https://github.com/zsel-opole/zsel-opole-org.git
+  
+  # Allowed destinations (clusters and namespaces)
+  destinations:
+    - namespace: 'core-*'
+      server: https://kubernetes.default.svc
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+  
+  # Cluster-scoped resources allowed
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace
+    - group: 'rbac.authorization.k8s.io'
+      kind: ClusterRole
+    - group: 'rbac.authorization.k8s.io'
+      kind: ClusterRoleBinding
+    - group: 'storage.k8s.io'
+      kind: StorageClass
+  
+  # Namespace-scoped resources (default: all allowed)
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  
+  # Roles (optional - for RBAC)
+  roles:
+    - name: admin
+      description: Full access to core services
+      policies:
+        - p, proj:core-services:admin, applications, *, core-services/*, allow
+      groups:
+        - IT-Admins
+    
+    - name: operator
+      description: Read-only access + manual sync
+      policies:
+        - p, proj:core-services:operator, applications, get, core-services/*, allow
+        - p, proj:core-services:operator, applications, sync, core-services/*, allow
+      groups:
+        - Network-Team

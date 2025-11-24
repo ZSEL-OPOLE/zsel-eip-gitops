@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: packetfence-portal
+  namespace: identity-system
+  labels:
+    app.kubernetes.io/name: captive-portal
+    app.kubernetes.io/component: packetfence
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - portal.zsel.opole.pl
+    secretName: packetfence-portal-tls
+  rules:
+  - host: portal.zsel.opole.pl
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: packetfence
+            port:
+              number: 80

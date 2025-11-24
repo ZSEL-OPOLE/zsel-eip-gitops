@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: logging-system
+  labels:
+    app.kubernetes.io/name: graylog
+    app.kubernetes.io/component: mongodb
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: graylog
+    app.kubernetes.io/component: mongodb
+  ports:
+  - name: mongodb
+    port: 27017
+    targetPort: 27017
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: logging-system
+  labels:
+    app.kubernetes.io/name: graylog
+    app.kubernetes.io/component: elasticsearch
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: graylog
+    app.kubernetes.io/component: elasticsearch
+  ports:
+  - name: http
+    port: 9200
+    targetPort: 9200
+    protocol: TCP
+  - name: transport
+    port: 9300
+    targetPort: 9300
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: graylog-http
+  namespace: logging-system
+  labels:
+    app.kubernetes.io/name: graylog
+    app.kubernetes.io/component: server
+  annotations:
+    metallb.universe.tf/address-pool: vlan600-management
+    metallb.universe.tf/loadBalancerIPs: 192.168.255.55
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.255.55
+  externalTrafficPolicy: Local
+  selector:
+    app.kubernetes.io/name: graylog
+    app.kubernetes.io/component: server
+  ports:
+  - name: http
+    port: 9000
+    targetPort: 9000
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: graylog-syslog
+  namespace: logging-system
+  labels:
+    app.kubernetes.io/name: graylog
+    app.kubernetes.io/component: server
+  annotations:
+    metallb.universe.tf/address-pool: vlan600-management
+    metallb.universe.tf/allow-shared-ip: graylog
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.255.55
+  externalTrafficPolicy: Local
+  selector:
+    app.kubernetes.io/name: graylog
+    app.kubernetes.io/component: server
+  ports:
+  - name: syslog-udp
+    port: 514
+    targetPort: 514
+    protocol: UDP
+  - name: syslog-tcp
+    port: 514
+    targetPort: 514
+    protocol: TCP
+  - name: gelf-udp
+    port: 12201
+    targetPort: 12201
+    protocol: UDP
+  - name: gelf-tcp
+    port: 12201
+    targetPort: 12201
+    protocol: TCP

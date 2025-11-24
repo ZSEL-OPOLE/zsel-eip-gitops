@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: monitoring-system
+
+resources:
+  - ../../base
+
+patches:
+  - path: patches/replicas.yaml
+  - path: patches/resources.yaml
+
+labels:
+  - pairs:
+      environment: production

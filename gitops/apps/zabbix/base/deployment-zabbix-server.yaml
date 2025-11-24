@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zabbix-server
+  namespace: monitoring-system
+  labels:
+    app.kubernetes.io/name: zabbix
+    app.kubernetes.io/component: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zabbix
+      app.kubernetes.io/component: server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zabbix
+        app.kubernetes.io/component: server
+    spec:
+      containers:
+      - name: zabbix-server
+        image: zabbix/zabbix-server-pgsql:alpine-6.4-latest
+        ports:
+        - containerPort: 10051
+          name: zabbix-trapper
+        env:
+        - name: DB_SERVER_HOST
+          value: "zabbix-postgresql"
+        - name: DB_SERVER_PORT
+          value: "5432"
+        - name: POSTGRES_USER
+          value: "zabbix"
+        - name: POSTGRES_DB
+          value: "zabbix"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zabbix-db-password
+              key: POSTGRES_PASSWORD
+        - name: ZBX_CACHESIZE
+          value: "1G"
+        - name: ZBX_HISTORYCACHESIZE
+          value: "512M"
+        - name: ZBX_TRENDCACHESIZE
+          value: "256M"
+        - name: ZBX_VALUECACHESIZE
+          value: "512M"
+        - name: ZBX_STARTPOLLERS
+          value: "50"
+        - name: ZBX_STARTPOLLERSUNREACHABLE
+          value: "10"
+        - name: ZBX_STARTPINGERS
+          value: "10"
+        - name: ZBX_STARTTRAPPERS
+          value: "10"
+        - name: ZBX_STARTDISCOVERERS
+          value: "5"
+        - name: ZBX_STARTHTTPPOLLERS
+          value: "5"
+        - name: ZBX_HOUSEKEEPINGFREQUENCY
+          value: "1"
+        - name: ZBX_MAXHOUSEKEEPERDELETE
+          value: "5000"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        livenessProbe:
+          tcpSocket:
+            port: 10051
+          initialDelaySeconds: 60
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 10051
+          initialDelaySeconds: 30
+          periodSeconds: 5

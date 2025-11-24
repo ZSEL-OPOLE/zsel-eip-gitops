@@ -1,0 +1,181 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bind9-zones
+  namespace: core-network
+  labels:
+    app.kubernetes.io/name: dns
+    app.kubernetes.io/component: bind9
+data:
+  # Network AD Zone (network-ad.zsel.opole.pl)
+  db.network-ad.zsel.opole.pl: |
+    $TTL 86400
+    @   IN  SOA ns1.network-ad.zsel.opole.pl. hostmaster.network-ad.zsel.opole.pl. (
+                2024112201  ; Serial (YYYYMMDDNN)
+                3600        ; Refresh (1 hour)
+                1800        ; Retry (30 minutes)
+                604800      ; Expire (1 week)
+                86400 )     ; Minimum TTL (1 day)
+    
+    ; Name Servers
+    @   IN  NS  ns1.network-ad.zsel.opole.pl.
+    
+    ; Primary DNS
+    ns1 IN  A   192.168.255.53
+    
+    ; Network AD Domain Controllers
+    network-ad                  IN  A   192.168.255.51
+    network-ad-dc-primary       IN  A   192.168.255.51
+    network-ad-dc-secondary     IN  A   192.168.255.52
+    
+    ; LDAP SRV Records
+    _ldap._tcp  IN  SRV 0 100 389 network-ad-dc-primary.network-ad.zsel.opole.pl.
+    _ldap._tcp  IN  SRV 10 100 389 network-ad-dc-secondary.network-ad.zsel.opole.pl.
+    
+    ; Kerberos SRV Records
+    _kerberos._tcp      IN  SRV 0 100 88 network-ad-dc-primary.network-ad.zsel.opole.pl.
+    _kerberos._tcp      IN  SRV 10 100 88 network-ad-dc-secondary.network-ad.zsel.opole.pl.
+    _kerberos._udp      IN  SRV 0 100 88 network-ad-dc-primary.network-ad.zsel.opole.pl.
+    _kerberos._udp      IN  SRV 10 100 88 network-ad-dc-secondary.network-ad.zsel.opole.pl.
+    
+    ; Domain Controller Locator
+    _ldap._tcp.dc._msdcs    IN  SRV 0 100 389 network-ad-dc-primary.network-ad.zsel.opole.pl.
+    _ldap._tcp.dc._msdcs    IN  SRV 10 100 389 network-ad-dc-secondary.network-ad.zsel.opole.pl.
+  
+  # User AD Zone (ad.zsel.opole.pl)
+  db.ad.zsel.opole.pl: |
+    $TTL 86400
+    @   IN  SOA ns1.ad.zsel.opole.pl. hostmaster.ad.zsel.opole.pl. (
+                2024112201  ; Serial (YYYYMMDDNN)
+                3600        ; Refresh (1 hour)
+                1800        ; Retry (30 minutes)
+                604800      ; Expire (1 week)
+                86400 )     ; Minimum TTL (1 day)
+    
+    ; Name Servers
+    @   IN  NS  ns1.ad.zsel.opole.pl.
+    
+    ; Primary DNS
+    ns1 IN  A   192.168.255.53
+    
+    ; User AD Domain Controllers
+    ad                      IN  A   192.168.10.50
+    user-ad-dc-primary      IN  A   192.168.10.50
+    user-ad-dc-secondary    IN  A   192.168.10.51
+    user-ad-dc-tertiary     IN  A   192.168.10.52
+    
+    ; LDAP SRV Records
+    _ldap._tcp  IN  SRV 0 100 389 user-ad-dc-primary.ad.zsel.opole.pl.
+    _ldap._tcp  IN  SRV 5 100 389 user-ad-dc-secondary.ad.zsel.opole.pl.
+    _ldap._tcp  IN  SRV 10 100 389 user-ad-dc-tertiary.ad.zsel.opole.pl.
+    
+    ; Kerberos SRV Records
+    _kerberos._tcp      IN  SRV 0 100 88 user-ad-dc-primary.ad.zsel.opole.pl.
+    _kerberos._tcp      IN  SRV 5 100 88 user-ad-dc-secondary.ad.zsel.opole.pl.
+    _kerberos._tcp      IN  SRV 10 100 88 user-ad-dc-tertiary.ad.zsel.opole.pl.
+    _kerberos._udp      IN  SRV 0 100 88 user-ad-dc-primary.ad.zsel.opole.pl.
+    _kerberos._udp      IN  SRV 5 100 88 user-ad-dc-secondary.ad.zsel.opole.pl.
+    _kerberos._udp      IN  SRV 10 100 88 user-ad-dc-tertiary.ad.zsel.opole.pl.
+    
+    ; Domain Controller Locator
+    _ldap._tcp.dc._msdcs    IN  SRV 0 100 389 user-ad-dc-primary.ad.zsel.opole.pl.
+    _ldap._tcp.dc._msdcs    IN  SRV 5 100 389 user-ad-dc-secondary.ad.zsel.opole.pl.
+    _ldap._tcp.dc._msdcs    IN  SRV 10 100 389 user-ad-dc-tertiary.ad.zsel.opole.pl.
+    
+    ; SSO Services
+    moodle      IN  A   192.168.10.100
+    bbb         IN  A   192.168.10.101
+    nextcloud   IN  A   192.168.10.102
+    portal      IN  A   192.168.255.61
+  
+  # Infrastructure Services Zone (zsel.opole.pl)
+  db.zsel.opole.pl: |
+    $TTL 86400
+    @   IN  SOA ns1.zsel.opole.pl. hostmaster.zsel.opole.pl. (
+                2024112201  ; Serial (YYYYMMDDNN)
+                3600        ; Refresh
+                1800        ; Retry
+                604800      ; Expire
+                86400 )     ; Minimum TTL
+    
+    ; Name Servers
+    @   IN  NS  ns1.zsel.opole.pl.
+    
+    ; Primary DNS
+    ns1 IN  A   192.168.255.53
+    
+    ; Core Infrastructure Services
+    ntp             IN  A   192.168.255.54
+    graylog         IN  A   192.168.255.55
+    prometheus      IN  A   192.168.255.56
+    grafana         IN  A   192.168.255.57
+    alertmanager    IN  A   192.168.255.58
+    zabbix          IN  A   192.168.255.59
+    minio           IN  A   192.168.255.70
+    
+    ; Authentication Services
+    radius-network  IN  A   192.168.255.50
+    radius-wifi     IN  A   192.168.255.60
+    portal          IN  A   192.168.255.61
+    
+    ; Network Management
+    network-ad      IN  A   192.168.255.51
+    ad              IN  A   192.168.10.50
+    
+    ; Applications
+    moodle          IN  A   192.168.10.100
+    bbb             IN  A   192.168.10.101
+    nextcloud       IN  A   192.168.10.102
+  
+  # Reverse Zone for VLAN 600 (192.168.255.0/24 - Management)
+  db.255.168.192.in-addr.arpa: |
+    $TTL 86400
+    @   IN  SOA ns1.zsel.opole.pl. hostmaster.zsel.opole.pl. (
+                2024112201  ; Serial
+                3600        ; Refresh
+                1800        ; Retry
+                604800      ; Expire
+                86400 )     ; Minimum TTL
+    
+    @   IN  NS  ns1.zsel.opole.pl.
+    
+    ; Core Services
+    53  IN  PTR ns1.zsel.opole.pl.
+    54  IN  PTR ntp.zsel.opole.pl.
+    55  IN  PTR graylog.zsel.opole.pl.
+    56  IN  PTR prometheus.zsel.opole.pl.
+    57  IN  PTR grafana.zsel.opole.pl.
+    58  IN  PTR alertmanager.zsel.opole.pl.
+    59  IN  PTR zabbix.zsel.opole.pl.
+    70  IN  PTR minio.zsel.opole.pl.
+    
+    ; Authentication
+    50  IN  PTR radius-network.zsel.opole.pl.
+    60  IN  PTR radius-wifi.zsel.opole.pl.
+    61  IN  PTR portal.zsel.opole.pl.
+    
+    ; Network AD
+    51  IN  PTR network-ad-dc-primary.network-ad.zsel.opole.pl.
+    52  IN  PTR network-ad-dc-secondary.network-ad.zsel.opole.pl.
+  
+  # Reverse Zone for VLAN 10 (192.168.10.0/24 - Servers)
+  db.10.168.192.in-addr.arpa: |
+    $TTL 86400
+    @   IN  SOA ns1.zsel.opole.pl. hostmaster.zsel.opole.pl. (
+                2024112201  ; Serial
+                3600        ; Refresh
+                1800        ; Retry
+                604800      ; Expire
+                86400 )     ; Minimum TTL
+    
+    @   IN  NS  ns1.zsel.opole.pl.
+    
+    ; User AD
+    50  IN  PTR user-ad-dc-primary.ad.zsel.opole.pl.
+    51  IN  PTR user-ad-dc-secondary.ad.zsel.opole.pl.
+    52  IN  PTR user-ad-dc-tertiary.ad.zsel.opole.pl.
+    
+    ; Applications
+    100 IN  PTR moodle.zsel.opole.pl.
+    101 IN  PTR bbb.zsel.opole.pl.
+    102 IN  PTR nextcloud.zsel.opole.pl.

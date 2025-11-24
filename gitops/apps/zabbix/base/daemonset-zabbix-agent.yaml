@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: zabbix-agent
+  namespace: monitoring-system
+  labels:
+    app.kubernetes.io/name: zabbix
+    app.kubernetes.io/component: agent
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zabbix
+      app.kubernetes.io/component: agent
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zabbix
+        app.kubernetes.io/component: agent
+    spec:
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - name: zabbix-agent
+        image: zabbix/zabbix-agent2:alpine-6.4-latest
+        ports:
+        - containerPort: 10050
+          name: agent
+          protocol: TCP
+        env:
+        - name: ZBX_HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: ZBX_SERVER_HOST
+          value: "zabbix-server"
+        - name: ZBX_SERVER_PORT
+          value: "10051"
+        - name: ZBX_PASSIVE_ALLOW
+          value: "true"
+        - name: ZBX_ACTIVE_ALLOW
+          value: "true"
+        - name: ZBX_TIMEOUT
+          value: "10"
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: host-proc
+          mountPath: /host/proc
+          readOnly: true
+        - name: host-sys
+          mountPath: /host/sys
+          readOnly: true
+        - name: host-root
+          mountPath: /host/root
+          readOnly: true
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m"
+      volumes:
+      - name: host-proc
+        hostPath:
+          path: /proc
+          type: Directory
+      - name: host-sys
+        hostPath:
+          path: /sys
+          type: Directory
+      - name: host-root
+        hostPath:
+          path: /
+          type: Directory

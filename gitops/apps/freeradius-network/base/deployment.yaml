@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: freeradius-network
+  namespace: core-auth
+  labels:
+    app.kubernetes.io/name: freeradius-network
+    app.kubernetes.io/component: radius-auth
+    app.kubernetes.io/part-of: core-services
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: freeradius-network
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: freeradius-network
+        app.kubernetes.io/component: radius-auth
+    spec:
+      containers:
+      - name: freeradius
+        image: freeradius/freeradius-server:3.2-alpine
+        imagePullPolicy: IfNotPresent
+        
+        env:
+        - name: RADIUS_BIND_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: freeradius-network-secrets
+              key: radius-bind-password
+        
+        - name: MIKROTIK_RADIUS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: freeradius-network-secrets
+              key: mikrotik-radius-secret
+        
+        ports:
+        - name: radius-auth
+          containerPort: 1812
+          protocol: UDP
+        - name: radius-acct
+          containerPort: 1813
+          protocol: UDP
+        
+        volumeMounts:
+        - name: ldap-config
+          mountPath: /etc/raddb/mods-available/ldap
+          subPath: ldap
+        - name: clients-config
+          mountPath: /etc/raddb/clients.conf
+          subPath: clients.conf
+        
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - "radtest test test localhost 0 testing123 || exit 0"
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - "radtest test test localhost 0 testing123 || exit 0"
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+      
+      volumes:
+      - name: ldap-config
+        configMap:
+          name: freeradius-network-ldap-config
+      - name: clients-config
+        configMap:
+          name: freeradius-network-clients-config

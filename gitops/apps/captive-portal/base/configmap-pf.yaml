@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: packetfence-config
+  namespace: identity-system
+  labels:
+    app.kubernetes.io/name: captive-portal
+    app.kubernetes.io/component: packetfence
+data:
+  pf.conf: |
+    [general]
+    hostname = portal.zsel.opole.pl
+    domain = zsel.opole.pl
+    timezone = Europe/Warsaw
+    
+    [database]
+    host = packetfence-mariadb
+    port = 3306
+    db = pf
+    user = pf
+    pass = ${MYSQL_PASSWORD}
+    
+    [radius]
+    # FreeRADIUS User WiFi integration
+    radius_server = 192.168.255.60
+    radius_secret = ${RADIUS_SECRET}
+    
+    # RADIUS accounting
+    radius_accounting = enabled
+    
+    # Change of Authorization (CoA)
+    radius_coa_enabled = enabled
+    radius_coa_port = 3799
+    
+    [captive_portal]
+    secure_redirect = enabled
+    detection_mecanism_urls = http://detectportal.zsel.opole.pl/generate_204
+    
+    # Portal URLs
+    portal_url = https://portal.zsel.opole.pl
+    
+    # Session timeout
+    session_timeout = 12h
+    
+    # Guest registration
+    guest_registration = disabled
+    
+    [authentication]
+    # LDAP integration with User AD
+    ldap_enabled = 1
+    ldap_server = user-ad-primary.identity-system.svc.cluster.local
+    ldap_port = 389
+    ldap_base_dn = OU=Users,DC=ad,DC=zsel,DC=opole,DC=pl
+    ldap_bind_dn = CN=sso-wifi-bind,OU=SSOApps,OU=ServiceAccounts,DC=ad,DC=zsel,DC=opole,DC=pl
+    ldap_bind_password = ${LDAP_BIND_PASSWORD}
+    
+    # LDAP search filter
+    ldap_user_filter = (sAMAccountName=%s)
+    
+    # LDAP attributes
+    ldap_firstname_attribute = givenName
+    ldap_lastname_attribute = sn
+    ldap_email_attribute = mail
+    
+    [vlan]
+    # VLAN assignment based on group membership
+    registration_vlan = 999
+    isolation_vlan = 998
+    
+    # Teachers VLAN
+    vlan_teachers = 20
+    vlan_teachers_filter = memberOf=CN=Teachers,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+    
+    # Students VLAN
+    vlan_students = 30
+    vlan_students_filter = memberOf=CN=Students,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+    
+    [maintenance]
+    # Maintenance window
+    maintenance_interval = 60
+    maintenance_window = 3-6
+    
+    [logging]
+    syslog_enabled = 1
+    syslog_server = 192.168.255.55
+    syslog_port = 514

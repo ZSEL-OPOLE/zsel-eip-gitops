@@ -1,0 +1,7 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: packetfence
+  namespace: identity-system
+spec:
+  replicas: 2  # Production HA

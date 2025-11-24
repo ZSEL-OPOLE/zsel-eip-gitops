@@ -1,0 +1,42 @@
+# Zabbix Monitoring Platform
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: zabbix
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  project: monitoring
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-opole-org.git
+    targetRevision: main
+    path: infrastruktura-k3s/gitops/apps/zabbix/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  healthChecks:
+    - tcpSocket:
+        port: 10051  # Zabbix Server
+      initialDelaySeconds: 120
+      periodSeconds: 30
+    - httpGet:
+        path: /zabbix.php
+        port: 8080  # Zabbix Web
+      initialDelaySeconds: 60
+      periodSeconds: 30
+  info:
+    - name: Description
+      value: "Zabbix 7.x (Server + Web + PostgreSQL + Agent)"
+    - name: Monitored Hosts
+      value: "57 MikroTik devices + 9 K3s nodes"
+    - name: Storage
+      value: "200 GB PostgreSQL (90 days metrics)"
+    - name: Templates
+      value: "MikroTik SNMPv3, MikroTik RouterOS, K3s Node"

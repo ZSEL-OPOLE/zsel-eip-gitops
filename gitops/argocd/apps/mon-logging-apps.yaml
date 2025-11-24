@@ -1,0 +1,38 @@
+# Log Aggregation
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: graylog
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  project: monitoring
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-opole-org.git
+    targetRevision: main
+    path: infrastruktura-k3s/gitops/apps/graylog/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logging-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  healthChecks:
+    - httpGet:
+        path: /api/system/lbstatus
+        port: 9000
+      initialDelaySeconds: 120
+      periodSeconds: 30
+  info:
+    - name: Description
+      value: "Graylog Stack (Elasticsearch 3-node + MongoDB + Graylog Server 2 replicas)"
+    - name: Service IP
+      value: "192.168.255.55 (HTTP 9000, Syslog UDP/TCP 514, GELF 12201)"
+    - name: Storage
+      value: "600 GB Elasticsearch (90 days retention) + 50GB MongoDB"
+    - name: Sources
+      value: "57 MikroTik devices + K3s cluster logs"

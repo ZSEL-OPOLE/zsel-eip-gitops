@@ -1,0 +1,623 @@
+# User AD - Kadra administracyjna i obsługa szkoły
+# OU: OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+# Hasła: Losowe 16-znakowe (muszą być zmienione przy pierwszym logowaniu)
+# Data: 22.11.2025
+
+# Organizational Unit: Staff
+dn: OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: organizationalUnit
+ou: Staff
+description: Kadra administracyjna i obsługa ZSEL Opole (30 osób)
+
+# ================================================================================
+# DYREKCJA (3 osoby)
+# ================================================================================
+
+# Dyrektor szkoły
+dn: CN=dyrektor,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: dyrektor
+sAMAccountName: dyrektor
+givenName: Dyrektor
+sn: Szkoły
+displayName: Dyrektor ZSEL
+mail: dyrektor@zsel.opole.pl
+userPrincipalName: dyrektor@ad.zsel.opole.pl
+description: Dyrektor Zespołu Szkół Elektronicznych i Licealnych
+title: Dyrektor
+department: Dyrekcja
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\dyrektor
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Management,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=NextCloud-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Wicedyrektor ds. dydaktycznych
+dn: CN=wicedyrektor.dydaktyka,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: wicedyrektor.dydaktyka
+sAMAccountName: wicedyrektor.dydaktyka
+givenName: Wicedyrektor
+sn: Dydaktyka
+displayName: Wicedyrektor ds. dydaktycznych
+mail: wicedyrektor.dydaktyka@zsel.opole.pl
+userPrincipalName: wicedyrektor.dydaktyka@ad.zsel.opole.pl
+description: Wicedyrektor ds. dydaktycznych
+title: Wicedyrektor
+department: Dyrekcja
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\wicedyrektor.dydaktyka
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Management,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Moodle-Admins,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Wicedyrektor ds. wychowawczych
+dn: CN=wicedyrektor.wychowanie,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: wicedyrektor.wychowanie
+sAMAccountName: wicedyrektor.wychowanie
+givenName: Wicedyrektor
+sn: Wychowanie
+displayName: Wicedyrektor ds. wychowawczych
+mail: wicedyrektor.wychowanie@zsel.opole.pl
+userPrincipalName: wicedyrektor.wychowanie@ad.zsel.opole.pl
+description: Wicedyrektor ds. wychowawczych
+title: Wicedyrektor
+department: Dyrekcja
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\wicedyrektor.wychowanie
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Management,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# ================================================================================
+# SEKRETARIAT (5 osób)
+# ================================================================================
+
+# Sekretarz szkoły
+dn: CN=sekretarz,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: sekretarz
+sAMAccountName: sekretarz
+givenName: Sekretarz
+sn: Szkoły
+displayName: Sekretarz ZSEL
+mail: sekretariat@zsel.opole.pl
+userPrincipalName: sekretarz@ad.zsel.opole.pl
+description: Sekretarz szkoły
+title: Sekretarz
+department: Sekretariat
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\sekretarz
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Secretariat,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Zastępca sekretarza
+dn: CN=sekretarz.zastepca,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: sekretarz.zastepca
+sAMAccountName: sekretarz.zastepca
+givenName: Zastępca
+sn: Sekretarza
+displayName: Zastępca sekretarza
+mail: sekretariat2@zsel.opole.pl
+userPrincipalName: sekretarz.zastepca@ad.zsel.opole.pl
+description: Zastępca sekretarza
+title: Zastępca sekretarza
+department: Sekretariat
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\sekretarz.zastepca
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Secretariat,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Pracownik sekretariatu 1
+dn: CN=sekretariat.01,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: sekretariat.01
+sAMAccountName: sekretariat.01
+givenName: Sekretariat
+sn: 01
+displayName: Pracownik sekretariatu 01
+mail: sekretariat.01@zsel.opole.pl
+userPrincipalName: sekretariat.01@ad.zsel.opole.pl
+description: Pracownik sekretariatu
+department: Sekretariat
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\sekretariat.01
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Secretariat,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Pracownik sekretariatu 2
+dn: CN=sekretariat.02,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: sekretariat.02
+sAMAccountName: sekretariat.02
+givenName: Sekretariat
+sn: 02
+displayName: Pracownik sekretariatu 02
+mail: sekretariat.02@zsel.opole.pl
+userPrincipalName: sekretariat.02@ad.zsel.opole.pl
+description: Pracownik sekretariatu
+department: Sekretariat
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\sekretariat.02
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Secretariat,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Archiwista
+dn: CN=archiwista,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: archiwista
+sAMAccountName: archiwista
+givenName: Archiwista
+sn: Szkolny
+displayName: Archiwista
+mail: archiwum@zsel.opole.pl
+userPrincipalName: archiwista@ad.zsel.opole.pl
+description: Archiwista szkolny
+department: Sekretariat
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\archiwista
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Secretariat,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# ================================================================================
+# KSIĘGOWOŚĆ (4 osoby)
+# ================================================================================
+
+# Główna księgowa
+dn: CN=ksiegowa,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: ksiegowa
+sAMAccountName: ksiegowa
+givenName: Główna
+sn: Księgowa
+displayName: Główna księgowa
+mail: ksiegowosc@zsel.opole.pl
+userPrincipalName: ksiegowa@ad.zsel.opole.pl
+description: Główna księgowa
+title: Główna księgowa
+department: Księgowość
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\ksiegowa
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Accounting,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Księgowa 1
+dn: CN=ksiegowa.01,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: ksiegowa.01
+sAMAccountName: ksiegowa.01
+givenName: Księgowa
+sn: 01
+displayName: Księgowa 01
+mail: ksiegowa.01@zsel.opole.pl
+userPrincipalName: ksiegowa.01@ad.zsel.opole.pl
+description: Pracownik księgowości
+department: Księgowość
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\ksiegowa.01
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Accounting,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Księgowa 2
+dn: CN=ksiegowa.02,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: ksiegowa.02
+sAMAccountName: ksiegowa.02
+givenName: Księgowa
+sn: 02
+displayName: Księgowa 02
+mail: ksiegowa.02@zsel.opole.pl
+userPrincipalName: ksiegowa.02@ad.zsel.opole.pl
+description: Pracownik księgowości
+department: Księgowość
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\ksiegowa.02
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Accounting,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Referent ds. płac
+dn: CN=plac.referent,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: plac.referent
+sAMAccountName: plac.referent
+givenName: Referent
+sn: Płac
+displayName: Referent ds. płac
+mail: place@zsel.opole.pl
+userPrincipalName: plac.referent@ad.zsel.opole.pl
+description: Referent ds. płac
+department: Księgowość
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\plac.referent
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Accounting,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# ================================================================================
+# KADRY (2 osoby)
+# ================================================================================
+
+# Specjalista ds. kadr
+dn: CN=kadrowa,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: kadrowa
+sAMAccountName: kadrowa
+givenName: Specjalista
+sn: Kadrowa
+displayName: Specjalista ds. kadr
+mail: kadry@zsel.opole.pl
+userPrincipalName: kadrowa@ad.zsel.opole.pl
+description: Specjalista ds. kadr
+title: Specjalista ds. kadr
+department: Kadry
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\kadrowa
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=HR,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Asystent ds. kadr
+dn: CN=kadrowa.asystent,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: kadrowa.asystent
+sAMAccountName: kadrowa.asystent
+givenName: Asystent
+sn: Kadrowa
+displayName: Asystent ds. kadr
+mail: kadry.asystent@zsel.opole.pl
+userPrincipalName: kadrowa.asystent@ad.zsel.opole.pl
+description: Asystent ds. kadr
+department: Kadry
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\kadrowa.asystent
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=HR,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# ================================================================================
+# SŁUŻBA ZDROWIA (3 osoby)
+# ================================================================================
+
+# Pielęgniarka szkolna
+dn: CN=pielegniarka,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: pielegniarka
+sAMAccountName: pielegniarka
+givenName: Pielęgniarka
+sn: Szkolna
+displayName: Pielęgniarka szkolna
+mail: gabinet@zsel.opole.pl
+userPrincipalName: pielegniarka@ad.zsel.opole.pl
+description: Pielęgniarka szkolna
+title: Pielęgniarka
+department: Służba zdrowia
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\pielegniarka
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Healthcare,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Psycholog szkolny
+dn: CN=psycholog,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: psycholog
+sAMAccountName: psycholog
+givenName: Psycholog
+sn: Szkolny
+displayName: Psycholog szkolny
+mail: psycholog@zsel.opole.pl
+userPrincipalName: psycholog@ad.zsel.opole.pl
+description: Psycholog szkolny
+title: Psycholog
+department: Służba zdrowia
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\psycholog
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Healthcare,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Pedagog szkolny
+dn: CN=pedagog,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: pedagog
+sAMAccountName: pedagog
+givenName: Pedagog
+sn: Szkolny
+displayName: Pedagog szkolny
+mail: pedagog@zsel.opole.pl
+userPrincipalName: pedagog@ad.zsel.opole.pl
+description: Pedagog szkolny
+title: Pedagog
+department: Służba zdrowia
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\pedagog
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Healthcare,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# ================================================================================
+# BIBLIOTEKA (2 osoby)
+# ================================================================================
+
+# Bibliotekarka
+dn: CN=bibliotekarka,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: bibliotekarka
+sAMAccountName: bibliotekarka
+givenName: Bibliotekarka
+sn: Szkolna
+displayName: Bibliotekarka
+mail: biblioteka@zsel.opole.pl
+userPrincipalName: bibliotekarka@ad.zsel.opole.pl
+description: Bibliotekarka szkolna
+title: Bibliotekarka
+department: Biblioteka
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\bibliotekarka
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Library,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Zastępca bibliotekarki
+dn: CN=bibliotekarka.zastepca,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: bibliotekarka.zastepca
+sAMAccountName: bibliotekarka.zastepca
+givenName: Zastępca
+sn: Bibliotekarki
+displayName: Zastępca bibliotekarki
+mail: biblioteka.zastepca@zsel.opole.pl
+userPrincipalName: bibliotekarka.zastepca@ad.zsel.opole.pl
+description: Zastępca bibliotekarki
+department: Biblioteka
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\bibliotekarka.zastepca
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Library,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# ================================================================================
+# OBSŁUGA (11 osób)
+# ================================================================================
+
+# Kierownik gospodarczy
+dn: CN=kierownik.gospodarczy,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: kierownik.gospodarczy
+sAMAccountName: kierownik.gospodarczy
+givenName: Kierownik
+sn: Gospodarczy
+displayName: Kierownik gospodarczy
+mail: gospodarczy@zsel.opole.pl
+userPrincipalName: kierownik.gospodarczy@ad.zsel.opole.pl
+description: Kierownik gospodarczy
+title: Kierownik gospodarczy
+department: Obsługa
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\kierownik.gospodarczy
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Maintenance,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Konserwator 1
+dn: CN=konserwator.01,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: konserwator.01
+sAMAccountName: konserwator.01
+givenName: Konserwator
+sn: 01
+displayName: Konserwator 01
+mail: konserwator.01@zsel.opole.pl
+userPrincipalName: konserwator.01@ad.zsel.opole.pl
+description: Konserwator budynku
+department: Obsługa
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\konserwator.01
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Maintenance,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Konserwator 2
+dn: CN=konserwator.02,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: konserwator.02
+sAMAccountName: konserwator.02
+givenName: Konserwator
+sn: 02
+displayName: Konserwator 02
+mail: konserwator.02@zsel.opole.pl
+userPrincipalName: konserwator.02@ad.zsel.opole.pl
+description: Konserwator budynku
+department: Obsługa
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\konserwator.02
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Maintenance,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Sprzątaczka 1
+dn: CN=sprzataczka.01,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: sprzataczka.01
+sAMAccountName: sprzataczka.01
+givenName: Sprzątaczka
+sn: 01
+displayName: Sprzątaczka 01
+mail: sprzataczka.01@zsel.opole.pl
+userPrincipalName: sprzataczka.01@ad.zsel.opole.pl
+description: Pracownik obsługi - sprzątanie
+department: Obsługa
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\sprzataczka.01
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Maintenance,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Sprzątaczka 2
+dn: CN=sprzataczka.02,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: sprzataczka.02
+sAMAccountName: sprzataczka.02
+givenName: Sprzątaczka
+sn: 02
+displayName: Sprzątaczka 02
+mail: sprzataczka.02@zsel.opole.pl
+userPrincipalName: sprzataczka.02@ad.zsel.opole.pl
+description: Pracownik obsługi - sprzątanie
+department: Obsługa
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\sprzataczka.02
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Maintenance,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Sprzątaczka 3
+dn: CN=sprzataczka.03,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: sprzataczka.03
+sAMAccountName: sprzataczka.03
+givenName: Sprzątaczka
+sn: 03
+displayName: Sprzątaczka 03
+mail: sprzataczka.03@zsel.opole.pl
+userPrincipalName: sprzataczka.03@ad.zsel.opole.pl
+description: Pracownik obsługi - sprzątanie
+department: Obsługa
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\sprzataczka.03
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Maintenance,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Sprzątaczka 4
+dn: CN=sprzataczka.04,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: sprzataczka.04
+sAMAccountName: sprzataczka.04
+givenName: Sprzątaczka
+sn: 04
+displayName: Sprzątaczka 04
+mail: sprzataczka.04@zsel.opole.pl
+userPrincipalName: sprzataczka.04@ad.zsel.opole.pl
+description: Pracownik obsługi - sprzątanie
+department: Obsługa
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\sprzataczka.04
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Maintenance,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Portier dzienny
+dn: CN=portier.dzienny,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: portier.dzienny
+sAMAccountName: portier.dzienny
+givenName: Portier
+sn: Dzienny
+displayName: Portier dzienny
+mail: portier.dzienny@zsel.opole.pl
+userPrincipalName: portier.dzienny@ad.zsel.opole.pl
+description: Portier - zmiana dzienna
+department: Obsługa
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\portier.dzienny
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Security,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Portier nocny
+dn: CN=portier.nocny,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: portier.nocny
+sAMAccountName: portier.nocny
+givenName: Portier
+sn: Nocny
+displayName: Portier nocny
+mail: portier.nocny@zsel.opole.pl
+userPrincipalName: portier.nocny@ad.zsel.opole.pl
+description: Portier - zmiana nocna
+department: Obsługa
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\portier.nocny
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Security,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Pracownik kuchni 1
+dn: CN=kuchnia.01,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: kuchnia.01
+sAMAccountName: kuchnia.01
+givenName: Kuchnia
+sn: 01
+displayName: Pracownik kuchni 01
+mail: kuchnia.01@zsel.opole.pl
+userPrincipalName: kuchnia.01@ad.zsel.opole.pl
+description: Pracownik stołówki szkolnej
+department: Obsługa
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\kuchnia.01
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Canteen,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+
+# Pracownik kuchni 2
+dn: CN=kuchnia.02,OU=Staff,DC=ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+cn: kuchnia.02
+sAMAccountName: kuchnia.02
+givenName: Kuchnia
+sn: 02
+displayName: Pracownik kuchni 02
+mail: kuchnia.02@zsel.opole.pl
+userPrincipalName: kuchnia.02@ad.zsel.opole.pl
+description: Pracownik stołówki szkolnej
+department: Obsługa
+homeDirectory: \\nextcloud.zsel.opole.pl\home\staff\kuchnia.02
+homeDrive: H:
+scriptPath: logon-staff.bat
+userAccountControl: 512
+memberOf: CN=Staff,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl
+memberOf: CN=Canteen,OU=Groups,DC=ad,DC=zsel,DC=opole,DC=pl

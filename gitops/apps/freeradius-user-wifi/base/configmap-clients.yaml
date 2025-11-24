@@ -1,0 +1,132 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: freeradius-user-wifi-clients-config
+  namespace: identity-system
+  labels:
+    app.kubernetes.io/name: freeradius-user-wifi
+    app.kubernetes.io/component: radius-auth
+data:
+  clients.conf: |
+    # Captive Portal (PacketFence)
+    client captive-portal {
+        ipaddr = 192.168.255.61
+        secret = ${CAPTIVE_PORTAL_RADIUS_SECRET}
+        shortname = packetfence
+        nas_type = other
+    }
+    
+    # MikroTik WiFi Access Points (16 cAP ax)
+    # VLAN: Multiple (20 Teachers, 30 Students, 40 Guests)
+    
+    client CAP-AX-01 {
+        ipaddr = 192.168.255.101
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-01
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-02 {
+        ipaddr = 192.168.255.102
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-02
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-03 {
+        ipaddr = 192.168.255.103
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-03
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-04 {
+        ipaddr = 192.168.255.104
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-04
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-05 {
+        ipaddr = 192.168.255.105
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-05
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-06 {
+        ipaddr = 192.168.255.106
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-06
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-07 {
+        ipaddr = 192.168.255.107
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-07
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-08 {
+        ipaddr = 192.168.255.108
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-08
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-09 {
+        ipaddr = 192.168.255.109
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-09
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-10 {
+        ipaddr = 192.168.255.110
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-10
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-11 {
+        ipaddr = 192.168.255.111
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-11
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-12 {
+        ipaddr = 192.168.255.112
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-12
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-13 {
+        ipaddr = 192.168.255.113
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-13
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-14 {
+        ipaddr = 192.168.255.114
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-14
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-15 {
+        ipaddr = 192.168.255.115
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-15
+        nas_type = mikrotik
+    }
+    
+    client CAP-AX-16 {
+        ipaddr = 192.168.255.116
+        secret = ${WIFI_RADIUS_SECRET}
+        shortname = cap-ax-16
+        nas_type = mikrotik
+    }

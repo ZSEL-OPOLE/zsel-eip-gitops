@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chrony-config
+  namespace: core-network
+  labels:
+    app.kubernetes.io/name: ntp
+    app.kubernetes.io/component: chrony
+data:
+  chrony.conf: |
+    # Chrony NTP Server Configuration for K3s Cluster
+    # Provides stratum 1-2 NTP service to infrastructure devices
+    
+    # Upstream NTP Servers (stratum 1-2)
+    pool pl.pool.ntp.org iburst maxsources 4
+    server tempus1.gum.gov.pl iburst
+    server tempus2.gum.gov.pl iburst
+    server ntp.certum.pl iburst
+    server time.cloudflare.com iburst
+    
+    # Fallback servers
+    pool time.google.com iburst maxsources 2
+    
+    # Record the rate at which the system clock gains/loses time
+    driftfile /var/lib/chrony/drift
+    
+    # Allow stepping the system clock if offset is large
+    makestep 1.0 3
+    
+    # Enable kernel synchronization
+    rtcsync
+    
+    # Serve time to local network
+    # Allow NTP client queries from private networks
+    allow 192.168.0.0/16
+    allow 10.0.0.0/8
+    allow 172.16.0.0/12
+    
+    # Deny all by default (security)
+    deny all
+    
+    # Specific allow for ZSEL infrastructure
+    allow 192.168.255.0/24   # Management VLAN
+    allow 192.168.10.0/24    # Servers VLAN
+    
+    # Log settings
+    log tracking measurements statistics
+    logdir /var/log/chrony
+    
+    # Increase log verbosity
+    logchange 0.5
+    
+    # Step threshold
+    maxupdateskew 100.0
+    
+    # Limit memory usage
+    clientloglimit 1024
+    
+    # Hwtimestamp (hardware timestamping - better accuracy)
+    # hwtimestamp eth0
+    
+    # Local stratum (act as stratum 10 if all upstreams fail)
+    local stratum 10
+    
+    # Smooth time adjustments
+    smoothtime 400 0.001 leaponly

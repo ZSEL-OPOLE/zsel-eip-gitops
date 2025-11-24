@@ -1,0 +1,29 @@
+# Network AD - IT Administrators
+# OU: OU=ITAdmins,OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl
+# Group: Domain Admins (full access to MikroTik)
+# MikroTik Group: network-admin
+
+# Organizational Unit: ITAdmins
+dn: OU=ITAdmins,OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl
+objectClass: organizationalUnit
+ou: ITAdmins
+description: IT Administrators with full network access
+
+# User 1: Łukasz Kołodziej (Cloud Architect)
+dn: CN=lukasz.kolodziej,OU=ITAdmins,OU=NetworkAdmins,DC=network-ad,DC=zsel,DC=opole,DC=pl
+objectClass: user
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: lukasz.kolodziej
+sAMAccountName: lukasz.kolodziej
+givenName: Łukasz
+sn: Kołodziej
+displayName: Łukasz Kołodziej
+mail: l.kolodziej@zsel.opole.pl
+userPrincipalName: lukasz.kolodziej@network-ad.zsel.opole.pl
+description: Cloud Architect - Full Network Admin
+userAccountControl: 512
+memberOf: CN=Domain Admins,CN=Users,DC=network-ad,DC=zsel,DC=opole,DC=pl
+
+
