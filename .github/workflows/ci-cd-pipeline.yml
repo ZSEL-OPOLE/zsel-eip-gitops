@@ -1,0 +1,430 @@
+# =============================================================================
+# ZSEL EIP - CI/CD Pipeline with Quality Gates
+# =============================================================================
+# Purpose: Automated validation, testing, and deployment with approval gates
+# Checks: Security, Syntax, Quality, Compliance
+# =============================================================================
+
+name: CI/CD Pipeline - Quality Gates
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+env:
+  TERRAFORM_VERSION: '1.6.0'
+  KUBECTL_VERSION: 'v1.28.0'
+  HELM_VERSION: 'v3.13.0'
+  KUBESEAL_VERSION: '0.24.0'
+
+jobs:
+  # ===========================================================================
+  # Stage 1: Pre-Validation (Syntax & Linting)
+  # ===========================================================================
+  pre-validation:
+    name: "Stage 1: Syntax & Linting"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Terraform Format Check
+        run: |
+          echo "🔍 Checking Terraform formatting..."
+          terraform fmt -check -recursive
+        continue-on-error: false
+
+      - name: Terraform Validate (DEV)
+        working-directory: ./terraform/environments/development
+        run: |
+          echo "✅ Validating DEV Terraform configuration..."
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform Validate (PROD)
+        working-directory: ./terraform/environments/production
+        run: |
+          echo "✅ Validating PROD Terraform configuration..."
+          terraform init -backend=false
+          terraform validate
+
+      - name: YAML Lint (ArgoCD Applications)
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: apps/
+          config_data: |
+            extends: default
+            rules:
+              line-length:
+                max: 120
+                level: warning
+              indentation:
+                spaces: 2
+              truthy:
+                allowed-values: ['true', 'false', 'on', 'off']
+
+      - name: YAML Lint (Sealed Secrets)
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: sealed-secrets/
+          config_data: |
+            extends: default
+            rules:
+              line-length:
+                max: 200  # Sealed secrets have long encrypted strings
+                level: warning
+
+      - name: Markdown Lint
+        uses: nosborn/github-action-markdown-cli@v3.3.0
+        with:
+          files: .
+          config_file: .markdownlint.json
+
+  # ===========================================================================
+  # Stage 2: Security Scanning
+  # ===========================================================================
+  security-scan:
+    name: "Stage 2: Security Scanning"
+    runs-on: ubuntu-latest
+    needs: pre-validation
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Trivy - Container Image Scanning
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'config'
+          scan-ref: './apps'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: kubesec - Kubernetes Security Scan
+        run: |
+          echo "🔒 Running kubesec security scan..."
+          docker run --rm -v $(pwd):/project kubesec/kubesec:v2 scan /project/apps/**/*.yaml | jq '.'
+
+      - name: Checkov - Infrastructure Security Scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ./terraform
+          framework: terraform
+          output_format: json
+          quiet: false
+          soft_fail: false
+
+      - name: TFSec - Terraform Security Scan
+        uses: aquasecurity/tfsec-action@v1.0.3
+        with:
+          working_directory: ./terraform
+          soft_fail: false
+
+      - name: Gitleaks - Secret Scanning
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+      - name: Check for Hardcoded Secrets
+        run: |
+          echo "🔍 Checking for hardcoded secrets..."
+          if grep -r -E '(password|secret|apikey|token)\s*[:=]\s*["\047][^"\047]{8,}' \
+            --include="*.yaml" --include="*.yml" --exclude-dir=sealed-secrets .; then
+            echo "❌ Found potential hardcoded secrets!"
+            exit 1
+          fi
+          echo "✅ No hardcoded secrets found"
+
+  # ===========================================================================
+  # Stage 3: Quality & Compliance Checks
+  # ===========================================================================
+  quality-checks:
+    name: "Stage 3: Quality & Compliance"
+    runs-on: ubuntu-latest
+    needs: security-scan
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Tools
+        run: |
+          # Kubectl
+          curl -LO "https://dl.k8s.io/release/${{ env.KUBECTL_VERSION }}/bin/linux/amd64/kubectl"
+          chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+          
+          # Helm
+          curl -fsSL https://get.helm.sh/helm-${{ env.HELM_VERSION }}-linux-amd64.tar.gz | tar -xz
+          sudo mv linux-amd64/helm /usr/local/bin/
+          
+          # kubeconform (Kubernetes manifest validation)
+          curl -L https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz | tar xz
+          sudo mv kubeconform /usr/local/bin/
+
+      - name: Validate Kubernetes Manifests
+        run: |
+          echo "✅ Validating all Kubernetes manifests with kubeconform..."
+          find apps/ -name "*.yaml" -o -name "*.yml" | xargs -I {} kubeconform -summary -verbose {}
+
+      - name: Helm Chart Linting
+        run: |
+          echo "🔍 Linting Helm charts (if any)..."
+          if [ -d "charts" ]; then
+            for chart in charts/*/; do
+              helm lint "$chart"
+            done
+          fi
+
+      - name: ArgoCD App Validation
+        run: |
+          echo "✅ Validating ArgoCD Application specs..."
+          for app in apps/*/application.yaml; do
+            kubectl apply --dry-run=client -f "$app"
+          done
+
+      - name: OPA Policy Validation
+        run: |
+          echo "📋 Validating OPA policies..."
+          docker run --rm -v $(pwd):/workspace openpolicyagent/opa:latest test /workspace/policies/ -v
+
+      - name: Resource Quota Check
+        run: |
+          echo "📊 Checking resource quotas and limits..."
+          python3 scripts/validate-resources.py
+
+      - name: RODO/GDPR Compliance Check
+        run: |
+          echo "🔒 Verifying RODO/GDPR compliance..."
+          # Check retention policies
+          # Check encryption requirements
+          # Check data protection measures
+          python3 scripts/validate-compliance.py
+
+  # ===========================================================================
+  # Stage 4: Integration Testing (DEV deployment)
+  # ===========================================================================
+  integration-test-dev:
+    name: "Stage 4: Integration Test (DEV)"
+    runs-on: ubuntu-latest
+    needs: quality-checks
+    if: github.ref == 'refs/heads/develop' || github.event_name == 'pull_request'
+    environment:
+      name: development
+      url: https://dev.zsel.opole.pl
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: ${{ env.KUBECTL_VERSION }}
+
+      - name: Configure kubectl for DEV
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_DEV }}" | base64 -d > ~/.kube/config
+          kubectl config use-context k3s-dev
+
+      - name: Terraform Plan (DEV)
+        working-directory: ./terraform/environments/development
+        env:
+          TF_VAR_kubeconfig: ${{ secrets.KUBECONFIG_DEV }}
+        run: |
+          terraform init
+          terraform plan -out=tfplan-dev
+
+      - name: Terraform Apply (DEV) - Auto
+        working-directory: ./terraform/environments/development
+        env:
+          TF_VAR_kubeconfig: ${{ secrets.KUBECONFIG_DEV }}
+        run: |
+          terraform apply -auto-approve tfplan-dev
+
+      - name: Deploy ArgoCD Apps (DEV)
+        run: |
+          echo "🚀 Deploying ArgoCD applications to DEV..."
+          kubectl apply -f apps/argocd-root/application.yaml
+          
+          # Wait for ArgoCD to sync
+          timeout 600 bash -c 'until kubectl get apps -n argocd | grep -q "Healthy"; do sleep 10; done'
+
+      - name: Run Integration Tests
+        run: |
+          echo "🧪 Running integration tests..."
+          # Test 1: All pods running
+          kubectl get pods -A | grep -v "Running\|Completed" && exit 1 || echo "✅ All pods running"
+          
+          # Test 2: Ingress accessible
+          curl -f https://dev.zsel.opole.pl || exit 1
+          
+          # Test 3: Database connectivity
+          kubectl exec -n db-postgresql-dev postgresql-0 -- pg_isready || exit 1
+
+      - name: Smoke Tests
+        run: |
+          echo "💨 Running smoke tests..."
+          bash scripts/smoke-tests.sh development
+
+  # ===========================================================================
+  # Stage 5: Manual Approval Gate (PROD only)
+  # ===========================================================================
+  approval-gate:
+    name: "Stage 5: Approval Gate (PROD)"
+    runs-on: ubuntu-latest
+    needs: integration-test-dev
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production-approval
+    steps:
+      - name: Await Approval
+        run: |
+          echo "⏳ Waiting for manual approval before PROD deployment..."
+          echo "Approvers: DevOps Lead, Security Lead, IT Director"
+
+  # ===========================================================================
+  # Stage 6: Production Deployment
+  # ===========================================================================
+  deploy-production:
+    name: "Stage 6: Deploy to PRODUCTION"
+    runs-on: ubuntu-latest
+    needs: approval-gate
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://zsel.opole.pl
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: ${{ env.KUBECTL_VERSION }}
+
+      - name: Configure kubectl for PROD
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_PROD }}" | base64 -d > ~/.kube/config
+          kubectl config use-context k3s-prod
+
+      - name: Backup Current State
+        run: |
+          echo "💾 Creating backup of current PROD state..."
+          velero backup create pre-deployment-$(date +%Y%m%d-%H%M%S) --wait
+
+      - name: Terraform Plan (PROD)
+        working-directory: ./terraform/environments/production
+        env:
+          TF_VAR_kubeconfig: ${{ secrets.KUBECONFIG_PROD }}
+        run: |
+          terraform init
+          terraform plan -out=tfplan-prod
+
+      - name: Terraform Apply (PROD)
+        working-directory: ./terraform/environments/production
+        env:
+          TF_VAR_kubeconfig: ${{ secrets.KUBECONFIG_PROD }}
+        run: |
+          terraform apply -auto-approve tfplan-prod
+
+      - name: Deploy ArgoCD Apps (PROD)
+        run: |
+          echo "🚀 Deploying ArgoCD applications to PROD..."
+          kubectl apply -f apps/argocd-root/application.yaml
+          
+          # Progressive sync with health checks
+          bash scripts/progressive-deploy.sh production
+
+      - name: Health Check (PROD)
+        run: |
+          echo "🏥 Running PROD health checks..."
+          bash scripts/health-check.sh production
+
+      - name: Notify Success
+        if: success()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          text: '✅ PROD deployment successful!'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Rollback on Failure
+        if: failure()
+        run: |
+          echo "❌ Deployment failed! Rolling back..."
+          kubectl rollout undo -n argocd deployment argocd-server
+          velero restore create --from-backup pre-deployment-latest --wait
+
+      - name: Notify Failure
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: '❌ PROD deployment FAILED! Rollback initiated.'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+  # ===========================================================================
+  # Stage 7: Post-Deployment Validation
+  # ===========================================================================
+  post-deployment:
+    name: "Stage 7: Post-Deployment Validation"
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure kubectl for PROD
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_PROD }}" | base64 -d > ~/.kube/config
+
+      - name: End-to-End Tests
+        run: |
+          echo "🧪 Running E2E tests on PROD..."
+          bash scripts/e2e-tests.sh production
+
+      - name: Performance Tests
+        run: |
+          echo "⚡ Running performance tests..."
+          bash scripts/performance-tests.sh production
+
+      - name: Security Scan (Runtime)
+        run: |
+          echo "🔒 Running runtime security scan..."
+          trivy k8s --report summary cluster
+
+      - name: Generate Deployment Report
+        run: |
+          echo "📊 Generating deployment report..."
+          python3 scripts/generate-report.py > deployment-report.md
+
+      - name: Upload Deployment Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-report
+          path: deployment-report.md
+
+      - name: Update Documentation
+        run: |
+          echo "📚 Updating deployment documentation..."
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add docs/
+          git commit -m "docs: update deployment docs [skip ci]" || true
+          git push
