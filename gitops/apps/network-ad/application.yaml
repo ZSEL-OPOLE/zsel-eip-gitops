@@ -1,0 +1,93 @@
+# =============================================================================
+# ArgoCD Application - Network AD Domain
+# =============================================================================
+# Purpose: Samba AD DC dla autentykacji urządzeń sieciowych (57 MikroTik)
+# Domain: network-ad.zsel.opole.pl
+# RADIUS/SNMP accounts dla MikroTik CAPsMAN, RADIUS auth
+# Last Updated: 2025-11-25
+# =============================================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: network-ad
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: network-ad
+    app.kubernetes.io/component: core-services
+    app.kubernetes.io/managed-by: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"  # Deploy after namespaces (wave 5)
+    notifications.argoproj.io/subscribe.on-sync-succeeded.mattermost: "ops-notifications"
+    notifications.argoproj.io/subscribe.on-health-degraded.mattermost: "ops-alerts"
+
+spec:
+  # Project Configuration
+  project: core-services
+
+  # Source Repository
+  source:
+    repoURL: https://github.com/lkolo-prez/zsel-eip-gitops  # TODO: Update to actual repo
+    targetRevision: main
+    path: gitops/apps/network-ad/overlays/production  # Kustomize overlay
+
+    # Kustomize Build
+    kustomize:
+      namePrefix: ""
+      nameSuffix: ""
+      commonLabels:
+        app.kubernetes.io/managed-by: argocd
+        domain: network-ad.zsel.opole.pl
+
+  # Destination Cluster
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ad-network
+
+  # Sync Policy - Semi-Automated (manual approval for AD)
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+      - RespectIgnoreDifferences=true
+
+    # Retry Strategy
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 5m
+
+  # Health Assessment
+  ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      jsonPointers:
+        - /spec/volumeClaimTemplates  # Ignore PVC changes
+        - /spec/template/metadata/annotations  # Ignore annotation changes
+
+# =============================================================================
+# Network AD Details:
+# =============================================================================
+# - Domain: network-ad.zsel.opole.pl
+# - Realm: NETWORK-AD.ZSEL.OPOLE.PL
+# - Purpose: Network device authentication (RADIUS/SNMP)
+# - Users: 57 MikroTik devices (CCR/CRS/cAP)
+# - OUs: NetworkDevices/Core, NetworkDevices/Access, NetworkDevices/Wireless
+# - LoadBalancer: 192.168.255.51 (VLAN 600 Management)
+# - Storage: 50GB PVC (Longhorn)
+# - HA: 2 replicas (StatefulSet)
+# =============================================================================
+
+# Related Resources:
+# - Base manifests: gitops/apps/network-ad/base/
+# - Production overlay: gitops/apps/network-ad/overlays/production/
+# - Sealed Secrets: gitops/sealed-secrets/network-ad-credentials.yaml
+# =============================================================================

@@ -1,0 +1,205 @@
+# =============================================================================
+# ArgoCD Application - Moodle LMS
+# =============================================================================
+# Purpose: Platforma e-learningowa dla ZSEL (1030 użytkowników)
+# Integration: User AD (LDAP auth), BigBlueButton (wirtualne klasy)
+# URL: https://moodle.zsel.opole.pl
+# Last Updated: 2025-11-25
+# =============================================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: moodle
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: moodle
+    app.kubernetes.io/component: education
+    app.kubernetes.io/managed-by: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"  # Deploy after User AD (wave 10)
+    notifications.argoproj.io/subscribe.on-sync-succeeded.mattermost: "ops-notifications"
+    notifications.argoproj.io/subscribe.on-health-degraded.mattermost: "ops-alerts"
+
+spec:
+  # Project Configuration
+  project: education
+
+  # Source Repository - Helm Chart
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: moodle
+    targetRevision: 21.x  # Moodle 4.4 LTS
+
+    # Helm Values
+    helm:
+      releaseName: moodle
+      values: |
+        # =============================================================================
+        # Moodle Configuration
+        # =============================================================================
+        image:
+          registry: docker.io
+          repository: bitnami/moodle
+          tag: 4.4.3-debian-12-r0
+          pullPolicy: IfNotPresent
+
+        # Site Configuration
+        moodleUsername: admin
+        moodlePassword: ""  # TODO: Set from Sealed Secret
+        moodleEmail: admin@zsel.opole.pl
+        moodleSiteName: "ZSEiL Opole - Platforma E-Learning"
+        moodleLang: pl
+        moodleSkipInstall: false
+
+        # LDAP Authentication (User AD Integration)
+        ldap:
+          enabled: true
+          host: "user-ad-samba.ad-user.svc.cluster.local"
+          port: 389
+          version: 3
+          bindDn: "CN=Moodle Service,OU=ServiceAccounts,DC=ad,DC=zsel,DC=opole,DC=pl"
+          bindPassword: ""  # TODO: Set from Sealed Secret
+          baseDn: "DC=ad,DC=zsel,DC=opole,DC=pl"
+          userFilter: "(&(objectClass=user)(memberOf=CN=Students,OU=Classes,DC=ad,DC=zsel,DC=opole,DC=pl))"
+          groupFilter: "(&(objectClass=group)(memberOf=CN=TeacherGroups,OU=Teachers,DC=ad,DC=zsel,DC=opole,DC=pl))"
+
+        # LoadBalancer Service (VLAN 110 K3s)
+        service:
+          type: LoadBalancer
+          port: 80
+          httpsPort: 443
+          loadBalancerIP: "192.168.10.20"  # Moodle LMS IP
+          annotations:
+            metallb.universe.tf/address-pool: k3s-services
+            metallb.universe.tf/allow-shared-ip: "true"
+
+        # Ingress (Traefik)
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          hostname: moodle.zsel.opole.pl
+          annotations:
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            traefik.ingress.kubernetes.io/router.tls: "true"
+          tls:
+            - secretName: moodle-tls
+              hosts:
+                - moodle.zsel.opole.pl
+
+        # Persistence - Longhorn Storage
+        persistence:
+          enabled: true
+          storageClass: "longhorn"
+          accessModes:
+            - ReadWriteOnce
+          size: 500Gi  # Courses, user files, backups
+
+        # MariaDB Database
+        mariadb:
+          enabled: true
+          auth:
+            rootPassword: ""  # TODO: Set from Sealed Secret
+            database: moodle
+            username: moodle
+            password: ""  # TODO: Set from Sealed Secret
+          primary:
+            persistence:
+              enabled: true
+              storageClass: "longhorn"
+              size: 100Gi  # Database
+
+        # Resources
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 8Gi
+          requests:
+            cpu: 2000m
+            memory: 4Gi
+
+        # Replicas
+        replicaCount: 2  # HA setup
+
+        # Anti-affinity (spread across nodes)
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                podAffinityTerm:
+                  labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: moodle
+                  topologyKey: kubernetes.io/hostname
+
+        # Health Checks
+        livenessProbe:
+          enabled: true
+          initialDelaySeconds: 600
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 6
+          successThreshold: 1
+
+        readinessProbe:
+          enabled: true
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+          successThreshold: 1
+
+  # Destination Cluster
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: edu-moodle
+
+  # Sync Policy - Automated with Health Checks
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - ServerSideApply=true
+
+    # Retry Strategy
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 10m
+
+# =============================================================================
+# Moodle Features:
+# =============================================================================
+# - LDAP Authentication (User AD): 1030 users (students + teachers)
+# - BigBlueButton Integration: Virtual classrooms (link in course activities)
+# - Course Categories: Per class (P0-P3), Per lab (S8-S46), Per subject
+# - User Roles:
+#   - Students (learner): Read courses, submit assignments
+#   - Teachers (editingteacher): Create/edit courses, grade assignments
+#   - IT Admin (manager): Site administration
+# - Storage: 500GB Longhorn (courses, files, backups)
+# - Database: MariaDB 100GB (course data, user progress)
+# - LoadBalancer: 192.168.10.20 (MetalLB on VLAN 110)
+# =============================================================================
+
+# Integration Points:
+# - User AD: LDAP authentication, group sync
+# - BigBlueButton: External tool integration (LTI)
+# - NextCloud: File repository integration
+# - Mattermost: Course notifications webhook
+# - Prometheus: Metrics scraping (moodle_exporter)
+# =============================================================================
+
+# Related Resources:
+# - Helm Chart: https://github.com/bitnami/charts/tree/main/bitnami/moodle
+# - Sealed Secrets: gitops/sealed-secrets/moodle-credentials.yaml
+# - Backup: Velero scheduled backup (daily 02:00 AM)
+# =============================================================================

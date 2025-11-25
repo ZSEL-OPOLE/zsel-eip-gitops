@@ -1,0 +1,105 @@
+# =============================================================================
+# ArgoCD App-of-Apps Root Application
+# =============================================================================
+# Purpose: Główna aplikacja zarządzająca wszystkimi innymi aplikacjami
+# Wzorzec: App-of-Apps Pattern - deklaratywne zarządzanie aplikacjami
+# Last Updated: 2025-11-25
+# =============================================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: zsel-root
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: zsel-root
+    app.kubernetes.io/managed-by: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"  # Deploy first
+    notifications.argoproj.io/subscribe.on-sync-succeeded.mattermost: "ops-notifications"
+
+spec:
+  # Project Configuration
+  project: core-services
+
+  # Source Repository
+  source:
+    repoURL: https://github.com/lkolo-prez/zsel-eip-gitops  # TODO: Update to actual repo
+    targetRevision: main
+    path: gitops/apps
+
+    # Directory Options
+    directory:
+      recurse: true
+      include: '*/application.yaml'  # Only load Application manifests
+
+  # Destination Cluster
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+
+  # Sync Policy - Automated Deployment
+  syncPolicy:
+    automated:
+      prune: true      # Delete resources gdy zostaną usunięte z Git
+      selfHeal: true   # Auto-sync gdy ktoś zmieni ręcznie
+      allowEmpty: false
+
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true  # Only sync changed resources
+
+    # Retry Strategy
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+  # Health Checks
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas  # Ignore HPA changes
+
+# =============================================================================
+# Struktura Apps Subdirectories:
+# =============================================================================
+# gitops/apps/
+# ├── argocd-root/           # THIS FILE (App-of-Apps root)
+# ├── core/
+# │   ├── user-ad/           # Application manifest for User AD
+# │   ├── network-ad/        # Application manifest for Network AD
+# │   ├── freeipa/           # Application manifest for FreeIPA
+# │   ├── dns/               # Application manifest for DNS (CoreDNS custom)
+# │   └── ntp/               # Application manifest for NTP (Chrony)
+# ├── education/
+# │   ├── moodle/            # Application manifest for Moodle LMS
+# │   ├── nextcloud/         # Application manifest for NextCloud
+# │   ├── gitlab/            # Application manifest for GitLab
+# │   ├── mattermost/        # Application manifest for Mattermost
+# │   └── bigbluebutton/     # Application manifest for BigBlueButton
+# ├── monitoring/
+# │   ├── prometheus/        # Application manifest for Prometheus
+# │   ├── grafana/           # Application manifest for Grafana
+# │   ├── loki/              # Application manifest for Loki
+# │   ├── alertmanager/      # Application manifest for AlertManager
+# │   └── graylog/           # Application manifest for Graylog
+# ├── security/
+# │   ├── sealed-secrets/    # Application manifest for Sealed Secrets
+# │   ├── falco/             # Application manifest for Falco
+# │   ├── wazuh/             # Application manifest for Wazuh
+# │   └── suricata/          # Application manifest for Suricata IDS
+# ├── storage/
+# │   ├── minio/             # Application manifest for MinIO
+# │   ├── longhorn-ui/       # Application manifest for Longhorn UI
+# │   └── velero/            # Application manifest for Velero Backup
+# └── admin/
+#     ├── portainer/         # Application manifest for Portainer
+#     ├── zammad/            # Application manifest for Zammad
+#     └── wikijs/            # Application manifest for WikiJS
+# =============================================================================

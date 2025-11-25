@@ -1,0 +1,111 @@
+# =============================================================================
+# ArgoCD Application - User AD Domain
+# =============================================================================
+# Purpose: Samba AD DC dla użytkowników (1030: 900 uczniów + 100 nauczycieli + 30 kadra)
+# Domain: ad.zsel.opole.pl
+# Integracja: FreeIPA, Moodle, NextCloud, GitLab (LDAP auth)
+# Last Updated: 2025-11-25
+# =============================================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: user-ad
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: user-ad
+    app.kubernetes.io/component: core-services
+    app.kubernetes.io/managed-by: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"  # Deploy with network-ad (parallel)
+    notifications.argoproj.io/subscribe.on-sync-succeeded.mattermost: "ops-notifications"
+    notifications.argoproj.io/subscribe.on-health-degraded.mattermost: "ops-alerts"
+
+spec:
+  # Project Configuration
+  project: core-services
+
+  # Source Repository
+  source:
+    repoURL: https://github.com/lkolo-prez/zsel-eip-gitops  # TODO: Update to actual repo
+    targetRevision: main
+    path: gitops/apps/user-ad/overlays/production  # Kustomize overlay
+
+    # Kustomize Build
+    kustomize:
+      namePrefix: ""
+      nameSuffix: ""
+      commonLabels:
+        app.kubernetes.io/managed-by: argocd
+        domain: ad.zsel.opole.pl
+
+  # Destination Cluster
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ad-user
+
+  # Sync Policy - Semi-Automated (manual approval for critical AD operations)
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+      - RespectIgnoreDifferences=true
+
+    # Retry Strategy
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 5m
+
+  # Health Assessment
+  ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      jsonPointers:
+        - /spec/volumeClaimTemplates
+        - /spec/template/metadata/annotations
+
+# =============================================================================
+# User AD Details:
+# =============================================================================
+# - Domain: ad.zsel.opole.pl
+# - Realm: AD.ZSEL.OPOLE.PL
+# - Purpose: User authentication (students, teachers, staff)
+# - Users: 1030 total
+#   - 900 Students (OUs: Classes/P0-P3, Labs/S8-S46)
+#   - 100 Teachers (OU: Teachers/{Subject departments})
+#   - 30 Staff (OUs: Administration, IT, Secretariat)
+# - OUs Structure:
+#   - Classes/ (Sale dydaktyczne P0-P3)
+#   - Labs/ (Pracownie komputerowe S8-S46)
+#   - Teachers/ (Nauczyciele wg przedmiotów)
+#   - Administration/ (Dyrekcja, sekretariat)
+#   - IT/ (Admini, support)
+# - LoadBalancer: 192.168.255.50 (VLAN 600 Management)
+# - Storage: 500GB PVC (Longhorn) - user profiles, GPO
+# - HA: 2 replicas (StatefulSet with anti-affinity)
+# =============================================================================
+
+# Integration Points:
+# - FreeIPA: LDAP sync, Kerberos trust
+# - Moodle: LDAP authentication plugin
+# - NextCloud: LDAP user backend
+# - GitLab: LDAP group sync
+# - BigBlueButton: LDAP teacher/student roles
+# - Portainer: LDAP RBAC (IT Admin roles)
+# =============================================================================
+
+# Related Resources:
+# - Base manifests: gitops/apps/user-ad/base/
+# - Production overlay: gitops/apps/user-ad/overlays/production/
+# - Sealed Secrets: gitops/sealed-secrets/user-ad-credentials.yaml
+# - User Import Script: gitops/apps/user-ad/scripts/import-users.sh (1030 users)
+# =============================================================================

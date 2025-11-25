@@ -1,0 +1,159 @@
+# =============================================================================
+# ArgoCD Application - NextCloud
+# =============================================================================
+# Purpose: Chmura plików dla ZSEL (150TB storage, 1030 users)
+# Integration: User AD (LDAP auth), Moodle (file repository)
+# URL: https://cloud.zsel.opole.pl
+# Last Updated: 2025-11-25
+# =============================================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nextcloud
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: nextcloud
+    app.kubernetes.io/component: education
+    app.kubernetes.io/managed-by: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"  # Deploy with Moodle
+    notifications.argoproj.io/subscribe.on-sync-succeeded.mattermost: "ops-notifications"
+
+spec:
+  project: education
+
+  source:
+    repoURL: https://nextcloud.github.io/helm/
+    chart: nextcloud
+    targetRevision: 4.x
+
+    helm:
+      releaseName: nextcloud
+      values: |
+        image:
+          repository: nextcloud
+          tag: 28.0-apache
+          pullPolicy: IfNotPresent
+
+        # NextCloud Configuration
+        nextcloud:
+          host: cloud.zsel.opole.pl
+          username: admin
+          password: ""  # Sealed Secret
+          datadir: /var/www/html/data
+          defaultConfigs:
+            default_language: pl
+            default_phone_region: PL
+            localesettings: pl
+          
+          # LDAP Configuration (User AD)
+          ldap:
+            enabled: true
+            host: "user-ad-samba.ad-user.svc.cluster.local"
+            port: 389
+            base: "DC=ad,DC=zsel,DC=opole,DC=pl"
+            userFilter: "(&(objectClass=user)(memberOf=CN=Students,OU=Classes,DC=ad,DC=zsel,DC=opole,DC=pl))"
+            loginFilter: "(&(objectClass=user)(sAMAccountName=%uid))"
+            bindDN: "CN=NextCloud Service,OU=ServiceAccounts,DC=ad,DC=zsel,DC=opole,DC=pl"
+            bindPassword: ""  # Sealed Secret
+
+        # Service Configuration
+        service:
+          type: LoadBalancer
+          port: 8080
+          loadBalancerIP: "192.168.10.21"  # NextCloud IP
+          annotations:
+            metallb.universe.tf/address-pool: k3s-services
+
+        # Ingress
+        ingress:
+          enabled: true
+          className: traefik
+          annotations:
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            traefik.ingress.kubernetes.io/router.middlewares: "nextcloud-headers@kubernetescrd"
+          tls:
+            - secretName: nextcloud-tls
+              hosts:
+                - cloud.zsel.opole.pl
+
+        # Persistence - MASSIVE Storage (150TB)
+        persistence:
+          enabled: true
+          storageClass: "longhorn"
+          accessMode: ReadWriteOnce
+          size: 150Ti  # User files (1030 users × ~150GB quota)
+
+        # PostgreSQL Database
+        postgresql:
+          enabled: true
+          auth:
+            username: nextcloud
+            password: ""  # Sealed Secret
+            database: nextcloud
+          primary:
+            persistence:
+              enabled: true
+              storageClass: "longhorn"
+              size: 50Gi
+
+        # Redis Cache
+        redis:
+          enabled: true
+          auth:
+            enabled: true
+            password: ""  # Sealed Secret
+          master:
+            persistence:
+              enabled: true
+              size: 8Gi
+
+        # Resources
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 8Gi
+          requests:
+            cpu: 2000m
+            memory: 4Gi
+
+        # Replicas
+        replicaCount: 2
+
+        # Cronjobs (background tasks)
+        cronjob:
+          enabled: true
+          schedule: "*/5 * * * *"  # Every 5 minutes
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: edu-nextcloud
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        maxDuration: 10m
+
+# =============================================================================
+# NextCloud Details:
+# =============================================================================
+# - Storage: 150TB Longhorn (1030 users × 150GB quota)
+# - LDAP: User AD integration (all students/teachers)
+# - Features:
+#   - File sync & share (desktop/mobile clients)
+#   - Collaborative editing (Office integration)
+#   - Calendar & Contacts sync (CalDAV/CardDAV)
+#   - Talk (chat & video calls)
+#   - Deck (Kanban boards for projects)
+# - LoadBalancer: 192.168.10.21
+# - Backup: Daily Velero backup
+# =============================================================================

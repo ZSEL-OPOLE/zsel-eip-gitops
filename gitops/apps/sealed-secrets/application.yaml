@@ -1,0 +1,136 @@
+# =============================================================================
+# ArgoCD Application - Sealed Secrets Controller
+# =============================================================================
+# Purpose: Bezpieczne przechowywanie credentials w Git (enkrypcja asymetryczna)
+# Vendor: Bitnami Sealed Secrets
+# URL: https://github.com/bitnami-labs/sealed-secrets
+# Last Updated: 2025-11-25
+# =============================================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sealed-secrets
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: sealed-secrets
+    app.kubernetes.io/component: security
+    app.kubernetes.io/managed-by: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"  # Deploy EARLY (before AD/apps need secrets)
+    notifications.argoproj.io/subscribe.on-sync-succeeded.mattermost: "ops-notifications"
+
+spec:
+  project: core-services
+
+  source:
+    repoURL: https://bitnami-labs.github.io/sealed-secrets
+    chart: sealed-secrets
+    targetRevision: 2.x
+
+    helm:
+      releaseName: sealed-secrets
+      values: |
+        # Controller Configuration
+        controller:
+          image:
+            repository: bitnami/sealed-secrets-controller
+            tag: v0.24.5
+            pullPolicy: IfNotPresent
+
+          # Resources
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+
+          # Security Context
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            fsGroup: 65534
+
+          # ServiceAccount
+          serviceAccount:
+            create: true
+            name: sealed-secrets-controller
+
+          # RBAC
+          rbac:
+            create: true
+            clusterRole: true  # Cluster-wide access
+
+          # Service
+          service:
+            type: ClusterIP
+            port: 8080
+
+          # Metrics (Prometheus)
+          metrics:
+            serviceMonitor:
+              enabled: true
+              interval: 30s
+
+        # Key Management
+        secretName: sealed-secrets-key
+        keyRenewPeriod: "0"  # Never rotate (manual rotation only)
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system  # System namespace for security controller
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false  # kube-system already exists
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        maxDuration: 3m
+
+# =============================================================================
+# Sealed Secrets Workflow:
+# =============================================================================
+# 1. Install kubeseal CLI:
+#    brew install kubeseal  # macOS
+#    wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.24.5/kubeseal-0.24.5-linux-amd64.tar.gz
+#
+# 2. Create regular Secret:
+#    kubectl create secret generic user-ad-password --dry-run=client \
+#      --from-literal=admin-password='SuperSecret123!' \
+#      -o yaml > user-ad-password.yaml
+#
+# 3. Seal the Secret (encrypt):
+#    kubeseal --format yaml < user-ad-password.yaml > user-ad-password-sealed.yaml
+#
+# 4. Commit SealedSecret to Git:
+#    git add gitops/sealed-secrets/user-ad-password-sealed.yaml
+#    git commit -m "Add User AD admin password (sealed)"
+#    git push
+#
+# 5. Controller auto-decrypts in cluster:
+#    - SealedSecret → Secret (decrypted, accessible only in target namespace)
+# =============================================================================
+
+# Key Management:
+# - Backup sealed-secrets-key from kube-system namespace:
+#   kubectl get secret -n kube-system sealed-secrets-key -o yaml > sealed-secrets-key-BACKUP.yaml
+# - Store backup in secure vault (Bitwarden/1Password)
+# - If cluster rebuild needed: restore key BEFORE deploying SealedSecrets
+# =============================================================================
+
+# Secrets to Seal:
+# - gitops/sealed-secrets/user-ad-credentials.yaml (AD admin password, bind DN)
+# - gitops/sealed-secrets/network-ad-credentials.yaml (Network AD admin password)
+# - gitops/sealed-secrets/moodle-credentials.yaml (Moodle admin, DB password, LDAP bind)
+# - gitops/sealed-secrets/nextcloud-credentials.yaml (NextCloud admin, DB, Redis, LDAP bind)
+# - gitops/sealed-secrets/gitlab-credentials.yaml (GitLab root, DB, Redis, LDAP)
+# - gitops/sealed-secrets/git-ssh-key.yaml (ArgoCD private repo access)
+# =============================================================================
