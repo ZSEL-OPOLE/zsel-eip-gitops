@@ -1,0 +1,283 @@
+username,firstname,lastname,email,class,role,department
+# ========================================
+# 1AT - Technik Mechatronik (31 students)
+# Wychowawca: Kozicka Edyta (EK)
+# ========================================
+p.adamek,Piotr,Adamek,p.adamek@zsel.opole.pl,1AT,student,mechatronika
+k.borek,Kacper,Borek,k.borek@zsel.opole.pl,1AT,student,mechatronika
+j.chlondowski,Jan,Chlondowski,j.chlondowski@zsel.opole.pl,1AT,student,mechatronika
+a.elias,Adam,Elias,a.elias@zsel.opole.pl,1AT,student,mechatronika
+m.glizia,Mikołaj,Glizia,m.glizia@zsel.opole.pl,1AT,student,mechatronika
+s.jabcon,Szymon,Jabcoń,s.jabcon@zsel.opole.pl,1AT,student,mechatronika
+j.jablonski,Jakub,Jabłoński,j.jablonski@zsel.opole.pl,1AT,student,mechatronika
+j.kaczmarski,Jan,Kaczmarski,j.kaczmarski@zsel.opole.pl,1AT,student,mechatronika
+j.karczewski,Jakub,Karczewski,j.karczewski@zsel.opole.pl,1AT,student,mechatronika
+b.kolodynski,Bartosz,Kołodyński,b.kolodynski@zsel.opole.pl,1AT,student,mechatronika
+o.kret,Oliver,Kret,o.kret@zsel.opole.pl,1AT,student,mechatronika
+b.latala,Bartosz,Latała,b.latala@zsel.opole.pl,1AT,student,mechatronika
+p.lis,Paweł,Lis,p.lis@zsel.opole.pl,1AT,student,mechatronika
+o.madela,Oskar,Madeła,o.madela@zsel.opole.pl,1AT,student,mechatronika
+s.mazur,Szymon,Mazur,s.mazur@zsel.opole.pl,1AT,student,mechatronika
+m.oles,Michał,Oleś,m.oles@zsel.opole.pl,1AT,student,mechatronika
+f.padamczyk,Filip,Padamczyk,f.padamczyk@zsel.opole.pl,1AT,student,mechatronika
+b.pluta,Bartosz,Pluta,b.pluta@zsel.opole.pl,1AT,student,mechatronika
+w.polanczyk,Wiktor Marek,Polańczyk,w.polanczyk@zsel.opole.pl,1AT,student,mechatronika
+k.sasiadek,Karol,Sąsiadek,k.sasiadek@zsel.opole.pl,1AT,student,mechatronika
+t.sekula,Tomasz,Sekula,t.sekula@zsel.opole.pl,1AT,student,mechatronika
+s.sikora,Szymon,Sikora,s.sikora@zsel.opole.pl,1AT,student,mechatronika
+z.siwinska,Zuzanna,Siwińska,z.siwinska@zsel.opole.pl,1AT,student,mechatronika
+a.sklorz,Aleksander,Sklorz,a.sklorz@zsel.opole.pl,1AT,student,mechatronika
+s.staszczyszyn,Sara,Staszczyszyn,s.staszczyszyn@zsel.opole.pl,1AT,student,mechatronika
+m.szkwarkowski,Mikołaj,Szkwarkowski,m.szkwarkowski@zsel.opole.pl,1AT,student,mechatronika
+m.szmit,Mateusz,Szmit,m.szmit@zsel.opole.pl,1AT,student,mechatronika
+b.sliwinski,Bartosz,Śliwiński,b.sliwinski@zsel.opole.pl,1AT,student,mechatronika
+r.slusarczyk,Rafał,Ślusarczyk,r.slusarczyk@zsel.opole.pl,1AT,student,mechatronika
+f.ulrich,Franciszek,Ulrich,f.ulrich@zsel.opole.pl,1AT,student,mechatronika
+p.ustrzycki,Paweł,Ustrzycki,p.ustrzycki@zsel.opole.pl,1AT,student,mechatronika
+# ========================================
+# 1BT1 - Technik Elektryk (17 students)
+# Wychowawca: Turek Magdalena (TU)
+# ========================================
+m.gabriel,Michał,Gabriel,m.gabriel@zsel.opole.pl,1BT1,student,elektrotechnika
+l.garbaczok,Łukasz,Garbaczok,l.garbaczok@zsel.opole.pl,1BT1,student,elektrotechnika
+f.grzyb,Franciszek,Grzyb,f.grzyb@zsel.opole.pl,1BT1,student,elektrotechnika
+p.hadrian,Paweł,Hadrian,p.hadrian@zsel.opole.pl,1BT1,student,elektrotechnika
+j.ilkow,Jan,Ilków,j.ilkow@zsel.opole.pl,1BT1,student,elektrotechnika
+m.josko,Miłosz,Jóśko,m.josko@zsel.opole.pl,1BT1,student,elektrotechnika
+f.junger,Filip,Junger,f.junger@zsel.opole.pl,1BT1,student,elektrotechnika
+j.kotynia,Jakub,Kotynia,j.kotynia@zsel.opole.pl,1BT1,student,elektrotechnika
+j.kowcun,Julian,Kowcun,j.kowcun@zsel.opole.pl,1BT1,student,elektrotechnika
+j.kucharski,Jan,Kucharski,j.kucharski@zsel.opole.pl,1BT1,student,elektrotechnika
+j.linkowski,Jakub,Linkowski,j.linkowski@zsel.opole.pl,1BT1,student,elektrotechnika
+n.mrachatz,Noah,Mrachatz,n.mrachatz@zsel.opole.pl,1BT1,student,elektrotechnika
+d.skiba,Daniel,Skiba,d.skiba@zsel.opole.pl,1BT1,student,elektrotechnika
+k.szukala,Krystian,Szukała,k.szukala@zsel.opole.pl,1BT1,student,elektrotechnika
+m.szymkowiak,Mateusz,Szymkowiak,m.szymkowiak@zsel.opole.pl,1BT1,student,elektrotechnika
+l.wojnar,Lech,Wojnar,l.wojnar@zsel.opole.pl,1BT1,student,elektrotechnika
+d.zmarzlik,Damian,Zmarzlik,d.zmarzlik@zsel.opole.pl,1BT1,student,elektrotechnika
+# ========================================
+# 1BT2 - Technik Automatyk (16 students)
+# Wychowawca: Turek Magdalena (TU)
+# ========================================
+d.bekiesz,Dominik,Bekiesz,d.bekiesz@zsel.opole.pl,1BT2,student,automatyka
+n.debowski,Natan,Dębowski,n.debowski@zsel.opole.pl,1BT2,student,automatyka
+m.dudek,Maciej,Dudek,m.dudek@zsel.opole.pl,1BT2,student,automatyka
+s.hadamek,Szymon,Hadamek,s.hadamek@zsel.opole.pl,1BT2,student,automatyka
+m.hartyn,Maksymilian,Hartyn Leszczyński,m.hartyn@zsel.opole.pl,1BT2,student,automatyka
+d.ibrahim,Dariusz,Ibrahim,d.ibrahim@zsel.opole.pl,1BT2,student,automatyka
+j.lika,Jan,Lika,j.lika@zsel.opole.pl,1BT2,student,automatyka
+k.osadzin,Kornel,Osadzin,k.osadzin@zsel.opole.pl,1BT2,student,automatyka
+w.pietruszka,Wojciech,Pietruszka,w.pietruszka@zsel.opole.pl,1BT2,student,automatyka
+k.rother,Krzysztof,Rother,k.rother@zsel.opole.pl,1BT2,student,automatyka
+m.skrzipczyk,Mateusz,Skrzipczyk,m.skrzipczyk@zsel.opole.pl,1BT2,student,automatyka
+m.stepczuk,Michał,Stepczuk,m.stepczuk@zsel.opole.pl,1BT2,student,automatyka
+d.szafranek,Dominik,Szafranek,d.szafranek@zsel.opole.pl,1BT2,student,automatyka
+m.szczesnia,Miłosz,Szczęśniak,m.szczesnia@zsel.opole.pl,1BT2,student,automatyka
+t.szneider,Tobiasz,Szneider,t.szneider@zsel.opole.pl,1BT2,student,automatyka
+r.wrzeciono,Rafał,Wrzeciono,r.wrzeciono@zsel.opole.pl,1BT2,student,automatyka
+# ========================================
+# 1CT1 - Technik Programista (14 students)
+# Wychowawca: Muszyński Piotr (Mu)
+# ========================================
+s.czapluk,Szymon,Czapluk,s.czapluk@zsel.opole.pl,1CT1,student,programowanie
+f.druzgala,Filip,Druzgała,f.druzgala@zsel.opole.pl,1CT1,student,programowanie
+d.gryc,Dawid,Gryc,d.gryc@zsel.opole.pl,1CT1,student,programowanie
+a.grzelak,Aleksander,Grzelak,a.grzelak@zsel.opole.pl,1CT1,student,programowanie
+o.kazmierowicz,Oskar,Kaźmierowicz,o.kazmierowicz@zsel.opole.pl,1CT1,student,programowanie
+k.kmiecik,Karol,Kmiecik,k.kmiecik@zsel.opole.pl,1CT1,student,programowanie
+k.korczak,Kacper,Korczak,k.korczak@zsel.opole.pl,1CT1,student,programowanie
+m.kupczyk,Marcel,Kupczyk,m.kupczyk@zsel.opole.pl,1CT1,student,programowanie
+s.mientus,Szymon,Mientus,s.mientus@zsel.opole.pl,1CT1,student,programowanie
+d.moch,Dominik,Moch,d.moch@zsel.opole.pl,1CT1,student,programowanie
+j.niewiadomski,Jan,Niewiadomski,j.niewiadomski@zsel.opole.pl,1CT1,student,programowanie
+d.radzioch,David,Radzioch,d.radzioch@zsel.opole.pl,1CT1,student,programowanie
+p.wieja,Paweł,Wieja,p.wieja@zsel.opole.pl,1CT1,student,programowanie
+k.zak,Krzysztof,Żak,k.zak@zsel.opole.pl,1CT1,student,programowanie
+# ========================================
+# 1CT2 - Technik Teleinformatyk (14 students)
+# Wychowawca: Muszyński Piotr (Mu)
+# ========================================
+f.cichy,Franciszek,Cichy,f.cichy@zsel.opole.pl,1CT2,student,teleinformatyka
+t.cieslinski,Tymoteusz,Cieśliński,t.cieslinski@zsel.opole.pl,1CT2,student,teleinformatyka
+a.gaj,Adam,Gaj,a.gaj@zsel.opole.pl,1CT2,student,teleinformatyka
+i.gawel,Ignacy,Gaweł,i.gawel@zsel.opole.pl,1CT2,student,teleinformatyka
+t.gorski,Tomasz,Górski,t.gorski@zsel.opole.pl,1CT2,student,teleinformatyka
+j.konieczyn,Jakub,Konieczyński,j.konieczyn@zsel.opole.pl,1CT2,student,teleinformatyka
+a.macioszek,Aleksander,Macioszek-Kurc,a.macioszek@zsel.opole.pl,1CT2,student,teleinformatyka
+f.majcherczyk,Franciszek,Majcherczyk,f.majcherczyk@zsel.opole.pl,1CT2,student,teleinformatyka
+a.nowicki,Adam,Nowicki,a.nowicki@zsel.opole.pl,1CT2,student,teleinformatyka
+m.raszka,Michał,Raszka,m.raszka@zsel.opole.pl,1CT2,student,teleinformatyka
+j.rudzinski,Jakob,Rudziński,j.rudzinski@zsel.opole.pl,1CT2,student,teleinformatyka
+k.serek,Ksawier,Serek,k.serek@zsel.opole.pl,1CT2,student,teleinformatyka
+t.stasiak,Tymon,Stasiak,t.stasiak@zsel.opole.pl,1CT2,student,teleinformatyka
+s.staszowski,Szymon,Staszowski,s.staszowski@zsel.opole.pl,1CT2,student,teleinformatyka
+# ========================================
+# 1DT - Technik Informatyk (30 students)
+# Wychowawca: Sukiennik Joanna (JK)
+# ========================================
+b.aniol,Bartosz,Anioł,b.aniol@zsel.opole.pl,1DT,student,informatyka
+f.barteczko,Filip,Barteczko,f.barteczko@zsel.opole.pl,1DT,student,informatyka
+k.bartkow,Konrad,Bartków,k.bartkow@zsel.opole.pl,1DT,student,informatyka
+m.bisztyga,Maksymilian,Bisztyga,m.bisztyga@zsel.opole.pl,1DT,student,informatyka
+p.bobko,Paweł,Bobko,p.bobko@zsel.opole.pl,1DT,student,informatyka
+w.buhl,Wiktor,Buhl,w.buhl@zsel.opole.pl,1DT,student,informatyka
+m.dworak,Marcin,Dworak,m.dworak@zsel.opole.pl,1DT,student,informatyka
+m.firlus,Michał,Firlus,m.firlus@zsel.opole.pl,1DT,student,informatyka
+a.gromada,Adam,Gromada,a.gromada@zsel.opole.pl,1DT,student,informatyka
+n.josek,Nikodem,Josek,n.josek@zsel.opole.pl,1DT,student,informatyka
+f.judek,Franciszek,Judek,f.judek@zsel.opole.pl,1DT,student,informatyka
+j.kaluza,Julia,Kałuża,j.kaluza@zsel.opole.pl,1DT,student,informatyka
+r.kempa,Robert,Kempa,r.kempa@zsel.opole.pl,1DT,student,informatyka
+a.kowcz,Aleksander,Kowcz,a.kowcz@zsel.opole.pl,1DT,student,informatyka
+s.marciak,Szymon,Marciak,s.marciak@zsel.opole.pl,1DT,student,informatyka
+g.mlot,Grzegorz,Młot,g.mlot@zsel.opole.pl,1DT,student,informatyka
+d.muszkiet,Dominik,Muszkiet,d.muszkiet@zsel.opole.pl,1DT,student,informatyka
+b.napieralski,Bartosz,Napieralski,b.napieralski@zsel.opole.pl,1DT,student,informatyka
+a.ozaist,Adam,Ozaist,a.ozaist@zsel.opole.pl,1DT,student,informatyka
+a.pawlowicz,Aleksander,Pawłowicz,a.pawlowicz@zsel.opole.pl,1DT,student,informatyka
+a.protsak,Arsenii,Protsak,a.protsak@zsel.opole.pl,1DT,student,informatyka
+t.romik,Tomasz,Romik,t.romik@zsel.opole.pl,1DT,student,informatyka
+j.siendzielorz,Jakub,Siendzielorz,j.siendzielorz@zsel.opole.pl,1DT,student,informatyka
+l.slupczynski,Łukasz,Słupczyński,l.slupczynski@zsel.opole.pl,1DT,student,informatyka
+g.sobon,Grzegorz,Soboń,g.sobon@zsel.opole.pl,1DT,student,informatyka
+m.sosnowski,Marcel,Sosnowski,m.sosnowski@zsel.opole.pl,1DT,student,informatyka
+n.trach,Nazarii,Trach,n.trach@zsel.opole.pl,1DT,student,informatyka
+f.werner,Franciszek,Werner,f.werner@zsel.opole.pl,1DT,student,informatyka
+k.wolny,Kacper,Wolny,k.wolny@zsel.opole.pl,1DT,student,informatyka
+s.wojcik,Stanisław,Wójcik,s.wojcik@zsel.opole.pl,1DT,student,informatyka
+# ========================================
+# 1AB - Elektryk (34 students)
+# Wychowawca: Małecki Marek (MM)
+# ========================================
+a.ba,Alim,Ba,a.ba@zsel.opole.pl,1AB,student,elektrotechnika
+m.bartkow2,Mateusz,Bartków,m.bartkow2@zsel.opole.pl,1AB,student,elektrotechnika
+m.bialas,Miłosz,Białas,m.bialas@zsel.opole.pl,1AB,student,elektrotechnika
+a.bialecki,Adam,Białecki,a.bialecki@zsel.opole.pl,1AB,student,elektrotechnika
+f.bil,Franciszek,Bil,f.bil@zsel.opole.pl,1AB,student,elektrotechnika
+r.cebula,Robert,Cebula,r.cebula@zsel.opole.pl,1AB,student,elektrotechnika
+j.ciula,Jakub,Ciuła,j.ciula@zsel.opole.pl,1AB,student,elektrotechnika
+m.cybula,Maksymilian,Cybula,m.cybula@zsel.opole.pl,1AB,student,elektrotechnika
+a.dunat,Adam,Dunat,a.dunat@zsel.opole.pl,1AB,student,elektrotechnika
+p.dwojak,Piotr,Dwojak,p.dwojak@zsel.opole.pl,1AB,student,elektrotechnika
+d.fronia,Daniel,Fronia,d.fronia@zsel.opole.pl,1AB,student,elektrotechnika
+r.gricman,Roland,Gricman,r.gricman@zsel.opole.pl,1AB,student,elektrotechnika
+n.hareza,Nataniel,Haręza,n.hareza@zsel.opole.pl,1AB,student,elektrotechnika
+p.herman,Paweł,Herman,p.herman@zsel.opole.pl,1AB,student,elektrotechnika
+m.jarosz,Michał,Jarosz Selepanov,m.jarosz@zsel.opole.pl,1AB,student,elektrotechnika
+k.jenel,Kacper,Jenel,k.jenel@zsel.opole.pl,1AB,student,elektrotechnika
+w.joszko,Wojciech,Joszko,w.joszko@zsel.opole.pl,1AB,student,elektrotechnika
+f.klitynski,Filip,Klityński,f.klitynski@zsel.opole.pl,1AB,student,elektrotechnika
+k.kudlinski,Kamil,Kudliński,k.kudlinski@zsel.opole.pl,1AB,student,elektrotechnika
+i.latacz,Igor,Latacz,i.latacz@zsel.opole.pl,1AB,student,elektrotechnika
+s.lauer,Sebastian,Lauer,s.lauer@zsel.opole.pl,1AB,student,elektrotechnika
+m.lozinski,Michał,Łoziński,m.lozinski@zsel.opole.pl,1AB,student,elektrotechnika
+s.maciejok,Samuel,Maciejok,s.maciejok@zsel.opole.pl,1AB,student,elektrotechnika
+k.migura,Krzysztof,Migura,k.migura@zsel.opole.pl,1AB,student,elektrotechnika
+m.mlonka,Mateusz Grzegorz,Mlonka,m.mlonka@zsel.opole.pl,1AB,student,elektrotechnika
+n.narolski,Nicolas,Narolski,n.narolski@zsel.opole.pl,1AB,student,elektrotechnika
+o.pastuszka,Oliwier,Pastuszka,o.pastuszka@zsel.opole.pl,1AB,student,elektrotechnika
+o.prochnij,Oliwier,Prochnij,o.prochnij@zsel.opole.pl,1AB,student,elektrotechnika
+a.pyka,Adam,Pyka,a.pyka@zsel.opole.pl,1AB,student,elektrotechnika
+m.rudkiewicz,Marcin,Rudkiewicz,m.rudkiewicz@zsel.opole.pl,1AB,student,elektrotechnika
+m.shylov,Mykyta,Shylov,m.shylov@zsel.opole.pl,1AB,student,elektrotechnika
+m.tarnawski,Maciej,Tarnawski,m.tarnawski@zsel.opole.pl,1AB,student,elektrotechnika
+o.wiench,Oskar,Wiench,o.wiench@zsel.opole.pl,1AB,student,elektrotechnika
+m.wilczek,Marcin,Wilczek,m.wilczek@zsel.opole.pl,1AB,student,elektrotechnika
+# ========================================
+# 1AW - Technik Elektryk (25 students)
+# Branżowa Szkoła II stopnia nr 4
+# ========================================
+m.balys,Michał,Bałys,m.balys@zsel.opole.pl,1AW,student,elektrotechnika
+j.batog,Jakub,Batóg,j.batog@zsel.opole.pl,1AW,student,elektrotechnika
+k.blazykowski,Karol,Błażykowski,k.blazykowski@zsel.opole.pl,1AW,student,elektrotechnika
+r.blyszcz,Rafał,Błyszcz,r.blyszcz@zsel.opole.pl,1AW,student,elektrotechnika
+l.budzowski,Łukasz,Budzowski,l.budzowski@zsel.opole.pl,1AW,student,elektrotechnika
+m.dawidowicz,Mateusz,Dawidowicz,m.dawidowicz@zsel.opole.pl,1AW,student,elektrotechnika
+o.dziobek,Oskar,Dzióbek,o.dziobek@zsel.opole.pl,1AW,student,elektrotechnika
+m.gasiorowski,Marek,Gąsiorowski,m.gasiorowski@zsel.opole.pl,1AW,student,elektrotechnika
+l.gordzielik,Łukasz,Gordzielik,l.gordzielik@zsel.opole.pl,1AW,student,elektrotechnika
+l.kendzierski,Leon,Kendzierski,l.kendzierski@zsel.opole.pl,1AW,student,elektrotechnika
+f.konieczny,Filip,Konieczny,f.konieczny@zsel.opole.pl,1AW,student,elektrotechnika
+k.kosno,Kajetan,Kosno,k.kosno@zsel.opole.pl,1AW,student,elektrotechnika
+m.kuc,Mateusz,Kuc,m.kuc@zsel.opole.pl,1AW,student,elektrotechnika
+k.mirowski,Konrad,Mirowski,k.mirowski@zsel.opole.pl,1AW,student,elektrotechnika
+s.nieckarz,Szymon,Nieckarz,s.nieckarz@zsel.opole.pl,1AW,student,elektrotechnika
+j.ploskonka,Jakub,Płoskonka,j.ploskonka@zsel.opole.pl,1AW,student,elektrotechnika
+i.pniewski,Igor,Pniewski,i.pniewski@zsel.opole.pl,1AW,student,elektrotechnika
+d.rosinski,Damian,Rosiński,d.rosinski@zsel.opole.pl,1AW,student,elektrotechnika
+a.rozalski,Aleksander,Różalski,a.rozalski@zsel.opole.pl,1AW,student,elektrotechnika
+p.rydlakowski,Paweł,Rydlakowski,p.rydlakowski@zsel.opole.pl,1AW,student,elektrotechnika
+k.sura,Krystian,Sura,k.sura@zsel.opole.pl,1AW,student,elektrotechnika
+s.sura2,Sebastian,Sura,s.sura2@zsel.opole.pl,1AW,student,elektrotechnika
+a.szpiech,Antoni,Szpiech,a.szpiech@zsel.opole.pl,1AW,student,elektrotechnika
+b.swider,Bartłomiej,Świder,b.swider@zsel.opole.pl,1AW,student,elektrotechnika
+k.ziemniak,Kacper,Ziemniak,k.ziemniak@zsel.opole.pl,1AW,student,elektrotechnika
+# ========================================
+# TEACHERS (65 total)
+# ========================================
+d.dobrowolski,D.,Dobrowolski,d.dobrowolski@zsel.opole.pl,,teacher,
+b.peczeniuk,B.,Peczeniuk,b.peczeniuk@zsel.opole.pl,,teacher,
+d.stankowicz,D.,Stankowicz,d.stankowicz@zsel.opole.pl,,teacher,
+a.rapinski,A.,Rapiński,a.rapinski@zsel.opole.pl,,teacher,
+l.kaminski,L.,Kamiński,l.kaminski@zsel.opole.pl,,teacher,
+p.dworaczyk,P.,Dworaczyk,p.dworaczyk@zsel.opole.pl,,teacher,
+k.dworaczynska,K.,Dworaczyńska,k.dworaczynska@zsel.opole.pl,,teacher,
+s.swies,S.,Święs,s.swies@zsel.opole.pl,,teacher,
+m.czerkawska,M.,Czerkawska,m.czerkawska@zsel.opole.pl,,teacher,
+k.mansfeld,K.,Mansfeld,k.mansfeld@zsel.opole.pl,,teacher,
+m.kmiec,M.,Kmieć,m.kmiec@zsel.opole.pl,,teacher,
+m.korzekwa,M.,Korzekwa,m.korzekwa@zsel.opole.pl,,teacher,
+t.sniegur,T.,Śniegur,t.sniegur@zsel.opole.pl,,teacher,
+e.rogala,E.,Rogala,e.rogala@zsel.opole.pl,,teacher,
+a.stankowicz,A.,Stankowicz,a.stankowicz@zsel.opole.pl,,teacher,
+r.dobosz,R.,Dobosz,r.dobosz@zsel.opole.pl,,teacher,
+j.sukiennik,J.,Sukiennik,j.sukiennik@zsel.opole.pl,,teacher,informatyka
+e.dratwa,E.,Dratwa,e.dratwa@zsel.opole.pl,,teacher,
+k.kansy,K.,Kansy,k.kansy@zsel.opole.pl,,teacher,
+g.lomny,G.,Łomny,g.lomny@zsel.opole.pl,,teacher,
+m.lisowska,M.,Lisowska,m.lisowska@zsel.opole.pl,,teacher,
+s.sawulska,S.,Sawulska,s.sawulska@zsel.opole.pl,,teacher,
+b.tulkis,B.,Tulkis,b.tulkis@zsel.opole.pl,,teacher,
+a.chmielewska,A.,Chmielewska,a.chmielewska@zsel.opole.pl,,teacher,
+e.kozicka,E.,Kozicka,e.kozicka@zsel.opole.pl,,teacher,mechatronika
+d.wiktorowska,D.,Wiktorowska,d.wiktorowska@zsel.opole.pl,,teacher,
+h.wojdyla,H.,Wojdyła,h.wojdyla@zsel.opole.pl,,teacher,
+i.natalli,I.,Natalli,i.natalli@zsel.opole.pl,,teacher,
+a.swisulska,A.,Świsulska,a.swisulska@zsel.opole.pl,,teacher,
+r.kowol,R.,Kowol,r.kowol@zsel.opole.pl,,teacher,
+m.turek,M.,Turek,m.turek@zsel.opole.pl,,teacher,elektrotechnika
+t.mysluk,T.,Myśluk,t.mysluk@zsel.opole.pl,,teacher,
+k.syta-cziernok,K.,Syta-Cziernok,k.syta-cziernok@zsel.opole.pl,,teacher,
+d.kulik-nowak,D.,Kulik-Nowak,d.kulik-nowak@zsel.opole.pl,,teacher,
+w.dobrowolski,W.,Dobrowolski,w.dobrowolski@zsel.opole.pl,,teacher,
+t.kaleta,T.,Kaleta,t.kaleta@zsel.opole.pl,,teacher,
+k.kamieniak,K.,Kamieniak,k.kamieniak@zsel.opole.pl,,teacher,
+b.raczka,B.,Rączka,b.raczka@zsel.opole.pl,,teacher,
+n.skowron,N.,Skowron,n.skowron@zsel.opole.pl,,teacher,
+j.stykala,J.,Stykała,j.stykala@zsel.opole.pl,,teacher,
+t.zajaczkowski,T.,Zajączkowski,t.zajaczkowski@zsel.opole.pl,,teacher,
+g.blozik,G.,Blozik,g.blozik@zsel.opole.pl,,teacher,
+r.chwalinski,R.,Chwaliński,r.chwalinski@zsel.opole.pl,,teacher,
+e.dubaj,E.,Dubaj,e.dubaj@zsel.opole.pl,,teacher,
+d.schnober,D.,Schnober,d.schnober@zsel.opole.pl,,teacher,
+p.zminkowski,P.,Żminkowski,p.zminkowski@zsel.opole.pl,,teacher,
+d.swiecicki,D.,Święcicki,d.swiecicki@zsel.opole.pl,,teacher,
+p.muszynski,P.,Muszyński,p.muszynski@zsel.opole.pl,,teacher,programowanie
+l.gargul,L.,Gargul,l.gargul@zsel.opole.pl,,teacher,
+r.kisza-swiatek,R.,Kisza-Świątek,r.kisza-swiatek@zsel.opole.pl,,teacher,
+b.wisniewski,B.,Wiśniewski,b.wisniewski@zsel.opole.pl,,teacher,
+p.mietelka,P.,Mietełka,p.mietelka@zsel.opole.pl,,teacher,
+r.moch,R.,Moch,r.moch@zsel.opole.pl,,teacher,
+m.malecki,M.,Małecki,m.malecki@zsel.opole.pl,,teacher,elektrotechnika
+m.machacka,M.,Machacka,m.machacka@zsel.opole.pl,,teacher,
+k.wolinski,K.,Woliński,k.wolinski@zsel.opole.pl,,teacher,
+k.nicpon,K.,Nicpoń,k.nicpon@zsel.opole.pl,,teacher,
+t.dobranowski,T.,Dobranowski,t.dobranowski@zsel.opole.pl,,teacher,
+z.wiktorowski,Z.,Wiktorowski,z.wiktorowski@zsel.opole.pl,,teacher,
+t.socha,T.,Socha,t.socha@zsel.opole.pl,,teacher,
+b.kubis,B.,Kubis,b.kubis@zsel.opole.pl,,teacher,
+p.dobrowolski2,P.,Dobrowolski,p.dobrowolski2@zsel.opole.pl,,teacher,
+j.trusz,J.,Trusz,j.trusz@zsel.opole.pl,,teacher,
+admin,Admin,Administrator,admin@zsel.opole.pl,,admin,
+it,IT,Support,it@zsel.opole.pl,,admin,
+security,Security,Officer,security@zsel.opole.pl,,admin,

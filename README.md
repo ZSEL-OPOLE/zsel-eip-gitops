@@ -122,6 +122,30 @@ kubectl apply -f apps/argocd-root/application.yaml
 
 ---
 
+## 🌍 Środowiska
+
+### DEV (Development)
+- **Cel:** Testowanie, eksperymentowanie, CI/CD
+- **Hardware:** 1-3 Mac Pro M2 Ultra (scale 1:3)
+- **Namespaces:** 11 (subset PROD)
+- **Replication:** 1 (no HA)
+- **Network Policies:** Relaxed (debugging-friendly)
+- **Deployment:** Auto-deploy from `develop` branch
+- **URL:** https://dev.zsel.opole.pl
+
+### PROD (Production)
+- **Cel:** Usługi produkcyjne (1030 użytkowników)
+- **Hardware:** 9 Mac Pro M2 Ultra (full scale)
+- **Namespaces:** 47 (complete)
+- **Replication:** 3 (HA for critical)
+- **Network Policies:** Zero Trust (default-deny)
+- **Deployment:** Manual approval gate (2/3 approvers)
+- **URL:** https://zsel.opole.pl
+
+**Terraform:** Separate configs in `terraform/environments/{development,production}`
+
+---
+
 ## 📊 Aplikacje (39 total)
 
 ### Core Infrastructure (Wave 10)
@@ -202,6 +226,15 @@ kubectl apply -f apps/argocd-root/application.yaml
 - **Policy Enforcement:** OPA Gatekeeper (admission control)
 - **SIEM:** Wazuh (security event correlation)
 - **VPN:** WireGuard (100 concurrent users, 192.168.30.60)
+
+### 🔒 CI/CD Security Gates:
+- **Stage 1:** Syntax & linting (Terraform, YAML, Markdown)
+- **Stage 2:** Security scanning (Trivy, kubesec, Checkov, TFSec, Gitleaks)
+- **Stage 3:** Quality checks (kubeconform, OPA, resource quotas)
+- **Stage 4:** Integration testing (DEV deployment + smoke tests)
+- **Stage 5:** Manual approval gate (PROD only, 2/3 approvers)
+- **Stage 6:** Progressive PROD deployment with health checks
+- **Stage 7:** Post-deployment validation (E2E, performance, security)
 
 ### 🔒 Compliance:
 - **RODO/GDPR:** 90-day retention, encrypted backups, right to deletion
@@ -285,11 +318,47 @@ Developer → Git Push → ArgoCD detects change → Sync → Kubernetes
 | Dokument | Opis |
 |----------|------|
 | [QUICKSTART.md](QUICKSTART.md) | 🚀 Szybki start (8 kroków, 2.5h) |
+| [DEPLOYMENT-PROCESS.md](../zsel-eip-dokumentacja/deployment/DEPLOYMENT-PROCESS.md) | 📋 **Procesy wdrożeniowe** (7-stage pipeline, quality gates) |
 | [SEALED-SECRETS-SECURITY.md](docs/SEALED-SECRETS-SECURITY.md) | 🔐 Security documentation (50 secrets) |
 | [IMAGE-VALIDATION-REPORT.md](../zsel-eip-dokumentacja/deployment/IMAGE-VALIDATION-REPORT.md) | ✅ Container image validation (39 apps) |
 | [DR-BACKUP-SCALING-STRATEGY.md](../zsel-eip-dokumentacja/deployment/DR-BACKUP-SCALING-STRATEGY.md) | 💾 Disaster recovery (4-layer strategy) |
 | [GITOPS-STRUCTURE.md](../zsel-eip-dokumentacja/deployment/GITOPS-STRUCTURE.md) | 📁 Repository structure (47 namespaces) |
-| [DEPLOYMENT-PLAN.md](../zsel-eip-dokumentacja/deployment/DEPLOYMENT-PLAN.md) | 📋 Detailed deployment plan (39 services) |
+
+### 🛠️ Scripts & Automation
+
+| Script | Purpose | Usage |
+|--------|---------|-------|
+| `scripts/generate-sealed-secrets.ps1` | Auto-generate 50+ secrets (CSPRNG, 191-512 bit entropy) | `.\generate-sealed-secrets.ps1` |
+| `scripts/validate-pre-deployment.ps1` | 25-check validation (Terraform, YAML, security, compliance) | `.\validate-pre-deployment.ps1 -Environment production` |
+| `scripts/security-scan.ps1` | Security scanning (Trivy, kubesec, kube-bench, OPA) | `.\security-scan.ps1 -ScanType full` |
+| `.github/workflows/ci-cd-pipeline.yml` | GitHub Actions CI/CD (7 stages, approval gates) | Automatic on push/PR |
+
+---
+
+## 🔄 CI/CD Pipeline
+
+### Workflow Stages
+```
+1. Pre-Validation    ← Syntax, linting (1-2 min)
+2. Security Scan     ← Trivy, kubesec, Gitleaks (3-5 min)
+3. Quality Checks    ← kubeconform, OPA, quotas (2-3 min)
+4. DEV Deployment    ← Auto-deploy + integration tests (10-15 min)
+5. Approval Gate     ← Manual review (PROD only, 2/3 approvers)
+6. PROD Deployment   ← Progressive sync + health checks (20-30 min)
+7. Post-Validation   ← E2E, performance, security (5-10 min)
+```
+
+### Quality Metrics
+- **Security:** 0 CRITICAL, 0 HIGH vulnerabilities
+- **Syntax:** 100% Terraform/YAML valid
+- **Coverage:** 100% NetworkPolicies, 100% RBAC
+- **Success Rate:** Target >= 95%
+
+**Full documentation:** [DEPLOYMENT-PROCESS.md](../zsel-eip-dokumentacja/deployment/DEPLOYMENT-PROCESS.md)
+
+---
+
+## 📚 Dokumentacja (Legacy)
 
 ---
 
