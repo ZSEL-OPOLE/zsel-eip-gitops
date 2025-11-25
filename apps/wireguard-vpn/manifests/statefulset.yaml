@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wireguard
+  namespace: net-wireguard
+  labels:
+    app: wireguard
+spec:
+  serviceName: wireguard-headless
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wireguard
+  template:
+    metadata:
+      labels:
+        app: wireguard
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: wireguard
+              topologyKey: kubernetes.io/hostname
+      
+      containers:
+        - name: wireguard
+          image: linuxserver/wireguard:latest
+          imagePullPolicy: Always
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+                - SYS_MODULE
+            privileged: true
+          
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Warsaw"
+            - name: SERVERURL
+              value: "vpn.zsel.opole.pl"
+            - name: SERVERPORT
+              value: "51820"
+            - name: PEERS
+              value: "100"  # 100 concurrent VPN users (teachers + IT staff)
+            - name: PEERDNS
+              value: "192.168.30.50"  # FreeIPA DNS
+            - name: INTERNAL_SUBNET
+              value: "10.13.13.0/24"
+            - name: ALLOWEDIPS
+              value: "192.168.0.0/16"  # Access to all internal networks
+          
+          ports:
+            - name: wireguard
+              containerPort: 51820
+              protocol: UDP
+          
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+          
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: lib-modules
+              mountPath: /lib/modules
+              readOnly: true
+      
+      volumes:
+        - name: lib-modules
+          hostPath:
+            path: /lib/modules
+            type: Directory
+  
+  volumeClaimTemplates:
+    - metadata:
+        name: config
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: longhorn-tier2-standard
+        resources:
+          requests:
+            storage: 10Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wireguard-vpn
+  namespace: net-wireguard
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: "192.168.30.60"
+spec:
+  type: LoadBalancer
+  selector:
+    app: wireguard
+  ports:
+    - name: wireguard
+      port: 51820
+      targetPort: 51820
+      protocol: UDP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wireguard-headless
+  namespace: net-wireguard
+spec:
+  clusterIP: None
+  selector:
+    app: wireguard
+  ports:
+    - name: wireguard
+      port: 51820
+      protocol: UDP

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bigbluebutton
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+spec:
+  project: education
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-eip-gitops.git
+    targetRevision: main
+    path: gitops/apps/bigbluebutton/manifests
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: edu-bbb
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

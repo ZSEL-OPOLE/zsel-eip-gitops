@@ -1,0 +1,131 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: harbor
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  project: devops
+  source:
+    repoURL: https://helm.goharbor.io
+    targetRevision: 1.14.0
+    chart: harbor
+    helm:
+      values: |
+        expose:
+          type: ingress
+          tls:
+            enabled: true
+            certSource: secret
+            secret:
+              secretName: harbor-tls
+          ingress:
+            hosts:
+              core: harbor.zsel.opole.pl
+            className: traefik
+            annotations:
+              cert-manager.io/cluster-issuer: letsencrypt-prod
+        
+        externalURL: https://harbor.zsel.opole.pl
+        
+        persistence:
+          enabled: true
+          persistentVolumeClaim:
+            registry:
+              storageClass: longhorn-tier2-standard
+              size: 2Ti
+            chartmuseum:
+              storageClass: longhorn-tier2-standard
+              size: 100Gi
+            jobservice:
+              storageClass: longhorn-tier2-standard
+              size: 50Gi
+            database:
+              storageClass: longhorn-tier1-critical
+              size: 100Gi
+            redis:
+              storageClass: longhorn-tier2-standard
+              size: 10Gi
+            trivy:
+              storageClass: longhorn-tier2-standard
+              size: 50Gi
+        
+        harborAdminPassword: SEALED_SECRET
+        
+        database:
+          type: external
+          external:
+            host: postgres-ha-pgpool.db-postgres.svc.cluster.local
+            port: 5432
+            username: harbor
+            password: SEALED_SECRET
+            coreDatabase: harbor_core
+            notaryServerDatabase: harbor_notary_server
+            notarySignerDatabase: harbor_notary_signer
+        
+        redis:
+          type: external
+          external:
+            addr: redis-master.devops-harbor.svc.cluster.local:6379
+        
+        core:
+          replicas: 2
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 4Gi
+            limits:
+              cpu: 2000m
+              memory: 8Gi
+        
+        jobservice:
+          replicas: 2
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+        
+        registry:
+          replicas: 2
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 4Gi
+            limits:
+              cpu: 2000m
+              memory: 8Gi
+        
+        trivy:
+          enabled: true
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+        
+        notary:
+          enabled: true
+        
+        metrics:
+          enabled: true
+          serviceMonitor:
+            enabled: true
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: devops-harbor
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

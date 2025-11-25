@@ -1,0 +1,208 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: bigbluebutton
+  namespace: edu-bbb
+  labels:
+    app: bigbluebutton
+spec:
+  serviceName: bigbluebutton-headless
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bigbluebutton
+  template:
+    metadata:
+      labels:
+        app: bigbluebutton
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: bigbluebutton
+                topologyKey: kubernetes.io/hostname
+      
+      containers:
+        - name: bigbluebutton
+          image: bigbluebutton/bigbluebutton:2.7.5
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DOMAIN
+              value: "bbb.zsel.opole.pl"
+            - name: ENABLE_HTTPS
+              value: "true"
+            - name: ENABLE_GREENLIGHT
+              value: "true"
+            - name: DB_HOST
+              value: "postgres-ha-pgpool.db-postgres.svc.cluster.local"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "bigbluebutton"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: bbb-db-secret
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bbb-db-secret
+                  key: password
+            - name: REDIS_HOST
+              value: "redis-master.edu-bbb.svc.cluster.local"
+            - name: TURN_SERVER
+              value: "turn.zsel.opole.pl:3478"
+            - name: BBB_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bbb-secret
+                  key: secret
+            
+            # LDAP integration
+            - name: LDAP_SERVER
+              value: "ldap://freeipa-ldap.core-freeipa.svc.cluster.local:389"
+            - name: LDAP_BASE
+              value: "ou=Teachers,dc=zsel,dc=opole,dc=pl"
+            - name: LDAP_BIND_DN
+              value: "uid=bbb-service,cn=sysaccounts,cn=etc,dc=zsel,dc=opole,dc=pl"
+            - name: LDAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bbb-ldap-secret
+                  key: password
+          
+          ports:
+            - name: http
+              containerPort: 80
+            - name: https
+              containerPort: 443
+            - name: kurento
+              containerPort: 8888
+          
+          resources:
+            requests:
+              cpu: 4000m
+              memory: 16Gi
+            limits:
+              cpu: 8000m
+              memory: 32Gi
+          
+          volumeMounts:
+            - name: recordings
+              mountPath: /var/bigbluebutton/recording
+            - name: published
+              mountPath: /var/bigbluebutton/published
+  
+  volumeClaimTemplates:
+    - metadata:
+        name: recordings
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: longhorn-tier2-standard
+        resources:
+          requests:
+            storage: 2Ti
+    - metadata:
+        name: published
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: longhorn-tier2-standard
+        resources:
+          requests:
+            storage: 1Ti
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: edu-bbb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.2-alpine
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bigbluebutton
+  namespace: edu-bbb
+spec:
+  type: ClusterIP
+  selector:
+    app: bigbluebutton
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: https
+      port: 443
+      targetPort: 443
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-master
+  namespace: edu-bbb
+spec:
+  type: ClusterIP
+  selector:
+    app: redis
+  ports:
+    - port: 6379
+      targetPort: 6379
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bigbluebutton
+  namespace: edu-bbb
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: core-sso-forward-auth@kubernetescrd
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - bbb.zsel.opole.pl
+      secretName: bbb-tls
+  rules:
+    - host: bbb.zsel.opole.pl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bigbluebutton
+                port:
+                  number: 443

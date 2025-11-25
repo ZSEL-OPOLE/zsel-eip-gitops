@@ -1,0 +1,79 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: falco
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+spec:
+  project: security
+  source:
+    repoURL: https://falcosecurity.github.io/charts
+    targetRevision: 4.0.0
+    chart: falco
+    helm:
+      values: |
+        driver:
+          kind: modern_ebpf  # eBPF driver for minimal overhead
+        
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        
+        falco:
+          rulesFile:
+            - /etc/falco/falco_rules.yaml
+            - /etc/falco/falco_rules.local.yaml
+            - /etc/falco/k8s_audit_rules.yaml
+          
+          jsonOutput: true
+          jsonIncludeOutputProperty: true
+          
+          httpOutput:
+            enabled: true
+            url: http://falcosidekick:2801
+        
+        # Falcosidekick for alert routing
+        falcosidekick:
+          enabled: true
+          config:
+            mattermost:
+              webhookurl: "http://mattermost.edu-mattermost.svc:8065/hooks/falco"
+              minimumpriority: "warning"
+            loki:
+              hostport: "http://loki.mon-loki.svc:3100"
+              minimumpriority: "notice"
+        
+        # Custom rules for ZSEL environment
+        customRules:
+          rules-zsel.yaml: |-
+            - rule: Unauthorized Process Execution in Container
+              desc: Detect unexpected process execution
+              condition: >
+                spawned_process and
+                container and
+                not proc.name in (known_processes)
+              output: >
+                Unauthorized process in container
+                (user=%user.name command=%proc.cmdline container=%container.name)
+              priority: WARNING
+              source: syscall
+        
+        tty: true
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sec-falco
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

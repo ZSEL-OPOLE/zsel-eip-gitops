@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calibre-web
+  namespace: edu-library
+  labels:
+    app: calibre-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: calibre-web
+  template:
+    metadata:
+      labels:
+        app: calibre-web
+    spec:
+      containers:
+        - name: calibre-web
+          image: lscr.io/linuxserver/calibre-web:0.6.21
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Warsaw"
+            - name: DOCKER_MODS
+              value: "linuxserver/mods:universal-calibre"
+          
+          ports:
+            - name: http
+              containerPort: 8083
+          
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+          
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: books
+              mountPath: /books
+      
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: calibre-config
+        - name: books
+          persistentVolumeClaim:
+            claimName: calibre-books
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: calibre-config
+  namespace: edu-library
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn-tier2-standard
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: calibre-books
+  namespace: edu-library
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: longhorn-tier2-standard
+  resources:
+    requests:
+      storage: 500Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: calibre-web
+  namespace: edu-library
+spec:
+  type: ClusterIP
+  selector:
+    app: calibre-web
+  ports:
+    - port: 8083
+      targetPort: 8083
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: calibre-web
+  namespace: edu-library
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: core-sso-forward-auth@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - library.zsel.opole.pl
+      secretName: calibre-tls
+  rules:
+    - host: library.zsel.opole.pl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: calibre-web
+                port:
+                  number: 8083

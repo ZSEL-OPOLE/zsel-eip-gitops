@@ -1,0 +1,121 @@
+# FreeIPA StatefulSet for ZSEL Opole
+# Provides: LDAP, Kerberos, DNS, Certificate Authority
+# Users: 1030 (900 students + 100 teachers + 30 staff)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: freeipa
+  namespace: core-freeipa
+  labels:
+    app: freeipa
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.255.50
+  ports:
+    - name: ldap
+      port: 389
+      targetPort: 389
+      protocol: TCP
+    - name: ldaps
+      port: 636
+      targetPort: 636
+      protocol: TCP
+    - name: kerberos
+      port: 88
+      targetPort: 88
+      protocol: TCP
+    - name: kerberos-udp
+      port: 88
+      targetPort: 88
+      protocol: UDP
+    - name: kpasswd
+      port: 464
+      targetPort: 464
+      protocol: TCP
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+    - name: https
+      port: 443
+      targetPort: 443
+      protocol: TCP
+  selector:
+    app: freeipa
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: freeipa
+  namespace: core-freeipa
+spec:
+  serviceName: freeipa
+  replicas: 2  # HA mode
+  selector:
+    matchLabels:
+      app: freeipa
+  template:
+    metadata:
+      labels:
+        app: freeipa
+    spec:
+      containers:
+        - name: freeipa
+          image: freeipa/freeipa-server:rocky-9-4.11.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: IPA_SERVER_HOSTNAME
+              value: "ipa.zsel.opole.pl"
+            - name: IPA_SERVER_IP
+              value: "192.168.255.50"
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: freeipa-admin-password
+                  key: password
+          ports:
+            - containerPort: 389
+              name: ldap
+            - containerPort: 636
+              name: ldaps
+            - containerPort: 88
+              name: kerberos
+            - containerPort: 464
+              name: kpasswd
+            - containerPort: 80
+              name: http
+            - containerPort: 443
+              name: https
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 8Gi
+            limits:
+              cpu: 2000m
+              memory: 16Gi
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - "ldapsearch -x -H ldap://localhost -b dc=zsel,dc=opole,dc=pl"
+            initialDelaySeconds: 300
+            periodSeconds: 60
+          readinessProbe:
+            tcpSocket:
+              port: 389
+            initialDelaySeconds: 60
+            periodSeconds: 10
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: longhorn-tier1-critical
+        resources:
+          requests:
+            storage: 100Gi

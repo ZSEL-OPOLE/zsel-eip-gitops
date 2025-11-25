@@ -1,0 +1,113 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: core
+  source:
+    repoURL: https://charts.longhorn.io
+    targetRevision: 1.6.0
+    chart: longhorn
+    helm:
+      values: |
+        persistence:
+          defaultClass: true
+          defaultClassReplicaCount: 2
+          reclaimPolicy: Retain
+        
+        defaultSettings:
+          backupTarget: "s3://longhorn-backups@minio/"
+          backupTargetCredentialSecret: minio-secret
+          defaultReplicaCount: 2
+          guaranteedInstanceManagerCPU: 10
+          storageOverProvisioningPercentage: 200
+          storageMinimalAvailablePercentage: 10
+          upgradeChecker: false
+          defaultLonghornStaticStorageClass: longhorn-tier2-standard
+          nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+          allowRecurringJobWhileVolumeDetached: true
+          autoSalvage: true
+          autoDeletePodWhenVolumeDetachedUnexpectedly: true
+          disableSchedulingOnCordonedNode: true
+          replicaSoftAntiAffinity: true
+          volumeAttachmentRecoveryPolicy: wait
+          mkfsExt4Parameters: "-O ^64bit,^metadata_csum"
+        
+        resources:
+          requests:
+            cpu: 2000m
+            memory: 16Gi
+          limits:
+            cpu: 4000m
+            memory: 32Gi
+        
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          host: longhorn.zsel.opole.pl
+          tls: true
+          tlsSecret: longhorn-tls
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+        
+        # UI Authentication
+        defaultSettings:
+          createDefaultDiskLabeledNodes: true
+        
+        longhornUI:
+          replicas: 2
+        
+        # Storage Classes (created by Terraform, managed here)
+        storageClasses:
+          tier1Critical:
+            name: longhorn-tier1-critical
+            isDefault: false
+            reclaimPolicy: Retain
+            allowVolumeExpansion: true
+            parameters:
+              numberOfReplicas: "3"
+              staleReplicaTimeout: "30"
+              dataLocality: "strict-local"
+              fromBackup: ""
+          
+          tier2Standard:
+            name: longhorn-tier2-standard
+            isDefault: true
+            reclaimPolicy: Retain
+            allowVolumeExpansion: true
+            parameters:
+              numberOfReplicas: "2"
+              staleReplicaTimeout: "30"
+              dataLocality: "best-effort"
+          
+          tier3Bulk:
+            name: longhorn-tier3-bulk
+            isDefault: false
+            reclaimPolicy: Delete
+            allowVolumeExpansion: true
+            parameters:
+              numberOfReplicas: "1"
+              staleReplicaTimeout: "60"
+              dataLocality: "disabled"
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: core-storage
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        maxDuration: 5m

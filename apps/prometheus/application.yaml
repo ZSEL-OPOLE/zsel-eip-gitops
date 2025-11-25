@@ -1,0 +1,136 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-stack
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+spec:
+  project: monitoring
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 58.0.0
+    chart: kube-prometheus-stack
+    helm:
+      values: |
+        prometheus:
+          prometheusSpec:
+            replicas: 2
+            retention: 30d
+            retentionSize: "180GB"
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: longhorn-tier1-critical
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 200Gi
+            resources:
+              requests:
+                cpu: 2000m
+                memory: 16Gi
+              limits:
+                cpu: 4000m
+                memory: 32Gi
+            serviceMonitorSelectorNilUsesHelmValues: false
+            podMonitorSelectorNilUsesHelmValues: false
+        
+        grafana:
+          enabled: true
+          replicas: 2
+          adminPassword: SEALED_SECRET
+          persistence:
+            enabled: true
+            storageClassName: longhorn-tier2-standard
+            size: 20Gi
+          ingress:
+            enabled: true
+            ingressClassName: traefik
+            hosts:
+              - grafana.zsel.opole.pl
+            tls:
+              - secretName: grafana-tls
+                hosts:
+                  - grafana.zsel.opole.pl
+          datasources:
+            datasources.yaml:
+              apiVersion: 1
+              datasources:
+                - name: Prometheus
+                  type: prometheus
+                  url: http://prometheus-kube-prometheus-prometheus:9090
+                  isDefault: true
+                - name: Loki
+                  type: loki
+                  url: http://loki.mon-loki.svc:3100
+          dashboardProviders:
+            dashboardproviders.yaml:
+              apiVersion: 1
+              providers:
+                - name: 'default'
+                  orgId: 1
+                  folder: ''
+                  type: file
+                  disableDeletion: false
+                  editable: true
+                  options:
+                    path: /var/lib/grafana/dashboards/default
+          resources:
+            requests:
+              cpu: 500m
+              memory: 4Gi
+            limits:
+              cpu: 1000m
+              memory: 8Gi
+        
+        alertmanager:
+          alertmanagerSpec:
+            replicas: 2
+            storage:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: longhorn-tier2-standard
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 10Gi
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                cpu: 200m
+                memory: 512Mi
+          config:
+            route:
+              receiver: 'mattermost'
+              group_by: ['alertname', 'cluster', 'service']
+              group_wait: 10s
+              group_interval: 10s
+              repeat_interval: 12h
+            receivers:
+              - name: 'mattermost'
+                webhook_configs:
+                  - url: 'http://mattermost.edu-mattermost.svc:8065/hooks/prometheus'
+                    send_resolved: true
+        
+        nodeExporter:
+          enabled: true
+        
+        kubeStateMetrics:
+          enabled: true
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mon-prometheus
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wazuh
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+spec:
+  project: security
+  source:
+    repoURL: https://github.com/wazuh/wazuh-kubernetes
+    targetRevision: v4.7.2
+    path: wazuh/
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sec-wazuh
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

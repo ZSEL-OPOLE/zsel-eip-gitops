@@ -1,0 +1,144 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mailu
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  project: communication
+  source:
+    repoURL: https://mailu.github.io/helm-charts/
+    targetRevision: 1.5.0
+    chart: mailu
+    helm:
+      values: |
+        domain: zsel.opole.pl
+        hostnames:
+          - zsel.opole.pl
+          - bcu.com.pl
+          - sue.opole.pl
+          - mrsu.pl
+          - elektryk.opole.pl
+          - k4tec.pl
+        
+        initialAccount:
+          username: admin
+          domain: zsel.opole.pl
+          password: SEALED_SECRET
+        
+        secretKey: SEALED_SECRET
+        
+        persistence:
+          single_pvc: false
+          storageClass: longhorn-tier2-standard
+          size: 500Gi
+          mailSize: 2Ti
+          redisSize: 10Gi
+        
+        front:
+          kind: Deployment
+          replicaCount: 2
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+        
+        admin:
+          enabled: true
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+        
+        postfix:
+          replicas: 2
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 4Gi
+            limits:
+              cpu: 2000m
+              memory: 8Gi
+        
+        dovecot:
+          enabled: true
+          replicas: 2
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 4Gi
+            limits:
+              cpu: 2000m
+              memory: 8Gi
+        
+        rspamd:
+          enabled: true
+          replicas: 2
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+        
+        clamav:
+          enabled: true
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 4Gi
+            limits:
+              cpu: 2000m
+              memory: 8Gi
+        
+        webmail:
+          enabled: true
+          replicas: 2
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+        
+        ingress:
+          enabled: true
+          className: traefik
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+          hosts:
+            - mail.zsel.opole.pl
+          tls:
+            - secretName: mailu-tls
+              hosts:
+                - mail.zsel.opole.pl
+        
+        # LDAP integration with FreeIPA
+        ldap:
+          enabled: true
+          server: ldap://freeipa-ldap.core-freeipa.svc.cluster.local:389
+          bind_dn: uid=mailu-service,cn=sysaccounts,cn=etc,dc=zsel,dc=opole,dc=pl
+          bind_password: SEALED_SECRET
+          search_base: dc=zsel,dc=opole,dc=pl
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: com-mailu
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

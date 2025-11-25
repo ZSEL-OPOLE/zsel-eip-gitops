@@ -1,0 +1,106 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+spec:
+  project: education
+  source:
+    repoURL: https://charts.min.io/
+    targetRevision: 5.0.15
+    chart: minio
+    helm:
+      values: |
+        mode: distributed
+        replicas: 4
+        
+        image:
+          tag: RELEASE.2024-11-07T00-52-20Z
+        
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 8Gi
+          limits:
+            cpu: 2000m
+            memory: 16Gi
+        
+        persistence:
+          enabled: true
+          storageClass: longhorn-tier2-standard
+          size: 2Ti
+        
+        rootUser: admin
+        rootPassword: SEALED_SECRET
+        
+        users:
+          - accessKey: longhorn-backup
+            secretKey: SEALED_SECRET
+            policy: readwrite
+          - accessKey: nextcloud
+            secretKey: SEALED_SECRET
+            policy: readwrite
+          - accessKey: gitlab
+            secretKey: SEALED_SECRET
+            policy: readwrite
+        
+        buckets:
+          - name: longhorn-backup
+            policy: none
+            purge: false
+          - name: nextcloud-external
+            policy: none
+            purge: false
+          - name: gitlab-artifacts
+            policy: none
+            purge: false
+          - name: gitlab-lfs
+            policy: none
+            purge: false
+          - name: harbor-registry
+            policy: none
+            purge: false
+        
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          hosts:
+            - minio.zsel.opole.pl
+          tls:
+            - secretName: minio-tls
+              hosts:
+                - minio.zsel.opole.pl
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+        
+        consoleIngress:
+          enabled: true
+          ingressClassName: traefik
+          hosts:
+            - minio-console.zsel.opole.pl
+          tls:
+            - secretName: minio-console-tls
+              hosts:
+                - minio-console.zsel.opole.pl
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+            traefik.ingress.kubernetes.io/router.middlewares: core-sso-forward-auth@kubernetescrd
+        
+        metrics:
+          serviceMonitor:
+            enabled: true
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: edu-minio
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

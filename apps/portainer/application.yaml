@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: portainer
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "35"
+spec:
+  project: devops
+  source:
+    repoURL: https://portainer.github.io/k8s/
+    targetRevision: 1.0.50
+    chart: portainer
+    helm:
+      values: |
+        replicaCount: 1
+        
+        service:
+          type: ClusterIP
+        
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+            traefik.ingress.kubernetes.io/router.middlewares: core-sso-forward-auth@kubernetescrd
+          hosts:
+            - host: portainer.zsel.opole.pl
+              paths:
+                - path: /
+          tls:
+            - secretName: portainer-tls
+              hosts:
+                - portainer.zsel.opole.pl
+        
+        persistence:
+          enabled: true
+          storageClass: longhorn-tier2-standard
+          size: 20Gi
+        
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2Gi
+          limits:
+            cpu: 1000m
+            memory: 4Gi
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: devops-portainer
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

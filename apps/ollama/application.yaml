@@ -1,0 +1,72 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ollama
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "40"
+spec:
+  project: ai
+  source:
+    repoURL: https://otwld.github.io/ollama-helm/
+    targetRevision: 0.36.0
+    chart: ollama
+    helm:
+      values: |
+        replicaCount: 2
+        
+        # GPU offload to Apple M2 Ultra Neural Engine
+        runtimeClassName: ""
+        
+        ollama:
+          models:
+            - llama3.1:8b
+            - codellama:13b
+            - mistral:7b
+            - phi3:mini
+        
+        resources:
+          requests:
+            cpu: 4000m
+            memory: 32Gi
+          limits:
+            cpu: 8000m
+            memory: 64Gi
+        
+        persistentVolume:
+          enabled: true
+          storageClass: longhorn-tier2-standard
+          size: 2Ti
+        
+        service:
+          type: ClusterIP
+          port: 11434
+        
+        ingress:
+          enabled: true
+          className: traefik
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+            traefik.ingress.kubernetes.io/router.middlewares: core-sso-forward-auth@kubernetescrd
+          hosts:
+            - host: ollama.zsel.opole.pl
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: ollama-tls
+              hosts:
+                - ollama.zsel.opole.pl
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ai-llm
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

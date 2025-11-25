@@ -1,0 +1,81 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: qdrant
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "40"
+spec:
+  project: ai
+  source:
+    repoURL: https://qdrant.github.io/qdrant-helm
+    targetRevision: 0.8.4
+    chart: qdrant
+    helm:
+      values: |
+        replicaCount: 2
+        
+        image:
+          tag: "v1.8.1"
+        
+        resources:
+          requests:
+            cpu: 2000m
+            memory: 16Gi
+          limits:
+            cpu: 4000m
+            memory: 32Gi
+        
+        persistence:
+          enabled: true
+          storageClass: longhorn-tier2-standard
+          size: 500Gi
+        
+        service:
+          type: ClusterIP
+          port: 6333
+          grpcPort: 6334
+        
+        ingress:
+          enabled: true
+          className: traefik
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+            traefik.ingress.kubernetes.io/router.middlewares: core-sso-forward-auth@kubernetescrd
+          hosts:
+            - host: qdrant.zsel.opole.pl
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: qdrant-tls
+              hosts:
+                - qdrant.zsel.opole.pl
+        
+        config:
+          service:
+            http_port: 6333
+            grpc_port: 6334
+          storage:
+            storage_path: /qdrant/storage
+            snapshots_path: /qdrant/snapshots
+          cluster:
+            enabled: true
+        
+        metrics:
+          enabled: true
+          serviceMonitor:
+            enabled: true
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ai-qdrant
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

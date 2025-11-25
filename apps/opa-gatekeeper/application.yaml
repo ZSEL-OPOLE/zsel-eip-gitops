@@ -1,0 +1,73 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opa-gatekeeper
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+spec:
+  project: security
+  source:
+    repoURL: https://open-policy-agent.github.io/gatekeeper/charts
+    targetRevision: 3.15.0
+    chart: gatekeeper
+    helm:
+      values: |
+        replicas: 2
+        
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2Gi
+          limits:
+            cpu: 1000m
+            memory: 4Gi
+        
+        audit:
+          resources:
+            requests:
+              cpu: 300m
+              memory: 1Gi
+            limits:
+              cpu: 500m
+              memory: 2Gi
+        
+        # Enable mutation
+        enableMutation: true
+        
+        # Constraint violations webhook
+        validatingWebhookConfiguration:
+          failurePolicy: Fail
+          namespaceSelector:
+            matchExpressions:
+              - key: admission.gatekeeper.sh/ignore
+                operator: DoesNotExist
+        
+        # Exempted namespaces (system namespaces)
+        exemptNamespaces:
+          - kube-system
+          - kube-public
+          - kube-node-lease
+          - argocd
+          - core-storage  # Longhorn needs privileges
+        
+        # Metrics
+        metrics:
+          enabled: true
+        
+        # Audit constraints
+        auditInterval: 60
+        constraintViolationsLimit: 20
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sec-gatekeeper
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

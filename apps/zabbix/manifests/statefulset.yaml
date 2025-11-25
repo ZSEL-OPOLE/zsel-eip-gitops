@@ -1,0 +1,254 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zabbix-server
+  namespace: mon-zabbix
+  labels:
+    app: zabbix-server
+spec:
+  serviceName: zabbix-server-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zabbix-server
+  template:
+    metadata:
+      labels:
+        app: zabbix-server
+    spec:
+      containers:
+        - name: zabbix-server
+          image: zabbix/zabbix-server-pgsql:alpine-6.4-latest
+          env:
+            - name: DB_SERVER_HOST
+              value: "postgres-ha.db-postgres.svc.cluster.local"
+            - name: DB_SERVER_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: "zabbix"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: zabbix-db-secret
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: zabbix-db-secret
+                  key: password
+            - name: ZBX_CACHESIZE
+              value: "2G"
+            - name: ZBX_HISTORYCACHESIZE
+              value: "1G"
+            - name: ZBX_TRENDCACHESIZE
+              value: "512M"
+          
+          ports:
+            - name: zabbix-trapper
+              containerPort: 10051
+              protocol: TCP
+          
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 8Gi
+            limits:
+              cpu: 4000m
+              memory: 16Gi
+          
+          volumeMounts:
+            - name: alertscripts
+              mountPath: /usr/lib/zabbix/alertscripts
+            - name: externalscripts
+              mountPath: /usr/lib/zabbix/externalscripts
+      
+      volumes:
+        - name: alertscripts
+          persistentVolumeClaim:
+            claimName: zabbix-alertscripts
+        - name: externalscripts
+          persistentVolumeClaim:
+            claimName: zabbix-externalscripts
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zabbix-web
+  namespace: mon-zabbix
+  labels:
+    app: zabbix-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zabbix-web
+  template:
+    metadata:
+      labels:
+        app: zabbix-web
+    spec:
+      containers:
+        - name: zabbix-web
+          image: zabbix/zabbix-web-nginx-pgsql:alpine-6.4-latest
+          env:
+            - name: ZBX_SERVER_HOST
+              value: "zabbix-server.mon-zabbix.svc"
+            - name: ZBX_SERVER_PORT
+              value: "10051"
+            - name: DB_SERVER_HOST
+              value: "postgres-ha.db-postgres.svc.cluster.local"
+            - name: DB_SERVER_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: "zabbix"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: zabbix-db-secret
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: zabbix-db-secret
+                  key: password
+            - name: PHP_TZ
+              value: "Europe/Warsaw"
+          
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-server
+  namespace: mon-zabbix
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: "192.168.30.61"
+spec:
+  type: LoadBalancer
+  selector:
+    app: zabbix-server
+  ports:
+    - name: zabbix-trapper
+      port: 10051
+      targetPort: 10051
+      protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-web
+  namespace: mon-zabbix
+spec:
+  type: ClusterIP
+  selector:
+    app: zabbix-web
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: zabbix-web
+  namespace: mon-zabbix
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: core-sso-forward-auth@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - zabbix.zsel.opole.pl
+      secretName: zabbix-tls
+  rules:
+    - host: zabbix.zsel.opole.pl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: zabbix-web
+                port:
+                  number: 8080
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zabbix-alertscripts
+  namespace: mon-zabbix
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: longhorn-tier2-standard
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zabbix-externalscripts
+  namespace: mon-zabbix
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: longhorn-tier2-standard
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zabbix-monitoring-config
+  namespace: mon-zabbix
+data:
+  targets.yaml: |
+    # 57 MikroTik routers/switches
+    mikrotiks:
+      - 192.168.0.1   # MikroTik Core Switch
+      - 192.168.1.1   # Class 1
+      - 192.168.2.1   # Class 2
+      # ... (53 more MikroTik devices)
+    
+    # 9 Mac Pro M2 Ultra nodes
+    k3s_nodes:
+      - k3s-master-1.zsel.local
+      - k3s-master-2.zsel.local
+      - k3s-master-3.zsel.local
+      - k3s-worker-1.zsel.local
+      - k3s-worker-2.zsel.local
+      - k3s-worker-3.zsel.local
+      - k3s-worker-4.zsel.local
+      - k3s-worker-5.zsel.local
+      - k3s-worker-6.zsel.local
+    
+    # Applications to monitor
+    services:
+      - FreeIPA LDAP (192.168.30.50:389)
+      - Keycloak SSO (192.168.30.51:443)
+      - Moodle LMS (moodle.zsel.opole.pl)
+      - NextCloud (nextcloud.zsel.opole.pl)
+      - GitLab (gitlab.zsel.opole.pl)
+      - BigBlueButton (bbb.zsel.opole.pl)

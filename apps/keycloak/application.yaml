@@ -1,0 +1,103 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: core
+  source:
+    repoURL: https://codecentric.github.io/helm-charts
+    targetRevision: 2.4.0
+    chart: keycloakx
+    helm:
+      values: |
+        replicas: 2
+        
+        image:
+          repository: quay.io/keycloak/keycloak
+          tag: "24.0.1"
+          pullPolicy: IfNotPresent
+        
+        command:
+          - "/opt/keycloak/bin/kc.sh"
+          - "start"
+          - "--optimized"
+        
+        extraEnv: |
+          - name: KC_DB
+            value: postgres
+          - name: KC_DB_URL
+            value: "jdbc:postgresql://postgresql-ha.db-postgres.svc:5432/keycloak"
+          - name: KC_DB_USERNAME
+            value: keycloak
+          - name: KC_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-db-password
+                key: password
+          - name: KC_HOSTNAME
+            value: "sso.zsel.opole.pl"
+          - name: KC_PROXY_HEADERS
+            value: "xforwarded"
+          - name: KEYCLOAK_ADMIN
+            value: admin
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-admin-password
+                key: password
+        
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 8Gi
+          limits:
+            cpu: 2000m
+            memory: 16Gi
+        
+        service:
+          type: LoadBalancer
+          loadBalancerIP: 192.168.255.52
+          port: 80
+        
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          rules:
+            - host: sso.zsel.opole.pl
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: keycloak-tls
+              hosts:
+                - sso.zsel.opole.pl
+        
+        postgresql:
+          enabled: false  # Use external PostgreSQL HA
+        
+        # Kerberos federation with FreeIPA
+        extraVolumeMounts: |
+          - name: krb5-conf
+            mountPath: /etc/krb5.conf
+            subPath: krb5.conf
+        
+        extraVolumes: |
+          - name: krb5-conf
+            configMap:
+              name: krb5-config
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: admin-keycloak
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

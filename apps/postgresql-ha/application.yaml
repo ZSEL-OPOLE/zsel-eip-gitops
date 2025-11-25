@@ -1,0 +1,107 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql-ha
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  project: databases
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 13.2.0
+    chart: postgresql-ha
+    helm:
+      values: |
+        postgresql:
+          image:
+            tag: 16.1.0
+          
+          replicaCount: 3
+          
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 12Gi
+            limits:
+              cpu: 4000m
+              memory: 24Gi
+          
+          # Root password
+          password: SEALED_SECRET
+          repmgrPassword: SEALED_SECRET
+          
+          # Database initialization
+          initdbScripts:
+            00_databases.sql: |
+              CREATE DATABASE keycloak OWNER postgres;
+              CREATE DATABASE moodle OWNER postgres;
+              CREATE DATABASE gitlab OWNER postgres;
+              CREATE DATABASE nextcloud OWNER postgres;
+              CREATE DATABASE mattermost OWNER postgres;
+              CREATE DATABASE zammad OWNER postgres;
+              CREATE DATABASE zabbix OWNER postgres;
+              CREATE DATABASE harbor OWNER postgres;
+              CREATE DATABASE jupyterhub OWNER postgres;
+          
+          # Extensions for applications
+          postgresqlExtendedConf: |
+            shared_preload_libraries = 'pg_stat_statements'
+            max_connections = 500
+            shared_buffers = 8GB
+            effective_cache_size = 16GB
+            maintenance_work_mem = 2GB
+            checkpoint_completion_target = 0.9
+            wal_buffers = 16MB
+            default_statistics_target = 100
+            random_page_cost = 1.1
+            effective_io_concurrency = 200
+            work_mem = 26214kB
+            min_wal_size = 2GB
+            max_wal_size = 8GB
+        
+        persistence:
+          enabled: true
+          storageClass: longhorn-tier1-critical
+          size: 1Ti
+        
+        pgpool:
+          replicaCount: 2
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+          adminPassword: SEALED_SECRET
+        
+        metrics:
+          enabled: true
+          serviceMonitor:
+            enabled: true
+        
+        volumePermissions:
+          enabled: true
+        
+        # Backup configuration
+        backup:
+          enabled: true
+          cronjob:
+            schedule: "0 */6 * * *"  # Every 6 hours
+            storage:
+              storageClass: longhorn-tier1-critical
+              size: 500Gi
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: db-postgres
+  
+  syncPolicy:
+    automated:
+      prune: false  # Don't auto-delete database
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

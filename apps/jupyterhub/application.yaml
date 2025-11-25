@@ -1,0 +1,110 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jupyterhub
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "40"
+spec:
+  project: ai
+  source:
+    repoURL: https://jupyterhub.github.io/helm-chart/
+    targetRevision: 3.2.0
+    chart: jupyterhub
+    helm:
+      values: |
+        hub:
+          image:
+            tag: "4.0.2"
+          
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+          
+          db:
+            type: postgres
+            url: postgresql://jupyterhub:SEALED_SECRET@postgres-ha-pgpool.db-postgres.svc.cluster.local:5432/jupyterhub
+          
+          config:
+            Authenticator:
+              admin_users:
+                - admin
+              allowed_users:
+                - "*"
+            
+            # LDAP authentication via FreeIPA
+            LDAPAuthenticator:
+              server_address: freeipa-ldap.core-freeipa.svc.cluster.local
+              server_port: 389
+              bind_dn_template:
+                - "uid={username},ou=Teachers,dc=zsel,dc=opole,dc=pl"
+                - "uid={username},ou=IT,dc=zsel,dc=opole,dc=pl"
+              lookup_dn: true
+              user_search_base: dc=zsel,dc=opole,dc=pl
+              user_attribute: uid
+              escape_userdn: false
+          
+          extraConfig:
+            auth: |
+              from ldapauthenticator import LDAPAuthenticator
+              c.JupyterHub.authenticator_class = LDAPAuthenticator
+        
+        proxy:
+          service:
+            type: ClusterIP
+          
+          https:
+            enabled: false  # Handled by Traefik
+        
+        singleuser:
+          image:
+            name: jupyter/datascience-notebook
+            tag: "python-3.11"
+          
+          cpu:
+            guarantee: 1
+            limit: 4
+          memory:
+            guarantee: 4G
+            limit: 16G
+          
+          storage:
+            type: dynamic
+            capacity: 50Gi
+            dynamic:
+              storageClass: longhorn-tier2-standard
+        
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+          hosts:
+            - jupyter.zsel.opole.pl
+          tls:
+            - secretName: jupyterhub-tls
+              hosts:
+                - jupyter.zsel.opole.pl
+        
+        prePuller:
+          hook:
+            enabled: true
+          continuous:
+            enabled: true
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ai-jupyterhub
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

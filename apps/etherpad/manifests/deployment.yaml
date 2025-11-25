@@ -1,0 +1,137 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etherpad
+  namespace: edu-etherpad
+  labels:
+    app: etherpad
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: etherpad
+  template:
+    metadata:
+      labels:
+        app: etherpad
+    spec:
+      containers:
+        - name: etherpad
+          image: etherpad/etherpad:1.9.6
+          env:
+            - name: TITLE
+              value: "ZSEL Etherpad - Collaborative Notepad"
+            - name: DEFAULT_PAD_TEXT
+              value: "Welcome to ZSEL Etherpad!"
+            - name: DB_TYPE
+              value: "postgres"
+            - name: DB_HOST
+              value: "postgres-ha-pgpool.db-postgres.svc.cluster.local"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "etherpad"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: etherpad-db-secret
+                  key: username
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: etherpad-db-secret
+                  key: password
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: etherpad-admin-secret
+                  key: password
+            
+            # LDAP authentication via plugin
+            - name: LDAP_URL
+              value: "ldap://freeipa-ldap.core-freeipa.svc.cluster.local:389"
+            - name: LDAP_BASE_DN
+              value: "dc=zsel,dc=opole,dc=pl"
+            - name: LDAP_BIND_DN
+              value: "uid=etherpad-service,cn=sysaccounts,cn=etc,dc=zsel,dc=opole,dc=pl"
+            - name: LDAP_BIND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: etherpad-ldap-secret
+                  key: password
+          
+          ports:
+            - name: http
+              containerPort: 9001
+          
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 4Gi
+          
+          volumeMounts:
+            - name: data
+              mountPath: /opt/etherpad-lite/var
+      
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: etherpad-data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etherpad-data
+  namespace: edu-etherpad
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: longhorn-tier2-standard
+  resources:
+    requests:
+      storage: 50Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: etherpad
+  namespace: edu-etherpad
+spec:
+  type: ClusterIP
+  selector:
+    app: etherpad
+  ports:
+    - port: 9001
+      targetPort: 9001
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: etherpad
+  namespace: edu-etherpad
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: core-sso-forward-auth@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - etherpad.zsel.opole.pl
+      secretName: etherpad-tls
+  rules:
+    - host: etherpad.zsel.opole.pl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: etherpad
+                port:
+                  number: 9001

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: zabbix
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+spec:
+  project: monitoring
+  source:
+    repoURL: https://github.com/zsel-opole/zsel-eip-gitops.git
+    targetRevision: main
+    path: gitops/apps/zabbix/manifests
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mon-zabbix
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

@@ -1,0 +1,84 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+spec:
+  project: monitoring
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    targetRevision: 6.0.0
+    chart: loki
+    helm:
+      values: |
+        loki:
+          auth_enabled: false
+          commonConfig:
+            replication_factor: 2
+          storage:
+            type: filesystem
+            filesystem:
+              chunks_directory: /var/loki/chunks
+              rules_directory: /var/loki/rules
+          limits_config:
+            retention_period: 730h  # 2 years (RODO compliance)
+            ingestion_rate_mb: 100
+            ingestion_burst_size_mb: 200
+        
+        write:
+          replicas: 2
+          persistence:
+            enabled: true
+            storageClass: longhorn-tier2-standard
+            size: 250Gi
+          resources:
+            requests:
+              cpu: 1500m
+              memory: 12Gi
+            limits:
+              cpu: 3000m
+              memory: 24Gi
+        
+        read:
+          replicas: 2
+          persistence:
+            enabled: true
+            storageClass: longhorn-tier2-standard
+            size: 250Gi
+          resources:
+            requests:
+              cpu: 1500m
+              memory: 12Gi
+            limits:
+              cpu: 3000m
+              memory: 24Gi
+        
+        gateway:
+          enabled: true
+          replicas: 1
+        
+        monitoring:
+          serviceMonitor:
+            enabled: true
+        
+        # Promtail for log collection
+        promtail:
+          enabled: true
+          config:
+            clients:
+              - url: http://loki-gateway/loki/api/v1/push
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mon-loki
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

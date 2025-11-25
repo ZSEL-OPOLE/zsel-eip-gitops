@@ -1,0 +1,111 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mysql-ha
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  project: databases
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 10.1.0
+    chart: mysql
+    helm:
+      values: |
+        image:
+          tag: 8.0.35
+        
+        architecture: replication
+        
+        auth:
+          rootPassword: SEALED_SECRET
+          replicationPassword: SEALED_SECRET
+        
+        primary:
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 12Gi
+            limits:
+              cpu: 4000m
+              memory: 24Gi
+          
+          persistence:
+            enabled: true
+            storageClass: longhorn-tier1-critical
+            size: 500Gi
+          
+          configuration: |-
+            [mysqld]
+            default_authentication_plugin=mysql_native_password
+            skip-name-resolve
+            explicit_defaults_for_timestamp
+            basedir=/opt/bitnami/mysql
+            plugin_dir=/opt/bitnami/mysql/lib/plugin
+            port=3306
+            socket=/opt/bitnami/mysql/tmp/mysql.sock
+            datadir=/bitnami/mysql/data
+            tmpdir=/opt/bitnami/mysql/tmp
+            max_allowed_packet=128M
+            bind-address=*
+            pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+            log-error=/opt/bitnami/mysql/logs/mysqld.log
+            character-set-server=UTF8
+            collation-server=utf8_general_ci
+            slow_query_log=1
+            slow_query_log_file=/opt/bitnami/mysql/logs/mysqld-slow.log
+            long_query_time=10.0
+            
+            # InnoDB settings
+            innodb_buffer_pool_size=8G
+            innodb_log_file_size=512M
+            innodb_flush_method=O_DIRECT
+            innodb_file_per_table=1
+            
+            # Replication settings
+            server-id=1
+            log_bin=mysql-bin
+            binlog_format=ROW
+            expire_logs_days=7
+        
+        secondary:
+          replicaCount: 2
+          
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 8Gi
+            limits:
+              cpu: 2000m
+              memory: 16Gi
+          
+          persistence:
+            enabled: true
+            storageClass: longhorn-tier1-critical
+            size: 500Gi
+        
+        metrics:
+          enabled: true
+          serviceMonitor:
+            enabled: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: db-mysql
+  
+  syncPolicy:
+    automated:
+      prune: false  # Don't auto-delete database
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

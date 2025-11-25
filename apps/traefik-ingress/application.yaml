@@ -1,0 +1,90 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik-ingress
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: core
+  source:
+    repoURL: https://traefik.github.io/charts
+    targetRevision: 26.1.0
+    chart: traefik
+    helm:
+      values: |
+        deployment:
+          replicas: 2
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 4Gi
+            limits:
+              cpu: 2000m
+              memory: 8Gi
+        
+        service:
+          type: LoadBalancer
+          spec:
+            loadBalancerIP: 192.168.10.20  # MetalLB pool
+        
+        ports:
+          web:
+            port: 80
+            exposedPort: 80
+            redirectTo:
+              port: websecure  # HTTP → HTTPS redirect
+          websecure:
+            port: 443
+            exposedPort: 443
+            tls:
+              enabled: true
+        
+        ingressRoute:
+          dashboard:
+            enabled: true
+            matchRule: Host(`traefik.zsel.opole.pl`)
+            entryPoints: ["websecure"]
+            middlewares:
+              - name: auth
+        
+        providers:
+          kubernetesCRD:
+            enabled: true
+            allowCrossNamespace: true
+          kubernetesIngress:
+            enabled: true
+            publishedService:
+              enabled: true
+        
+        logs:
+          general:
+            level: INFO
+          access:
+            enabled: true
+            format: json
+        
+        # Cert-Manager integration
+        additionalArguments:
+          - "--certificatesresolvers.letsencrypt.acme.email=admin@zsel.opole.pl"
+          - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
+          - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+        
+        persistence:
+          enabled: true
+          storageClass: longhorn-tier2-standard
+          size: 10Gi
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: core-ingress
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

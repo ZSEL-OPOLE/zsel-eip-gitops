@@ -1,0 +1,84 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: core
+  source:
+    repoURL: https://metallb.github.io/metallb
+    targetRevision: 0.14.9
+    chart: metallb
+    helm:
+      values: |
+        controller:
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+        
+        speaker:
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          frr:
+            enabled: false  # L2 mode only (BGP disabled)
+        
+        # IP Address Pools
+        ipAddressPools:
+          - name: k3s-services-pool
+            addresses:
+              - 192.168.10.20-192.168.10.100
+            autoAssign: true
+            avoidBuggyIPs: true
+          
+          - name: management-pool
+            addresses:
+              - 192.168.255.50-192.168.255.100
+            autoAssign: false  # Manual assignment for critical services
+        
+        # L2 Advertisement
+        l2Advertisements:
+          - name: l2-advert
+            ipAddressPools:
+              - k3s-services-pool
+              - management-pool
+            interfaces:
+              - eth0
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: core-metallb
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=false  # Terraform creates namespace
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  
+  ignoreDifferences:
+    - group: ""
+      kind: Service
+      jsonPointers:
+        - /spec/clusterIP
+        - /spec/clusterIPs

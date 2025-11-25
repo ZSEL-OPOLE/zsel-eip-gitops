@@ -1,0 +1,81 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: onlyoffice
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+spec:
+  project: education
+  source:
+    repoURL: https://download.onlyoffice.com/charts/stable
+    targetRevision: 1.4.0
+    chart: docs
+    helm:
+      values: |
+        replicaCount: 2
+        
+        image:
+          tag: "7.5.1"
+        
+        resources:
+          requests:
+            cpu: 2000m
+            memory: 8Gi
+          limits:
+            cpu: 4000m
+            memory: 16Gi
+        
+        persistence:
+          enabled: true
+          storageClass: longhorn-tier2-standard
+          size: 100Gi
+        
+        ingress:
+          enabled: true
+          className: traefik
+          hosts:
+            - host: onlyoffice.zsel.opole.pl
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: onlyoffice-tls
+              hosts:
+                - onlyoffice.zsel.opole.pl
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+        
+        jwt:
+          enabled: true
+          secret: SEALED_SECRET
+          header: Authorization
+        
+        # PostgreSQL connection
+        connections:
+          dbHost: postgres-ha-pgpool.db-postgres.svc.cluster.local
+          dbPort: 5432
+          dbName: onlyoffice
+          dbUser: onlyoffice
+          dbPass: SEALED_SECRET
+        
+        # NextCloud integration
+        extraConf:
+          wopi:
+            enable: true
+          storage:
+            fs:
+              secretString: SEALED_SECRET
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: edu-onlyoffice
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
