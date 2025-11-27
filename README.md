@@ -14,9 +14,13 @@
 ### Infrastruktura
 - **39 aplikacji** (LMS, GitLab, NextCloud, BigBlueButton, AI/ML...)
 - **47 namespaces** (1 aplikacja = 1 namespace)
-- **9 × Mac Pro M2 Ultra** (216 cores, 1728 GB RAM, 72 TB storage)
+- **1 klaster K3s** - 9 × Mac Pro M2 Ultra (3 masters + 6 workers)
+  - **Control Plane:** 3 masters (192.168.10.11-13) - HA etcd cluster
+  - **Worker Nodes:** 6 specialized (192.168.10.14-19) - education, devops, ai-ml, analytics, storage
+  - **Total Resources:** 216 CPU cores, 1728 GB RAM, 72 TB local + 150 TB NAS
 - **1030 użytkowników** (900 uczniów + 100 nauczycieli + 30 admin)
 - **6 domen** (zsel.opole.pl, bcu.com.pl, sue.opole.pl, mrsu.pl, elektryk.opole.pl, k4tec.pl)
+- **VLAN 110:** K3s cluster network (192.168.10.0/24) - dedykowana sieć dla Kubernetes
 
 ### Technologie
 - **Kubernetes:** K3s (ARM64-optimized dla Apple Silicon)
