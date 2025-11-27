@@ -490,3 +490,25 @@ Built with:
 **Status:** ✅ Production Ready  
 **Last updated:** 25 listopada 2025  
 **Version:** 1.0.0
+
+---
+
+## 🔒 Security & Code Quality
+
+This repository implements enterprise-grade security with 4-layer defense:
+
+1. **Local**: Pre-commit hooks (30+ checks)
+2. **CI/CD**: GitHub Actions (18 jobs)  
+3. **Branch**: Protection rules + required reviews
+4. **Organization**: Global security policies
+
+**Quick Start:**
+```powershell
+pip install pre-commit
+pre-commit install
+```
+
+**Documentation:**
+- [SECURITY.md](SECURITY.md) - Security policy
+- [CONTRIBUTING.md](CONTRIBUTING.md) - Development workflow
+- [SECURITY-SETUP.md](SECURITY-SETUP.md) - Complete setup guide
